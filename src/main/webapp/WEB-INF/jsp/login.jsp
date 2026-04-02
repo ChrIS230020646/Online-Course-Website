@@ -9,29 +9,40 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
 <head>
-    <title>Login</title>
+    <title>Sign In</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-<h2>Login Page</h2>
-
-<!-- 顯示錯誤訊息 -->
-<c:if test="${param.error != null}">
-    <p style="color:red">Invalid username or password.</p>
-</c:if>
-
-<form action="/login" method="post">
-    <div>
-        <label>Username:</label>
-        <input type="text" name="username"/>
+<div class="ui-container d-flex flex-column align-items-center justify-content-center" style="min-height: 90vh;">
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h1 class="page-title" style="font-size: 32px;">Sign In</h1>
+        <p style="color: var(--text-secondary); font-size: 17px; margin-top: 8px;">Enter your details to continue</p>
     </div>
-    <div>
-        <label>Password:</label>
-        <input type="password" name="password"/>
-    </div>
-    <button type="submit">Login</button>
-</form>
 
-<p>Don't have an account? <a href="/register">Register here</a></p>
+    <div class="ui-card static" style="width: 100%; max-width: 400px; padding: 48px;">
+        <form action="/login" method="post">
+            <div class="mb-4">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="ui-input" placeholder="e.g. john_doe" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="ui-input" placeholder="Your password" required>
+            </div>
+
+            <button type="submit" class="btn-primary-custom w-100 mt-3" style="padding: 14px; font-size: 17px;">Sign In</button>
+
+            <div class="text-center mt-4">
+                <span style="color: var(--text-secondary); font-size: 14px;">Don't have an account?</span>
+                <a href="/register" class="btn-link-custom ms-1" style="font-size: 14px; font-weight: 500;">Create one now</a>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>
+
 
