@@ -1,4 +1,4 @@
-package hkmu.comp3820sef._820sef_project_s12992583; // 請確認你的 package 路徑
+package hkmu.comp3820sef._820sef_project_s12992583;
 
 import hkmu.comp3820sef._820sef_project_s12992583.model.Course;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.CourseRepository;

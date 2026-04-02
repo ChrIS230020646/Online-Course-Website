@@ -39,7 +39,7 @@ public class UserController {
 
         AppUser newUser = new AppUser();
         newUser.setUsername(username);
-        newUser.setPassword(passwordEncoder.encode(password)); // 加密！
+        newUser.setPassword(passwordEncoder.encode(password));
         newUser.setRole(role);
 
         userRepository.save(newUser);
