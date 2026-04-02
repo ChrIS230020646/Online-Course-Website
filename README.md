@@ -12,7 +12,8 @@ Key technologies used:
 ---
 
 ## Update Log
-
+### [2026-04-03]
+- **Added**: UI and fix some register error.
 ### [2026-04-02] - Initial Authentication Setup
 - **Added**: User Registration and Login functionality.
 - **Added**: Security configuration using Spring Security (BCrypt password hashing).
