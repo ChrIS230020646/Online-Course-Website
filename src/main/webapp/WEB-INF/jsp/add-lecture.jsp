@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <title>Add New Lecture</title>
@@ -17,7 +18,7 @@
 <body>
 <div class="ui-container">
     <a href="/courses/${courseId}" class="btn-back">❮</a>
-
+<sec:authorize access="hasRole('TEACHER')">
     <h1 class="page-title mb-5">New Lecture</h1>
     <p style="color: var(--text-secondary); margin-top: -40px; margin-bottom: 40px;">
         Adding content to Course ID: <strong>${courseId}</strong>
@@ -47,6 +48,17 @@
             <%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> --%>
         </form>
     </div>
+</sec:authorize>
+    <sec:authorize access="hasRole('STUDENT')">
+    <div class="ui-card static">
+        <div class="d-flex justify-content-center">
+        <h1 class="page-title mb-5">You DO NOT have permission to access this page</h1>
+        </div>
+        <div class="d-flex justify-content-center">
+        <a href="/courses" class="btn-primary-custom">Back to Courses</a>
+        </div>
+    </div>
+    </sec:authorize>
 </div>
 </body>
 </html>
