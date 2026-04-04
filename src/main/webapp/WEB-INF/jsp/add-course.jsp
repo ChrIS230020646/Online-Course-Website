@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: s12992583
+  User: s12992583_ChrIS
   Date: 3/4/2026
   Time: 1:45
   To change this template use File | Settings | File Templates.
@@ -20,7 +20,7 @@
   <h1 class="page-title mb-5">Course Information</h1>
 
   <div class="ui-card static">
-    <form action="/add-course" method="post">
+    <form action="/courses/add" method="post">
       <div class="mb-4">
         <label for="title">Title</label>
         <input type="text" id="title" name="title" class="ui-input" placeholder="e.g. Advanced Java" required>

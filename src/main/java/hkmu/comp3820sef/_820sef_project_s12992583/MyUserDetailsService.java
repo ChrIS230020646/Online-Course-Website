@@ -26,7 +26,8 @@ public class MyUserDetailsService implements UserDetailsService {
         return new User(
                 user.getUsername(),
                 user.getPassword(),
-                AuthorityUtils.createAuthorityList(user.getRole())
+                AuthorityUtils.createAuthorityList("ROLE_" + user.getRole())
+
         );
     }
 }

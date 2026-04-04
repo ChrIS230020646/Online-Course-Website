@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: s12992583
+  User: s12992583_ChrIS
   Date: 3/4/2026
   Time: 0:22
   To change this template use File | Settings | File Templates.
@@ -16,11 +16,16 @@
 </head>
 <body>
 <div class="ui-container d-flex flex-column align-items-center justify-content-center" style="min-height: 90vh;">
+    <c:if test="${not empty param.success}">
+        <div class="alert alert-success" style="border-radius: 12px; font-size: 14px; text-align: center;">
+            Registration successful! Please sign in.
+        </div>
+    </c:if>
     <div style="text-align: center; margin-bottom: 40px;">
+        <a href="/" class="text-decoration-none text-muted mb-4 d-inline-block">❮</a>
         <h1 class="page-title" style="font-size: 32px;">Sign In</h1>
         <p style="color: var(--text-secondary); font-size: 17px; margin-top: 8px;">Enter your details to continue</p>
     </div>
-
     <div class="ui-card static" style="width: 100%; max-width: 400px; padding: 48px;">
         <form action="/login" method="post">
             <div class="mb-4">

@@ -1,6 +1,8 @@
 package hkmu.comp3820sef._820sef_project_s12992583.model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,7 +23,13 @@ public class Course {
     private AppUser instructor;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private List<Lecture> lectures;
+    private List<Lecture> lectures = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "enrolledCourses")
+    private List<AppUser> students = new ArrayList<>();
+
+
+
 
     public Long getId() {
         return id;
@@ -63,6 +71,9 @@ public class Course {
         this.instructor = instructor;
     }
 
+
+
+
     public List<Lecture> getLectures() {
         return lectures;
     }
@@ -70,5 +81,9 @@ public class Course {
     public void setLectures(List<Lecture> lectures) {
         this.lectures = lectures;
     }
+
+    public List<AppUser> getStudents() { return students; }
+
+    public void setStudents(List<AppUser> students) { this.students = students; }
 }
 

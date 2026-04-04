@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: s12992583
+  User: s12992583_ChrIS
   Date: 26/3/2026
   Time: 14:44
   To change this template use File | Settings | File Templates.
@@ -25,7 +25,7 @@
         </p>
         <div class="d-flex justify-content-center gap-3">
             <a href="/courses" class="btn-primary-custom" style="padding: 18px 48px; font-size: 19px;">Browse Courses</a>
-            <a href="/login" class="btn-outline-custom" style="padding: 18px 48px; font-size: 19px; border-radius: 980px;">Student Login</a>
+            <a href="/login" class="btn-outline-custom" style="padding: 18px 48px; font-size: 19px; border-radius: 980px;">Login</a>
         </div>
     </div>
 

@@ -46,6 +46,10 @@ dependencies {
     implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl'
     // sec
     implementation 'org.springframework.security:spring-security-taglibs'
+
+    //
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-taglibs'
 }
 
 tasks.named('test') {

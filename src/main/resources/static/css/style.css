@@ -17,9 +17,9 @@ body {
 }
 
 .ui-container {
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 40px 20px;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
 }
 
 .page-title {
@@ -152,4 +152,27 @@ label {
 .ui-input:focus {
     border-color: var(--brand-blue);
     box-shadow: 0 0 0 4px rgba(0,113,227,0.1);
+}
+
+/* Navbar */
+.main-nav {
+    background: white;
+    padding: 15px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.nav-links a {
+    margin-left: 25px;
+    text-decoration: none;
+    color: #444;
+    font-weight: 500;
+}
+
+.nav-links a:hover { color: #007bff; }
+
+.btn-logout {
+    color: #dc3545 !important;
 }

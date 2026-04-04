@@ -44,7 +44,8 @@ public class UserController {
 
         userRepository.save(newUser);
 
-        return "redirect:/?success=Registration successful";
+        return "redirect:/login?success=true";
+
     }
 }
 

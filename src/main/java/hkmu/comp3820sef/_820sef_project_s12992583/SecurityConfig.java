@@ -17,19 +17,21 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .dispatcherTypeMatchers(jakarta.servlet.DispatcherType.FORWARD, jakarta.servlet.DispatcherType.ERROR).permitAll()
-                        .requestMatchers("/h2-console/**", "/register", "/login", "/", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/h2-console/**", "/register", "/login", "/", "/css/**", "/js/**", "/style.css").permitAll()
+                        .requestMatchers("/courses/add", "/courses/edit/**", "/courses/delete/**").hasRole("TEACHER")
+                        .requestMatchers("/courses/**", "/my-courses").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/courses", true)
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessUrl("/")
                         .permitAll()
                 )
                 .csrf(csrf -> csrf.disable())
@@ -37,8 +39,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

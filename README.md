@@ -12,9 +12,12 @@ Key technologies used:
 ---
 
 ## Update Log
-### [2026-04-03]
+### [2026-04-05 By Chris 12992583]
+- **Added**: Course Details + Enrollment + UI
+- **Bug Fixes**: Controller bug + UI bug
+### [2026-04-03 By Chris 12992583]
 - **Added**: UI and fix some register error.
-### [2026-04-02] - Initial Authentication Setup
+### [2026-04-02 By Chris 12992583] - Initial Authentication Setup 
 - **Added**: User Registration and Login functionality.
 - **Added**: Security configuration using Spring Security (BCrypt password hashing).
 - **Added**: Database models for `AppUser` and `UserRepository`.
