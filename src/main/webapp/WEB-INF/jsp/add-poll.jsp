@@ -16,6 +16,7 @@
 <body>
 <div class="ui-container">
   <a href="/courses/${courseId}" class="btn-back">❮</a>
+<sec:authorize access="hasRole('TEACHER')">
 
   <div class="header mb-5">
     <h1 class="page-title">${poll.question}</h1>
@@ -41,6 +42,17 @@
       <button type="submit" class="btn-primary-custom mt-4">Create Poll</button>
     </form>
   </div>
+</sec:authorize>
+  <sec:authorize access="hasRole('STUDENT')">
+    <div class="ui-card static">
+      <div class="d-flex justify-content-center">
+        <h1 class="page-title mb-5">You DO NOT have permission to access this page</h1>
+      </div>
+      <div class="d-flex justify-content-center">
+        <a href="/courses" class="btn-primary-custom">Back to Courses</a>
+      </div>
+    </div>
+  </sec:authorize>
 </div>
 </body>
 </html>
