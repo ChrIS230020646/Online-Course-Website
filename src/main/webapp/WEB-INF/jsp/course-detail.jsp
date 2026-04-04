@@ -45,8 +45,8 @@
 
         <sec:authorize access="hasRole('TEACHER')">
             <div>
-            <a href="/courses/${course.id}/add-lecture" class="btn-outline-custom" style="text-decoration:none;">Add Lecture</a>
-            <a href="/course/${course.id}/add-poll" class="btn-outline-custom" style="text-decoration:none;">Add Poll</a>
+                <a href="/courses/${course.id}/add-lecture" class="btn-outline-custom" style="text-decoration:none;">Add Lecture</a>
+                <a href="/courses/${course.id}/add-poll" class="btn-outline-custom" style="text-decoration:none;">Add Poll</a>
             </div>
         </sec:authorize>
 
@@ -127,5 +127,4 @@
 </div>
 </body>
 </html>
-
 
