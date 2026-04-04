@@ -44,7 +44,10 @@
         <h2 class="m-0" style="font-size: 24px; font-weight: 600;">Course Content</h2>
 
         <sec:authorize access="hasRole('TEACHER')">
+            <div>
             <a href="/courses/${course.id}/add-lecture" class="btn-outline-custom" style="text-decoration:none;">Add Lecture</a>
+            <a href="/course/${course.id}/add-poll" class="btn-outline-custom" style="text-decoration:none;">Add Poll</a>
+            </div>
         </sec:authorize>
 
         <sec:authorize access="hasRole('STUDENT')">
