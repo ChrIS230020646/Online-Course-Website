@@ -12,6 +12,10 @@ Key technologies used:
 ---
 
 ## Update Log
+### [2026-04-05 By Adrian 14219499]
+- **Added**:Complete Add Polls Function, Polls can now be Viewed on Course Details Page
+### [2026-04-05 By Adrian 14219499]
+- **Added**:Add Polls Function(Not fully Implemented)
 ### [2026-04-05 By Chris 12992583]
 - **Added**: Course Details + Enrollment + UI
 - **Bug Fixes**: Controller bug + UI bug
