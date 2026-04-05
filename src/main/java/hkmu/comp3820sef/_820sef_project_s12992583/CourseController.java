@@ -133,6 +133,14 @@ public class CourseController {
         // it need a lecture-detail.jsp to display
         return "lecture-detail";
     }
+
+    @GetMapping("/{courseId}/index-page")
+    public String showCourseIndexPage(@PathVariable Long courseId, Model model) {
+        // model.addAttribute("course", course);
+        // model.addAttribute("lectures", lectures);
+        // model.addAttribute("polls", polls);
+        return "course-index-page";
+    }
 }
 
 

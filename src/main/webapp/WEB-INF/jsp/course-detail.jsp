@@ -75,13 +75,13 @@
                     </div>
 
                     <sec:authorize access="hasRole('TEACHER')">
-                        <a href="/lectures/${lecture.id}" class="btn btn-sm btn-light rounded-pill px-3">View / Edit</a>
+                        <a href="/course-material-page/${lecture.id}" class="btn btn-sm btn-light rounded-pill px-3">View / Edit</a>
                     </sec:authorize>
 
                     <sec:authorize access="hasRole('STUDENT')">
                         <c:choose>
                             <c:when test="${isEnrolled}">
-                                <a href="/lectures/${lecture.id}" class="btn btn-sm btn-light rounded-pill px-3">View</a>
+                                <a href="/course-material-page/${lecture.id}" class="btn btn-sm btn-light rounded-pill px-3">View</a>
                             </c:when>
                             <c:otherwise>
                                 <button class="btn btn-sm btn-light disabled rounded-pill px-3" title="Please enroll first">Locked 🔒</button>
