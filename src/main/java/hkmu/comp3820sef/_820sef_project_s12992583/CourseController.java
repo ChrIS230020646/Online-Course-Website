@@ -129,6 +129,7 @@ public class CourseController {
         // model.addAttribute("lectures", lectures);
         // model.addAttribute("polls", polls);
         return "course-index-page";
+    }
 
     @Autowired
     private PollRepository pollRepository;
