@@ -115,21 +115,16 @@ public class CourseController {
 
     @GetMapping("/lectures/{lectureId}")
     public String viewLecture(@PathVariable Long lectureId, Model model) {
-        // lectureRepository
-        // Lecture lecture = lectureRepository.findById(lectureId).orElseThrow();
-        // model.addAttribute("lecture", lecture);
 
-        // it need a lecture-detail.jsp to display
-        return "lecture-detail";
+        Lecture lecture = lectureRepository.findById(lectureId).orElseThrow();
+        model.addAttribute("lecture", lecture);
+
+        model.addAttribute("course", lecture.getCourse());
+
+        return "course-material-page";
     }
 
-    @GetMapping("/{courseId}/index-page")
-    public String showCourseIndexPage(@PathVariable Long courseId, Model model) {
-        // model.addAttribute("course", course);
-        // model.addAttribute("lectures", lectures);
-        // model.addAttribute("polls", polls);
-        return "course-index-page";
-    }
+
 
     @Autowired
     private PollRepository pollRepository;

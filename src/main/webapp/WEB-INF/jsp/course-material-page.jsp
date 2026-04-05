@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* 檔案下載連結樣式 */
         .file-download-link {
             display: inline-flex;
             align-items: center;
@@ -41,8 +40,7 @@
     </div>
     <div class="nav-links">
         <a href="/courses">All Courses</a>
-        <!-- 修正路徑：將 /course-detail 改為 /course -->
-        <a href="/course/${course.id}">Course Detail</a>
+        <a href="/courses/${course.id}">Course Detail</a>
         <form action="/logout" method="post" style="display:inline; margin-left:25px;">
             <button type="submit" class="btn-logout" style="border:none; background:none; cursor:pointer; font-weight:500;">Logout</button>
         </form>
@@ -50,8 +48,7 @@
 </nav>
 
 <div class="ui-container">
-    <!-- 修正路徑：返回按鈕連回課程詳情 -->
-    <a href="/course/${course.id}" class="btn-back">❮</a>
+    <a href="/courses/${course.id}" class="btn-back">❮</a>
 
     <header class="mb-5">
         <h1 style="font-size: 42px; font-weight: 700; margin-top: 10px;">${lecture.title}</h1>
@@ -62,13 +59,10 @@
             <p style="font-size: 18px; color: #424245; line-height: 1.8; white-space: pre-wrap;">${lecture.content}</p>
         </div>
 
-        <!-- 下載區：改為檔案清單樣式 -->
         <div class="mt-4 pt-4 border-top">
             <a href="/download/lecture/${lecture.id}" class="file-download-link">
-                <!-- PDF 圖示 -->
                 <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" class="file-icon" alt="pdf">
                 <span style="font-size: 17px; font-weight: 500;">${lecture.title}.pdf</span>
-                <!-- 下載箭頭圖示 -->
                 <svg class="download-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                     <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
                     <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
