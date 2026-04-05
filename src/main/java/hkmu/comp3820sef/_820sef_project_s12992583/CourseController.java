@@ -113,7 +113,7 @@ public class CourseController {
         return "course-detail";
     }
 
-    @GetMapping("/lectures/{lectureId}")
+//    @GetMapping("/lectures/{lectureId}")
     public String viewLecture(@PathVariable Long lectureId, Model model) {
 
         Lecture lecture = lectureRepository.findById(lectureId).orElseThrow();

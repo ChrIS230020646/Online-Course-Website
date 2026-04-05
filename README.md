@@ -14,6 +14,9 @@ Key technologies used:
 ## Update Log
 ### [2026-04-06 By Chris 12992583]
 - **Added**: course-material-page Update
+- **Bug Fixes**: Resolving code conflicts
+### [2026-04-05 By Jacky 12728551]
+- **Added**:Complete Add comment Function Component , Entity & Controller
 ### [2026-04-05 By Adrian 14219499]
 - **Added**:Complete Add Polls Function, Polls can now be Viewed on Course Details Page + Divided Course Content to Display Lectures and Polls Separately
 ### [2026-04-05 By Adrian 14219499]
