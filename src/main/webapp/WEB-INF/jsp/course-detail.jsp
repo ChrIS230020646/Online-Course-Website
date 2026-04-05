@@ -67,6 +67,7 @@
 
     <div class="lecture-list mb-5">
         <c:forEach items="${course.lectures}" var="lecture">
+            <h2 class="m-0" style="font-size: 24px; font-weight: 600;">Lectures</h2>
             <div class="ui-card">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
@@ -93,6 +94,50 @@
         </c:forEach>
         <c:if test="${empty course.lectures}">
             <p class="text-muted">No lectures added yet.</p>
+        </c:if>
+    </div>
+
+    <%-- Poll Section --%>
+    <div class="poll-list mb-5">
+        <h2 class="mb-3" style="font-size: 24px; font-weight: 600;">Active Polls</h2>
+
+        <%-- Loop through the POLLS collection, not the lectures collection --%>
+        <c:forEach items="${course.polls}" var="poll">
+            <div class="ui-card mb-3" style="border-left: 4px solid #007aff;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                            <%-- Display the Question created in add-poll.jsp --%>
+                        <h4 style="font-size:18px; margin:0;">📊 ${poll.question}</h4>
+                        <p class="text-muted m-0" style="font-size:13px; mt-1">
+                            Cast your vote to help shape the next class!
+                        </p>
+                    </div>
+
+                        <%-- Teacher View: See Results --%>
+                    <sec:authorize access="hasRole('TEACHER')">
+                        <a href="/courses/${course.id}/poll/${poll.id}" class="btn btn-sm btn-light rounded-pill px-3">View Results/Edit</a>
+                    </sec:authorize>
+
+                        <%-- Student View: Vote --%>
+                    <sec:authorize access="hasRole('STUDENT')">
+                        <c:choose>
+                            <c:when test="${isEnrolled}">
+                                <a href="/courses/${course.id}/poll/${poll.id}" class="btn btn-sm btn-primary rounded-pill px-4">View Results/Vote</a>
+                            </c:when>
+                            <c:otherwise>
+                                <button class="btn btn-sm btn-light disabled rounded-pill px-3" title="Enroll to participate">Locked 🔒</button>
+                            </c:otherwise>
+                        </c:choose>
+                    </sec:authorize>
+                </div>
+            </div>
+        </c:forEach>
+
+        <%-- Fallback if no polls have been created yet --%>
+        <c:if test="${empty course.polls}">
+            <div class="p-4 border rounded text-center" style="border-style: dashed !important;">
+                <p class="text-muted m-0">No polls have been created for this course yet.</p>
+            </div>
         </c:if>
     </div>
 
