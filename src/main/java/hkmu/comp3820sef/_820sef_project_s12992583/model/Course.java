@@ -28,6 +28,18 @@ public class Course {
     @ManyToMany(mappedBy = "enrolledCourses")
     private List<AppUser> students = new ArrayList<>();
 
+    // Add this field near your lectures field
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<Poll> polls = new ArrayList<>();
+
+    // Add these methods at the bottom of the class
+    public List<Poll> getPolls() {
+        return polls;
+    }
+
+    public void setPolls(List<Poll> polls) {
+        this.polls = polls;
+    }
 
 
 
