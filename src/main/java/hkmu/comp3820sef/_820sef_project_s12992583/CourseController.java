@@ -3,8 +3,10 @@ package hkmu.comp3820sef._820sef_project_s12992583;
 import hkmu.comp3820sef._820sef_project_s12992583.model.AppUser;
 import hkmu.comp3820sef._820sef_project_s12992583.model.Course;
 import hkmu.comp3820sef._820sef_project_s12992583.model.Lecture;
+import hkmu.comp3820sef._820sef_project_s12992583.model.Poll;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.CourseRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.LectureRepository;
+import hkmu.comp3820sef._820sef_project_s12992583.repository.PollRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -67,20 +70,6 @@ public class CourseController {
         return "redirect:/courses/" + courseId;
     }
 
-    @GetMapping("/courses/{courseId}/add-poll")
-    public String showAddPollForm(@PathVariable Long courseId, Model model) {
-        model.addAttribute("courseId", courseId);
-        return "add-poll"; // Directs to your add-poll.jsp
-    }
-
-    // Process the 5 options and "Create" the poll
-    @PostMapping("/courses/{courseId}/add-poll")
-    public String createPoll(@PathVariable Long courseId,
-                             @RequestParam String question,
-                             @RequestParam List<String> options) {
-
-        return "redirect:/courses/" + courseId;
-    }
     @PostMapping("/courses/{courseId}/enroll")
     public String enrollCourse(@PathVariable Long courseId, Authentication authentication, RedirectAttributes redirectAttributes) {
         String username = authentication.getName();
@@ -132,6 +121,32 @@ public class CourseController {
 
         // it need a lecture-detail.jsp to display
         return "lecture-detail";
+    }
+    @Autowired
+    private PollRepository pollRepository;
+
+    @GetMapping("/courses/{courseId}/add-poll")
+    public String showAddPollForm(@PathVariable Long courseId, Model model) {
+        model.addAttribute("courseId", courseId);
+        return "add-poll"; // Directs to your add-poll.jsp
+    }
+    @PostMapping("/courses/{courseId}/add-poll")
+    public String createPoll(@PathVariable Long courseId,
+                             @RequestParam String question,
+                             @RequestParam List<String> options) {
+
+        Course course = courseRepository.findById(courseId).orElseThrow();
+
+        Poll poll = new Poll();
+        poll.setQuestion(question);
+        poll.setOptions(options); // This takes the 5 strings from the JSP
+        poll.setCourse(course);
+
+        // Initialize 5 zeros for the initial vote counts
+        poll.setVotes(new ArrayList<>(List.of(0, 0, 0, 0, 0)));
+
+        pollRepository.save(poll);
+        return "redirect:/courses/" + courseId;
     }
 }
 
