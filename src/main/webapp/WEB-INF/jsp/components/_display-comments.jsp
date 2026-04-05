@@ -56,7 +56,7 @@
                                         <form action="/comment/delete/${reply.id}" method="post" class="d-inline">
                                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                             <input type="hidden" name="lectureId" value="${lectureId}"/>
-                                            <button type="submit" class="btn btn-link btn-sm text-danger p-0">×</button>
+                                            <button type="submit" class="btn btn-link btn-sm text-danger p-0">Delete</button>
                                         </form>
                                     </sec:authorize>
                                 </div>

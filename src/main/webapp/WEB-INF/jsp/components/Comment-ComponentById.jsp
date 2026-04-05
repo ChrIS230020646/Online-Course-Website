@@ -23,7 +23,6 @@
     </div>
 <div class="content-box p-3 bg-light rounded mb-4">
     <strong>lectureId:</strong>
-    <%-- 直接使用 ${lectureId} 而不是 ${cmt.lectureId} --%>
     <p class="mt-2 lead">${lectureId}</p>
 </div>
 
