@@ -46,6 +46,58 @@
                     <span class="btn-link-custom" style="font-weight: 500; font-size: 15px;">Learn more</span>
                 </a>
             </div>
+
+            <div class="mt-5">
+                <h2 style="font-weight: 700; margin-bottom: 24px;">Browse Courses</h2>
+                <div class="row g-4">
+                    <c:forEach items="${courses}" var="course">
+                        <div class="col-md-4">
+                            <a href="/course/${course.id}" class="ui-card clickable h-100 d-flex flex-column">
+                        <span style="color:var(--text-secondary); font-weight:600; font-size:12px; text-transform:uppercase;">
+                                ${course.category}
+                        </span>
+                                <h4 style="font-size: 20px; font-weight: 600; margin: 10px 0;">${course.title}</h4>
+                            </a>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+
+            <div class="mt-5 pt-5">
+                <h2 style="font-weight: 700; margin-bottom: 24px;">All Lectures</h2>
+                <div class="ui-card" style="padding: 20px;">
+                    <div class="list-group list-group-flush">
+                        <c:forEach items="${lectures}" var="lecture">
+                            <a href="/lecture/${lecture.id}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 border-0">
+                                <div>
+                                    <span class="badge bg-primary me-2">Lecture</span>
+                                    <span style="font-weight: 500;">${lecture.title}</span>
+                                </div>
+                                <span class="text-muted" style="font-size: 14px;">View Details &rarr;</span>
+                            </a>
+                        </c:forEach>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5 pt-5">
+                <h2 style="font-weight: 700; margin-bottom: 24px;">Active Polls</h2>
+                <div class="row g-4">
+                    <c:forEach items="${polls}" var="poll">
+                        <div class="col-md-6">
+                            <a href="/poll/${poll.id}" class="ui-card clickable d-flex align-items-center gap-3">
+                                <div style="font-size: 28px;">📊</div>
+                                <div>
+                                    <h4 style="margin:0; font-weight: 600; font-size: 18px;">${poll.question}</h4>
+                                    <p style="margin:0; font-size: 14px; color: var(--text-secondary);">Participate in this multiple choice poll</p>
+                                </div>
+                            </a>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+
+
         </c:forEach>
     </div>
     <div class="row mt-5 pt-5 g-4">

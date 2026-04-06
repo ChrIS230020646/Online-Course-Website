@@ -12,6 +12,9 @@ Key technologies used:
 ---
 
 ## Update Log
+### [2026-04-07 By Chris 12992583]
+- **Added**: Index My Courses update
+- **Bug Fixes**: course Details page bug fixed(bug fixed for student unable to access course details)
 ### [2026-04-06 By Chris 12992583]
 - **Added**: course-material-page Update
 - **Bug Fixes**: Resolving code conflicts
