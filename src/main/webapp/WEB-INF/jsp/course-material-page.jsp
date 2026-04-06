@@ -74,34 +74,8 @@
     <div class="ui-card">
         <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 25px;">Comments / Discussion</h2>
 
-        <div class="comment-list mb-4">
-            <c:choose>
-                <c:when test="${empty comments}">
-                    <p class="text-muted">No comments yet. Be the first to comment!</p>
-                </c:when>
-                <c:otherwise>
-                    <c:forEach var="comment" items="${comments}">
-                        <div class="pb-3 mb-3 border-bottom">
-                            <div class="d-flex justify-content-between">
-                                <strong style="color: var(--brand-blue);">${comment.user.username}</strong>
-                                <small class="text-muted">Just now</small>
-                            </div>
-                            <p class="m-0 mt-1" style="color: #424245;">${comment.content}</p>
-                        </div>
-                    </c:forEach>
-                </c:otherwise>
-            </c:choose>
-        </div>
+        <jsp:include page="/WEB-INF/jsp/components/comment-section.jsp" />
 
-        <form action="/course-material-page/${lecture.id}/comment" method="post" class="mt-4">
-            <div class="mb-3">
-                <label class="form-label" style="font-weight: 600; color: #1d1d1f;">Add a comment</label>
-                <textarea class="ui-input" name="content" rows="3" placeholder="Write your thoughts here..." required></textarea>
-            </div>
-            <div class="d-flex justify-content-end">
-                <button type="submit" class="btn-primary-custom">Post Comment</button>
-            </div>
-        </form>
     </div>
 </div>
 

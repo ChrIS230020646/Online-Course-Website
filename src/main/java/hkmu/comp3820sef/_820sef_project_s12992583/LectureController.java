@@ -29,11 +29,12 @@ public class LectureController {
         if (lecture == null) {
             return "redirect:/";
         }
+        List<Comment> comments = commentRepository.findByLectureIdAndParentCommentIsNullOrderByCommentTimeDesc(lectureId);
 
         model.addAttribute("lecture", lecture);
         model.addAttribute("course", lecture.getCourse());
-        model.addAttribute("comments", new ArrayList<>());
-
+        model.addAttribute("commentList", comments);
+//        model.addAttribute("lectureId", lectureId);
         return "course-material-page";
     }
 
@@ -54,6 +55,6 @@ public class LectureController {
         model.addAttribute("commentList", comments);
         model.addAttribute("lectureId", lectureId);
 
-        return "lecture-detail";
+        return "course-material-page";
     }
 }

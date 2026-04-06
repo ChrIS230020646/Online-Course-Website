@@ -78,7 +78,7 @@ public class CommentController {
         commentRepository.save(comment);
 
         // 重導向到顯示課程的頁面，請確保這個路徑存在！
-        return "redirect:/lectures/lectures/" + lectureId;
+        return "redirect:/course-material-page/" + lectureId;
     }
 
 
@@ -100,34 +100,36 @@ public class CommentController {
             commentRepository.delete(comment);
         }
 
-        return "redirect:/lectures/lectures/" + lectureId;
+        return "redirect:/course-material-page/" + lectureId;
     }
-//    @GetMapping("/comments/{Id}")
-//    public String getCommentById(@PathVariable Long Id, Model model) {
-//        // 1. 根據 ID 抓取單一條評論
-//        Comment comment = commentRepository.findById(Id)
-//                .orElseThrow(() -> new IllegalArgumentException("Comment ID " + Id + " not found"));
-//
-//        // 2. 將這條評論的資訊放入 Model
+    @GetMapping("/comments/{Id}")
+    public String getCommentById(@PathVariable Long Id, Model model) {
+        // 1. 根據 ID 抓取單一條評論
+        Comment comment = commentRepository.findById(Id)
+                .orElseThrow(() -> new IllegalArgumentException("Comment ID " + Id + " not found"));
+
+        // 2. 將這條評論的資訊放入 Model
+        model.addAttribute("cmt", comment);
+
+        // 3. 為了讓返回按鈕能運作，通常也會傳入所屬的 lectureId
+        model.addAttribute("lectureId", comment.getLecture().getId());
+
+        // 返回你指定的 JSP 組件名稱
+        return "components/Comment-ComponentById";
+    }
+//@GetMapping("/comments/{Id}")
+//public String getCommentById(@PathVariable Long Id, Model model) {
+//    // Use findById and handle the absence gracefully
+//    return commentRepository.findById(Id).map(comment -> {
 //        model.addAttribute("cmt", comment);
-//
-//        // 3. 為了讓返回按鈕能運作，通常也會傳入所屬的 lectureId
 //        model.addAttribute("lectureId", comment.getLecture().getId());
-//
-//        // 返回你指定的 JSP 組件名稱
 //        return "components/Comment-ComponentById";
 //    }
-@GetMapping("/comments/{Id}")
-public String getCommentById(@PathVariable Long Id, Model model) {
-    // Use findById and handle the absence gracefully
-    return commentRepository.findById(Id).map(comment -> {
-        model.addAttribute("cmt", comment);
-        model.addAttribute("lectureId", comment.getLecture().getId());
-        return "components/Comment-ComponentById";
-    }).orElseGet(() -> {
-        // Log the error and redirect or return an error view instead of crashing
-        model.addAttribute("errorMessage", "Comment not found.");
-        return "redirect:/courses";
-    });
-}
+//    )
+//            .orElseGet(() -> {
+//        // Log the error and redirect or return an error view instead of crashing
+//        model.addAttribute("errorMessage", "Comment not found.");
+//        return "redirect:/courses";
+//    });
+//}
 }

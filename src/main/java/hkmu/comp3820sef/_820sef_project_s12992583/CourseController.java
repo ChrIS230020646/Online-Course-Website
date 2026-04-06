@@ -113,19 +113,15 @@ public class CourseController {
         return "course-detail";
     }
 
-//    @GetMapping("/lectures/{lectureId}")
+    @GetMapping("/lectures/{lectureId}")
     public String viewLecture(@PathVariable Long lectureId, Model model) {
+        // lectureRepository
+        // Lecture lecture = lectureRepository.findById(lectureId).orElseThrow();
+        // model.addAttribute("lecture", lecture);
 
-        Lecture lecture = lectureRepository.findById(lectureId).orElseThrow();
-        model.addAttribute("lecture", lecture);
-
-        model.addAttribute("course", lecture.getCourse());
-
-        return "course-material-page";
+        // it need a lecture-detail.jsp to display
+        return "lecture-detail";
     }
-
-
-
     @Autowired
     private PollRepository pollRepository;
 
@@ -134,7 +130,6 @@ public class CourseController {
         model.addAttribute("courseId", courseId);
         return "add-poll"; // Directs to your add-poll.jsp
     }
-
     @PostMapping("/courses/{courseId}/add-poll")
     public String createPoll(@PathVariable Long courseId,
                              @RequestParam String question,
