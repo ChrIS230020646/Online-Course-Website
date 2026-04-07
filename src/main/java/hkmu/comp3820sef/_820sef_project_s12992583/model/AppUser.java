@@ -5,23 +5,28 @@ import java.util.List;
 import java.util.ArrayList;
 
 @Entity
-@Table(name = "users") // db name = users
+@Table(name = "users")
 public class AppUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String fullName;
+    private String email;
+    private String phoneNumber;
+
+    private String profilePicture;
+
     @Column(unique = true, nullable = false)
-    private String username; // AC
+    private String username;
 
     @Column(nullable = false)
-    private String password; // PW
+    private String password;
 
     @Column(nullable = false)
     private String role; // STUDENT or TEACHER
 
-    // Getter and Setter
     public AppUser() {}
     public AppUser(String username, String password, String role) {
         this.username = username;
@@ -41,6 +46,14 @@ public class AppUser {
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 
     @ManyToMany
     @JoinTable(
@@ -51,4 +64,19 @@ public class AppUser {
     private List<Course> enrolledCourses = new ArrayList<>();
     public List<Course> getEnrolledCourses() { return enrolledCourses; }
     public void setEnrolledCourses(List<Course> enrolledCourses) { this.enrolledCourses = enrolledCourses; }
+
+
+
+
+    public String getProfilePicture() {
+        if (profilePicture == null || profilePicture.isEmpty()) {
+            return "https://ui-avatars.com/api/?name=" + (fullName != null ? fullName : username) + "&background=random&color=fff";
+        }
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
 }
+

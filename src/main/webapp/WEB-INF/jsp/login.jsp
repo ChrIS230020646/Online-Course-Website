@@ -16,21 +16,29 @@
 </head>
 <body>
 <div class="ui-container d-flex flex-column align-items-center justify-content-center" style="min-height: 90vh;">
-    <c:if test="${not empty param.success}">
-        <div class="alert alert-success" style="border-radius: 12px; font-size: 14px; text-align: center;">
-            Registration successful! Please sign in.
-        </div>
-    </c:if>
+
     <div style="text-align: center; margin-bottom: 40px;">
         <a href="/" class="text-decoration-none text-muted mb-4 d-inline-block">❮</a>
         <h1 class="page-title" style="font-size: 32px;">Sign In</h1>
         <p style="color: var(--text-secondary); font-size: 17px; margin-top: 8px;">Enter your details to continue</p>
     </div>
+
     <div class="ui-card static" style="width: 100%; max-width: 400px; padding: 48px;">
+
+        <c:if test="${param.registered == 'true'}">
+            <div class="alert alert-success py-2" style="font-size: 14px;">Registration successful! Please sign in.</div>
+        </c:if>
+        <c:if test="${param.error != null}">
+            <div class="alert alert-danger py-2" style="font-size: 14px;">Invalid ID or password.</div>
+        </c:if>
+        <c:if test="${param.logout != null}">
+            <div class="alert alert-info py-2" style="font-size: 14px;">Logged out successfully.</div>
+        </c:if>
+
         <form action="/login" method="post">
             <div class="mb-4">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" class="ui-input" placeholder="e.g. john_doe" required>
+                <label for="username">Username / Email / Phone</label>
+                <input type="text" id="username" name="username" class="ui-input" placeholder="e.g. john_doe or john@email.com" required>
             </div>
 
             <div class="mb-4">
@@ -49,5 +57,6 @@
 </div>
 </body>
 </html>
+
 
 

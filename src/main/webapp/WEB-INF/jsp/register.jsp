@@ -11,60 +11,63 @@
 <head>
     <title>Create Account</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-<div class="ui-container d-flex flex-column align-items-center justify-content-center" style="min-height: 95vh;">
-    <div style="text-align: center; margin-bottom: 40px;">
-        <h1 class="page-title" style="font-size: 32px;">Create Account</h1>
-        <p style="color: var(--text-secondary); font-size: 17px; margin-top: 8px;">Join our community today</p>
+<div class="ui-container d-flex flex-column align-items-center justify-content-center" style="min-height: 95vh; padding-top: 50px; padding-bottom: 50px;">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h1 class="page-title">Create Account</h1>
     </div>
 
-    <div class="ui-card static" style="width: 100%; max-width: 440px; padding: 48px;">
-
+    <div class="ui-card static" style="width: 100%; max-width: 440px; padding: 40px;">
         <a href="/" class="text-decoration-none text-muted" style="position: absolute; top: 20px; left: 25px; font-size: 20px;">❮</a>
 
-        <c:if test="${not empty param.success}">
-            <div class="alert alert-success" style="border-radius: 12px; font-size: 14px; text-align: center;">
-                Registration successful! Please sign in.
+        <!-- 錯誤提示 -->
+        <c:if test="${not empty param.error}">
+            <div class="alert alert-danger" style="border-radius: 12px; font-size: 13px;">
+                    ${param.error}
             </div>
         </c:if>
 
         <form action="/register" method="post">
-            <div class="mb-4">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" class="ui-input" placeholder="Choose a username" required>
+            <div class="mb-3">
+                <label>Username (must contain letters)</label>
+                <input type="text" name="username" class="ui-input" placeholder="e.g. john88" required>
             </div>
-
-            <div class="mb-4">
-                <label for="role">I am a...</label>
-                <select id="role" name="role" class="ui-input" required style="appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2386868b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 0.65rem auto;">
-                    <option value="" disabled selected>Select your role</option>
+            <div class="mb-3">
+                <label>Full Name</label>
+                <input type="text" name="fullName" class="ui-input" placeholder="Full name" required>
+            </div>
+            <div class="mb-3">
+                <label>Email Address</label>
+                <input type="email" name="email" class="ui-input" placeholder="email@example.com" required>
+            </div>
+            <div class="mb-3">
+                <label>Phone Number</label>
+                <input type="tel" name="phoneNumber" class="ui-input" placeholder="Phone number" required>
+            </div>
+            <div class="mb-3">
+                <label>Role</label>
+                <select name="role" class="ui-input" required>
                     <option value="STUDENT">Student</option>
                     <option value="TEACHER">Teacher</option>
                 </select>
             </div>
-
-            <div class="mb-4">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" class="ui-input" placeholder="Strong password" required>
+            <div class="mb-3">
+                <label>Password</label>
+                <input type="password" name="password" class="ui-input" placeholder="8+ chars, A-Z, a-z, 0-9, @" required>
+            </div>
+            <div class="mb-3">
+                <label>Confirm Password</label>
+                <input type="password" name="confirmPassword" class="ui-input" placeholder="Repeat password" required>
             </div>
 
-            <div class="mb-4">
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" class="ui-input" placeholder="Repeat password" required>
-            </div>
-
-            <button type="submit" class="btn-primary-custom w-100 mt-3" style="padding: 14px; font-size: 17px;">Get Started</button>
-
-            <div class="text-center mt-4">
-                <span style="color: var(--text-secondary); font-size: 14px;">Already a member?</span>
-                <a href="/login" class="btn-link-custom ms-1" style="font-size: 14px; font-weight: 500;">Sign in here</a>
-            </div>
+            <button type="submit" class="btn-primary-custom w-100 mt-2">Get Started</button>
         </form>
     </div>
 </div>
 </body>
 </html>
+
+
 

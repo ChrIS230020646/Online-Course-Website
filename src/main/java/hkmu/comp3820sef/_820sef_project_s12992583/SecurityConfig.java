@@ -23,7 +23,7 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(jakarta.servlet.DispatcherType.FORWARD, jakarta.servlet.DispatcherType.ERROR).permitAll()
 
                         // Makes these specific paths (Home, Login, Register, CSS/JS) public to everyone
-                        .requestMatchers("/h2-console/**", "/register", "/login", "/", "/css/**", "/js/**", "/style.css").permitAll()
+                        .requestMatchers("/h2-console/**", "/register", "/login", "/", "/css/**", "/js/**", "/style.css","/uploads/**").permitAll()
 
                         // Restricts Course creation, editing, and deletion to users with the 'TEACHER' role only
                         .requestMatchers("/courses/add", "/courses/edit/**", "/courses/delete/**").hasRole("TEACHER")

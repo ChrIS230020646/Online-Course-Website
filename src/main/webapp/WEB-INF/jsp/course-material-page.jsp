@@ -35,9 +35,18 @@
 <body class="bg-light">
 
 <nav class="main-nav">
-    <div class="nav-logo">
-        <a href="/courses" style="font-weight:bold; font-size:1.2rem; text-decoration:none; color:black;">EduPortal</a>
+
+    <div class="d-flex align-items-center">
+        <a href="/profile" class="text-decoration-none d-flex align-items-center">
+            <img src="${pageContext.request.userPrincipal != null ? currentUser.profilePicture : 'https://ui-avatars.com/api/?name=User'}"
+                 alt="Avatar"
+                 style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #eee;">
+            <span class="ms-2 fw-bold" style="color: #333;">
+                ${currentUser.fullName}
+            </span>
+        </a>
     </div>
+
     <div class="nav-links">
         <a href="/courses">All Courses</a>
         <a href="/courses/${course.id}">Course Detail</a>
