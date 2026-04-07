@@ -38,8 +38,17 @@ public class Comment {
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
     @OrderBy("commentTime ASC") // 讓回覆按時間先後排序
     private List<Comment> replies = new ArrayList<>();
+// hkmu.comp3820sef._820sef_project_s12992583.model.Comment
+
+    @ManyToOne
+    @JoinColumn(name = "reply_to_user_id") // 確保資料庫有呢一欄
+    private AppUser replyToUser; // 名稱必須同 JSP 寫法一致
+
 
     // -----------------------
+    // 記得加埋 Getter 同 Setter
+    public AppUser getReplyToUser() { return replyToUser; }
+    public void setReplyToUser(AppUser replyToUser) { this.replyToUser = replyToUser; }
 
     public Comment() {}
 

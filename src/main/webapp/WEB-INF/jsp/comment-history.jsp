@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>個人評論歷史</title>
+    <title>My Review History</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
@@ -22,26 +22,26 @@
 
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h2 class="fw-bold m-0">我的評論歷史</h2>
-                    <p class="text-muted small">管理你在各個課程下的發言紀錄</p>
+                    <h2 class="fw-bold m-0">My Review History</h2>
+                    <p class="text-muted small">Manage the record of your speaking under the various courses</p>
                 </div>
 
                 <div class="dropdown">
                     <button class="btn btn-white shadow-sm dropdown-toggle sort-btn" type="button" data-bs-toggle="dropdown">
                         <i class="bi bi-sort-down"></i>
                         <c:choose>
-                            <c:when test="${currentSort == 'lecture'}">按課程排序</c:when>
-                            <c:otherwise>按發佈時間</c:otherwise>
+                            <c:when test="${currentSort == 'lecture'}">lecture</c:when>
+                            <c:otherwise>time</c:otherwise>
                         </c:choose>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><h6 class="dropdown-header">時間排序</h6></li>
-                        <li><a class="dropdown-item ${currentSort == 'commentTime' && currentDir == 'desc' ? 'active' : ''}" href="?sortBy=commentTime&dir=desc">最新優先</a></li>
-                        <li><a class="dropdown-item ${currentSort == 'commentTime' && currentDir == 'asc' ? 'active' : ''}" href="?sortBy=commentTime&dir=asc">最早優先</a></li>
+                        <li><h6 class="dropdown-header">Sort by time</h6></li>
+                        <li><a class="dropdown-item ${currentSort == 'commentTime' && currentDir == 'desc' ? 'active' : ''}" href="?sortBy=commentTime&dir=desc">Latest priority</a></li>
+                        <li><a class="dropdown-item ${currentSort == 'commentTime' && currentDir == 'asc' ? 'active' : ''}" href="?sortBy=commentTime&dir=asc">Earliest priority</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><h6 class="dropdown-header">名稱排序</h6></li>
-                        <li><a class="dropdown-item ${currentSort == 'lecture' && currentDir == 'asc' ? 'active' : ''}" href="?sortBy=lecture&dir=asc">課程名稱 (A-Z)</a></li>
-                        <li><a class="dropdown-item ${currentSort == 'lecture' && currentDir == 'desc' ? 'active' : ''}" href="?sortBy=lecture&dir=desc">課程名稱 (Z-A)</a></li>
+                        <li><h6 class="dropdown-header">Sort by Name</h6></li>
+                        <li><a class="dropdown-item ${currentSort == 'lecture' && currentDir == 'asc' ? 'active' : ''}" href="?sortBy=lecture&dir=asc">lecture Name (A-Z)</a></li>
+                        <li><a class="dropdown-item ${currentSort == 'lecture' && currentDir == 'desc' ? 'active' : ''}" href="?sortBy=lecture&dir=desc">lecture Name (Z-A)</a></li>
                     </ul>
                 </div>
             </div>
@@ -50,8 +50,8 @@
                 <c:when test="${empty historyList}">
                     <div class="text-center py-5 bg-white rounded shadow-sm border">
                         <i class="bi bi-chat-dots text-light" style="font-size: 4rem;"></i>
-                        <p class="mt-3 text-muted">目前還沒有任何評論紀錄喔！</p>
-                        <a href="${pageContext.request.contextPath}/" class="btn btn-primary btn-sm">去看看課程</a>
+                        <p class="mt-3 text-muted">There are no review records yet！</p>
+                        <a href="${pageContext.request.contextPath}/" class="btn btn-primary btn-sm">view Lecture</a>
                     </div>
                 </c:when>
 <c:otherwise>
@@ -67,7 +67,7 @@
 
             <div class="text-center mt-4">
                 <a href="${pageContext.request.contextPath}/" class="btn btn-link text-decoration-none text-muted">
-                    <i class="bi bi-arrow-left"></i> 返回首頁
+                    <i class="bi bi-arrow-left"></i> Home Page
                 </a>
             </div>
 

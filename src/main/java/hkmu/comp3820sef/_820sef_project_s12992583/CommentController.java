@@ -53,22 +53,24 @@ public class CommentController {
 //        return "lecture-detail"; // 或者是你的 JSP 檔名
 //    }
 @GetMapping("/history")
-public String showHistory(@RequestParam(value = "lectureId", required = false) Long lectureId, // 接收選填的 lectureId
-        @RequestParam(value = "sortBy", defaultValue = "commentTime") String sortBy,
-        @RequestParam(value = "dir", defaultValue = "desc") String dir,
-        Principal principal, Model model) {
-    AppUser currentUser = userRepository.findByUsername(principal.getName());
-    Sort sort = dir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+public String showHistory(Principal principal, Model model) {
+    if (principal == null) return "redirect:/login";
 
+    // 1. 獲取當前用戶
+    AppUser currentUser = userRepository.findByUsername(principal.getName());
+
+    // 2. 獲取留言紀錄（按時間倒序）
+    Sort sort = Sort.by("commentTime").descending();
     List<Comment> historyList = commentRepository.findByUser(currentUser, sort);
 
-    // 強行觸發 Hibernate 加載關聯資料，避免 JSP 讀不到
+    // 3. 核心修正：手動觸發 Hibernate 抓取關聯數據，確保 JSP 能讀到 parentComment.user
     for (Comment cmt : historyList) {
         if (cmt.getLecture() != null) {
-            cmt.getLecture().getTitle(); // 觸發 Proxy 加載
+            cmt.getLecture().getTitle();
         }
         if (cmt.getParentComment() != null) {
-            cmt.getParentComment().getDescription(); // 如果有回覆內容也要加載
+            // 觸發加載父留言及其作者，避免 JSP 出現 LazyInitializationException 或顯示不完整
+            cmt.getParentComment().getUser().getUsername();
         }
     }
 
