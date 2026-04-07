@@ -74,10 +74,7 @@
         </div>
     </div>
 </div>
-<c:forEach items="${historyList}" var="cmt">
-    <p>測試抓取：${cmt.description} / ${cmt.lecture.title}</p> <%-- 測試這行有沒有字 --%>
 
-</c:forEach>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
