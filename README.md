@@ -10,11 +10,15 @@ Key technologies used:
 - **Frontend:** JSP, Bootstrap
 
 ---
+
+
+## Update Log
+### [2026-04-08 By Chris 12992583]
+- **Added**: Profile Created + Enhanced login registration security 
 ### [2026-04-07 By Jacky 12728551]
 - **Added**: add comment-history (show comment history)
 ### [2026-04-06 By Jacky 12728551]
 - **Bug Fixes**:  course Details page comment Function Component bug fixed (merge not update)
-## Update Log
 ### [2026-04-07 By Chris 12992583]
 - **Added**: Index My Courses update
 - **Bug Fixes**: course Details page bug fixed(bug fixed for student unable to access course details)
