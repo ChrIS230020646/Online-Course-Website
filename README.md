@@ -10,7 +10,10 @@ Key technologies used:
 - **Frontend:** JSP, Bootstrap
 
 ---
-
+### [2026-04-07 By Jacky 12728551]
+- **Added**: add comment-history (show)
+### [2026-04-06 By Jacky 12728551]
+- **Bug Fixes**:  course Details page comment Function Component bug fixed (merge not update)
 ## Update Log
 ### [2026-04-07 By Chris 12992583]
 - **Added**: Index My Courses update
