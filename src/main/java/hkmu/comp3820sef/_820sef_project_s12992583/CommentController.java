@@ -9,8 +9,11 @@ import hkmu.comp3820sef._820sef_project_s12992583.repository.CommentRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.CourseRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.LectureRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,6 +52,67 @@ public class CommentController {
 //
 //        return "lecture-detail"; // 或者是你的 JSP 檔名
 //    }
+@GetMapping("/history")
+public String showHistory(@RequestParam(value = "lectureId", required = false) Long lectureId, // 接收選填的 lectureId
+        @RequestParam(value = "sortBy", defaultValue = "commentTime") String sortBy,
+        @RequestParam(value = "dir", defaultValue = "desc") String dir,
+        Principal principal, Model model) {
+    AppUser currentUser = userRepository.findByUsername(principal.getName());
+    Sort sort = dir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+    List<Comment> historyList = commentRepository.findByUser(currentUser, sort);
+
+    // 強行觸發 Hibernate 加載關聯資料，避免 JSP 讀不到
+    for (Comment cmt : historyList) {
+        if (cmt.getLecture() != null) {
+            cmt.getLecture().getTitle(); // 觸發 Proxy 加載
+        }
+        if (cmt.getParentComment() != null) {
+            cmt.getParentComment().getDescription(); // 如果有回覆內容也要加載
+        }
+    }
+
+    model.addAttribute("historyList", historyList);
+    return "comment-history";
+}
+//@GetMapping("/history")
+//public String showCommentHistory(
+////        @RequestParam(value = "lectureId", required = false) Long lectureId, // 接收選填的 lectureId
+//        @RequestParam(value = "sortBy", defaultValue = "commentTime") String sortBy,
+//        @RequestParam(value = "dir", defaultValue = "desc") String dir,
+//        Principal principal, Model model) {
+//
+//    if (principal == null) return "redirect:/login";
+//
+//    AppUser currentUser = userRepository.findByUsername(principal.getName());
+//    Sort sort = dir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+//
+//    List<Comment> historyList;
+//
+//
+//        // 否則搵晒所有課程嘅留言
+//        historyList = commentRepository.findByUser(currentUser, sort);
+//
+//
+////    model.addAttribute("historyList", historyList);
+//
+//    model.addAttribute("historyList", historyList);
+//    return "comment-history";
+//}
+
+    @PostMapping("/delete/{id}")
+    public String deleteComment(@PathVariable Long id,
+                                HttpServletRequest request) {
+
+        // 執行刪除
+        commentRepository.deleteById(id);
+
+        // 獲取發送請求的來源網址 (Referer)
+        String referer = request.getHeader("Referer");
+
+        // 如果抓得到來源網址，就跳回去；抓不到則跳回首頁
+        return "redirect:" + (referer != null ? referer : "/");
+    }
     // 處理新增評論
     @PostMapping("/lectures/{lectureId}/add-comment")
     public String addComment(@PathVariable Long lectureId,
@@ -83,7 +147,7 @@ public class CommentController {
 
 
     // 處理老師刪除評論
-    @PostMapping("/delete/{id}")
+    @PostMapping("/lectures/delete/{id}")
     public String deleteComment(@PathVariable Long id,
                                 @RequestParam Long lectureId,
                                 Principal principal)  {
@@ -132,4 +196,6 @@ public class CommentController {
 //        return "redirect:/courses";
 //    });
 //}
+
+
 }

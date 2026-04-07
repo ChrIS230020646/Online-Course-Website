@@ -1,0 +1,84 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>個人評論歷史</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .bg-primary-soft { background-color: #e7f0ff; }
+        .card { transition: transform 0.2s; }
+        .card:hover { transform: translateY(-3px); }
+        .sort-btn { border-radius: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold m-0">我的評論歷史</h2>
+                    <p class="text-muted small">管理你在各個課程下的發言紀錄</p>
+                </div>
+
+                <div class="dropdown">
+                    <button class="btn btn-white shadow-sm dropdown-toggle sort-btn" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-sort-down"></i>
+                        <c:choose>
+                            <c:when test="${currentSort == 'lecture'}">按課程排序</c:when>
+                            <c:otherwise>按發佈時間</c:otherwise>
+                        </c:choose>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><h6 class="dropdown-header">時間排序</h6></li>
+                        <li><a class="dropdown-item ${currentSort == 'commentTime' && currentDir == 'desc' ? 'active' : ''}" href="?sortBy=commentTime&dir=desc">最新優先</a></li>
+                        <li><a class="dropdown-item ${currentSort == 'commentTime' && currentDir == 'asc' ? 'active' : ''}" href="?sortBy=commentTime&dir=asc">最早優先</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><h6 class="dropdown-header">名稱排序</h6></li>
+                        <li><a class="dropdown-item ${currentSort == 'lecture' && currentDir == 'asc' ? 'active' : ''}" href="?sortBy=lecture&dir=asc">課程名稱 (A-Z)</a></li>
+                        <li><a class="dropdown-item ${currentSort == 'lecture' && currentDir == 'desc' ? 'active' : ''}" href="?sortBy=lecture&dir=desc">課程名稱 (Z-A)</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <c:choose>
+                <c:when test="${empty historyList}">
+                    <div class="text-center py-5 bg-white rounded shadow-sm border">
+                        <i class="bi bi-chat-dots text-light" style="font-size: 4rem;"></i>
+                        <p class="mt-3 text-muted">目前還沒有任何評論紀錄喔！</p>
+                        <a href="${pageContext.request.contextPath}/" class="btn btn-primary btn-sm">去看看課程</a>
+                    </div>
+                </c:when>
+<c:otherwise>
+    <c:forEach items="${historyList}" var="cmt">
+        <%-- 將目前的 cmt 強制放入 request scope，確保子頁面一定讀到 --%>
+        <c:set var="cmt" value="${cmt}" scope="request" />
+
+        <div class="comment-item-container">
+            <%@ include file="/WEB-INF/jsp/components/_comment-item.jsp" %>
+        </div>
+    </c:forEach>
+</c:otherwise></c:choose>
+
+            <div class="text-center mt-4">
+                <a href="${pageContext.request.contextPath}/" class="btn btn-link text-decoration-none text-muted">
+                    <i class="bi bi-arrow-left"></i> 返回首頁
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+<c:forEach items="${historyList}" var="cmt">
+    <p>測試抓取：${cmt.description} / ${cmt.lecture.title}</p> <%-- 測試這行有沒有字 --%>
+
+</c:forEach>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

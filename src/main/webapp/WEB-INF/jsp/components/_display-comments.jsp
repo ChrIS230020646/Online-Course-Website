@@ -25,7 +25,7 @@
 
                     <%-- 權限檢查：刪除按鈕 --%>
                     <sec:authorize access="hasRole('TEACHER') or (isAuthenticated() and authentication.name == cmt.user.username)">
-                        <form action="${pageContext.request.contextPath}/comment/delete/${cmt.id}" method="post" class="m-0">
+                        <form action="${pageContext.request.contextPath}/comment/lectures/delete/${cmt.id}" method="post" class="m-0">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <input type="hidden" name="lectureId" value="${lectureId}"/>
                             <button type="submit" class="btn btn-link text-danger p-0"
@@ -67,7 +67,7 @@
                                 <div class="d-flex justify-content-between align-items-center mb-1">
                                     <strong style="font-size: 0.85rem; color: #1d1d1f;">@${reply.user.username}</strong>
                                     <sec:authorize access="hasRole('TEACHER') or (isAuthenticated() and authentication.name == reply.user.username)">
-                                        <form action="${pageContext.request.contextPath}/comment/delete/${reply.id}" method="post" class="m-0">
+                                        <form action="${pageContext.request.contextPath}/comment/lectures/delete/${reply.id}" method="post" class="m-0">
                                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                             <input type="hidden" name="lectureId" value="${lectureId}"/>
                                             <button type="submit" class="btn btn-link text-danger p-0" style="font-size: 0.75rem; text-decoration: none; opacity: 0.6;">delete</button>
