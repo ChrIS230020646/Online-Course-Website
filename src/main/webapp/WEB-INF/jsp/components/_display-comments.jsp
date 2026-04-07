@@ -28,7 +28,7 @@
                     <sec:authorize access="hasRole('TEACHER')" var="isTeacher" />
 
                     <c:if test="${isTeacher || isAuthor}">
-                        <form action="${pageContext.request.contextPath}/comment/delete/${cmt.id}" method="post" class="m-0">
+                        <form action="${pageContext.request.contextPath}/comment/lectures/delete/${cmt.id}" method="post" class="m-0">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <input type="hidden" name="lectureId" value="${lectureId}"/>
                             <button type="submit" class="btn btn-link text-danger p-0"
