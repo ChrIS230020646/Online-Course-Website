@@ -77,8 +77,8 @@
     </div>
 
     <div class="lecture-list mb-5">
+    <h2 class="m-0" style="font-size: 24px; font-weight: 600;">Lectures</h2>
         <c:forEach items="${course.lectures}" var="lecture">
-            <h2 class="m-0" style="font-size: 24px; font-weight: 600;">Lectures</h2>
             <div class="ui-card">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
@@ -87,7 +87,10 @@
                     </div>
 
                     <sec:authorize access="hasRole('TEACHER')">
+                      <div>
                         <a href="/course-material-page/${lecture.id}" class="btn btn-sm btn-light rounded-pill px-3">View / Edit</a>
+                        <%@ include file="/WEB-INF/jsp/lecture-components/btn-delete.jsp" %>
+                        </div>
                     </sec:authorize>
 
                     <sec:authorize access="hasRole('STUDENT')">
