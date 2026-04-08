@@ -13,6 +13,8 @@ Key technologies used:
 
 
 ## Update Log
+### [2026-04-05 By Adrian 14219499]
+- **Added**: Edit course, edit lectures, delete course, delete lectures
 ### [2026-04-08 By Chris 12992583]
 - **Added**: Index UI rewrite + profile avatar upload bug fixed
 ### [2026-04-08 By Jacky 12728551]
