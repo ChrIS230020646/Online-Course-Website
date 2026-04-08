@@ -157,6 +157,48 @@ public class CourseController {
         pollRepository.save(poll);
         return "redirect:/courses/" + courseId;
     }
+    //the edit form
+    @GetMapping("/courses/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid course Id:" + id));
+        model.addAttribute("course", course);
+        return "edit-course";
+    }
+
+    //Process the update
+    @PostMapping("/courses/{id}/edit")
+    public String updateCourse(@PathVariable Long id,
+                               @RequestParam String title,
+                               @RequestParam String category,
+                               @RequestParam String description,
+                               RedirectAttributes redirectAttributes) {
+
+        Course course = courseRepository.findById(id).orElseThrow();
+
+        // Update the values
+        course.setTitle(title);
+        course.setCategory(category);
+        course.setDescription(description);
+
+        courseRepository.save(course);
+
+        redirectAttributes.addFlashAttribute("message", "Course updated successfully!");
+
+        // Redirect back to the course detail page to see changes
+        return "redirect:/courses/" + id;
+    }
+    @PostMapping("/courses/{id}/delete")
+    public String deleteCourse(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            courseRepository.deleteById(id);
+            redirectAttributes.addFlashAttribute("message", "Course has been successfully deleted.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Failed to delete course. Ensure all related data is cleared.");
+        }
+
+        return "redirect:/courses";
+    }
 }
 
 

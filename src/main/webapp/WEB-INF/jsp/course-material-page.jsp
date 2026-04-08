@@ -64,9 +64,37 @@
     </header>
 
     <div class="ui-card mb-5">
-        <div class="py-3">
-            <p style="font-size: 18px; color: #424245; line-height: 1.8; white-space: pre-wrap;">${lecture.content}</p>
-        </div>
+        <sec:authorize access="hasRole('TEACHER')">
+            <form action="/course-material-page/${lecture.id}/update" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-muted small text-uppercase">Edit Title</label>
+                    <input type="text" name="title" class="form-control form-control-lg border-0 bg-light"
+                           value="${lecture.title}" style="font-weight: 700;" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-muted small text-uppercase">Edit Content</label>
+                    <textarea name="content" class="form-control border-0 bg-light" rows="12"
+                              style="line-height: 1.8; font-size: 18px;">${lecture.content}</textarea>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted small"><i>Teacher Mode: Changes will go live once saved.</i></span>
+                    <button type="submit" class="btn btn-primary rounded-pill px-5 shadow-sm">Save Changes</button>
+                </div>
+            </form>
+        </sec:authorize>
+
+        <sec:authorize access="hasRole('STUDENT')">
+            <header class="mb-4">
+                <h1 style="font-size: 42px; font-weight: 700;">${lecture.title}</h1>
+            </header>
+            <div class="py-3">
+                <p style="font-size: 18px; color: #424245; line-height: 1.8; white-space: pre-wrap;">${lecture.content}</p>
+            </div>
+        </sec:authorize>
 
         <div class="mt-4 pt-4 border-top">
             <a href="/download/lecture/${lecture.id}" class="file-download-link">

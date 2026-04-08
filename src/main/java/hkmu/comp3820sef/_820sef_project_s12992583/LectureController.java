@@ -61,16 +61,29 @@ public class LectureController {
     }
     @PostMapping("/course-material-page/delete/{lectureId}")
     public String deleteLecture(@PathVariable Long lectureId) {
-        // 1. Find the lecture to identify the course ID for redirection
-        Lecture lecture = lectureRepository.findById(lectureId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid lecture Id:" + lectureId));
+        //Find the lecture to identify the course ID for redirection
+        Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(() -> new IllegalArgumentException("Invalid lecture Id:" + lectureId));
 
         Long courseId = lecture.getCourse().getId();
-
-        // 2. Delete the lecture
+        //Delete the lecture
         lectureRepository.delete(lecture);
-
-        // 3. Redirect back to the specific course detail page
+        //Redirect back to the specific course detail page
         return "redirect:/courses/" + courseId;
+    }
+    @PostMapping("/course-material-page/{lectureId}/update")
+    public String updateLecture(@PathVariable Long lectureId,
+                                @RequestParam("title") String title,
+                                @RequestParam("content") String content) {
+
+        //Find the existing lecture
+        Lecture lecture = lectureRepository.findById(lectureId)
+                .orElseThrow(() -> new IllegalArgumentException("Lecture not found: " + lectureId));
+        //Update the fields with the data from the form
+        lecture.setTitle(title);
+        lecture.setContent(content);
+        //Save the changes back to the database
+        lectureRepository.save(lecture);
+        //Redirect back to the same page to show the updated content
+        return "redirect:/course-material-page/" + lectureId;
     }
 }

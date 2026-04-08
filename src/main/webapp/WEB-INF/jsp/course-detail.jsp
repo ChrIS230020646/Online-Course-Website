@@ -41,7 +41,19 @@
 </nav>
 
 <div class="ui-container">
-    <a href="/courses" class="btn-back">❮</a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="/courses" class="btn-back">❮</a>
+        <sec:authorize access="hasRole('TEACHER')">
+            <div class="d-flex gap-2 align-items-center">
+                <a href="/courses/${course.id}/edit" class="btn btn-outline-primary rounded-pill px-4">Edit Course</a>
+                <form action="/courses/${course.id}/delete" method="post" class="m-0"
+                      onsubmit="return confirm('WARNING: This will permanently delete the course. Proceed?');">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <button type="submit" class="btn btn-danger rounded-pill px-4">Nuke Course</button>
+                </form>
+            </div>
+        </sec:authorize>
+    </div>
 
     <header class="mb-5">
     <span class="text-uppercase" style="color:var(--text-secondary); font-size:12px; font-weight:600; letter-spacing:1px;">
