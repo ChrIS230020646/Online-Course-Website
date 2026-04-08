@@ -5,7 +5,7 @@ import hkmu.comp3820sef._820sef_project_s12992583.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model; // 必須是這個！不是 logback 的
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +18,13 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @Controller
 public class UserController {
 
@@ -27,7 +34,7 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private final String UPLOAD_DIR = "src/main/resources/static/uploads/";
+    private final String UPLOAD_DIR = "uploads/";
 
     @GetMapping("/login")
     public String login() {
@@ -100,11 +107,9 @@ public class UserController {
         user.setPhoneNumber(phoneNumber);
 
         if (password != null && !password.isEmpty()) {
-
             if (!password.equals(confirmPassword)) {
                 return redirectWithProfileError("Passwords do not match.");
             }
-
             String strongPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
             if (!password.matches(strongPattern)) {
                 return redirectWithProfileError("Password must be 8+ chars with uppercase, lowercase, number, and special character.");
@@ -116,11 +121,11 @@ public class UserController {
             Path uploadPath = Paths.get(UPLOAD_DIR);
             if (!Files.exists(uploadPath)) Files.createDirectories(uploadPath);
 
-            String fileName = user.getUsername() + ".jpg";
+            String fileName = user.getUsername() + "_" + System.currentTimeMillis() + ".jpg";
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(avatarFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-            user.setProfilePicture("/uploads/" + fileName + "?t=" + System.currentTimeMillis());
+            user.setProfilePicture("/uploads/" + fileName);
         }
 
         userRepository.save(user);

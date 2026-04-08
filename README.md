@@ -13,6 +13,8 @@ Key technologies used:
 
 
 ## Update Log
+### [2026-04-08 By Chris 12992583]
+- **Added**: Index UI rewrite + profile avatar upload bug fixed
 ### [2026-04-08 By Jacky 12728551]
 - **Added**: add poll-history, vote function ,poll detail
 ### [2026-04-08 By Chris 12992583]

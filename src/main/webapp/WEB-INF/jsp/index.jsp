@@ -10,119 +10,103 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Welcome to Modern Learning</title>
+    <title>Learning Platform</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <style>
+        .instructor-tag { font-size: 13px; color: var(--brand-blue); font-weight: 500; }
+        .source-tag { font-size: 11px; color: #8e8e93; text-transform: uppercase; margin-bottom: 5px; display: block; font-weight: 600; }
+        .nav-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1px solid #eee; }
+        .main-nav { padding: 15px 5%; }
+    </style>
 </head>
 <body>
-<div class="ui-container">
-    <div class="hero-section text-center" style="padding: 100px 0 80px 0;">
-        <h1 style="font-size: 64px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 24px; color: var(--text-primary); line-height: 1.1;">
-            Learn Everything. <br> <span style="color: var(--brand-blue);">Anywhere.</span>
-        </h1>
-        <p style="font-size: 24px; color: var(--text-secondary); max-width: 700px; margin: 0 auto 48px auto; line-height: 1.5; font-weight: 400;">
-            The most professional way to manage your learning path. <br> Experience a cleaner, faster, and smarter education platform.
-        </p>
-        <div class="d-flex justify-content-center gap-3">
-            <a href="/courses" class="btn-primary-custom" style="padding: 18px 48px; font-size: 19px;">Browse Courses</a>
-            <a href="/login" class="btn-outline-custom" style="padding: 18px 48px; font-size: 19px; border-radius: 980px;">Login</a>
+
+<nav class="main-nav">
+    <div class="nav-links" style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+
+        <div class="d-flex align-items-center gap-3">
+            <sec:authorize access="isAuthenticated()">
+                <a href="/profile">
+                    <img src="${not empty user.profilePicture ? user.profilePicture : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}" class="nav-avatar">
+                </a>
+                <a href="/logout" class="btn-logout" style="font-size: 14px; text-decoration: none;">Logout</a>
+            </sec:authorize>
+            <sec:authorize access="isAnonymous()">
+                <a href="/login" style="text-decoration: none; font-weight: 600;">Login</a>
+            </sec:authorize>
+        </div>
+
+        <div>
+            <a href="/courses" style="font-weight: 600;">Browse Courses</a>
         </div>
     </div>
-    <div><h1>My Courses</h1></div>
-    <div class="row mt-5 pt-5 g-4">
+</nav>
+
+<div class="ui-container">
+
+    <div class="mt-4 mb-5">
+        <sec:authorize access="isAuthenticated()">
+            <h1 class="page-title">Hello, ${user.fullName}</h1>
+            <p class="text-secondary">Explore your courses and recent updates.</p>
+        </sec:authorize>
+    </div>
+
+    <div class="mb-4">
+        <h2 style="font-weight: 700; font-size: 28px;">Courses</h2>
+    </div>
+
+    <div class="row g-4 mb-5">
         <c:forEach items="${courses}" var="course">
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4">
                 <a href="/course/${course.id}" class="ui-card clickable h-100 d-flex flex-column">
-                    <span style="color:var(--text-secondary); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:0.05em;">
-                            ${course.category}
-                    </span>
-                    <h2 style="font-size: 20px; font-weight: 600; margin: 10px 0; color: var(--text-primary);">
-                            ${course.title}
-                    </h2>
-                    <p style="color: #48484a; font-size: 15px; flex-grow: 1; margin-bottom: 20px;">
-                            ${course.description}
-                    </p>
-                    <span class="btn-link-custom" style="font-weight: 500; font-size: 15px;">Learn more</span>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span style="color:var(--text-secondary); font-weight:600; font-size:11px; text-transform:uppercase;">${course.category}</span>
+                        <span class="instructor-tag">👤 ${course.instructor.fullName}</span>
+                    </div>
+                    <h3 style="font-size: 20px; font-weight: 700; margin: 15px 0 10px 0; color: var(--text-primary);">${course.title}</h3>
+                    <p style="color: #666; font-size: 14px; flex-grow: 1; margin-bottom: 20px;">${course.description}</p>
+                    <span class="btn-link-custom" style="font-size: 13px; font-weight: 600;">Learn more ❯</span>
                 </a>
             </div>
-
-            <div class="mt-5">
-                <h2 style="font-weight: 700; margin-bottom: 24px;">Browse Courses</h2>
-                <div class="row g-4">
-                    <c:forEach items="${courses}" var="course">
-                        <div class="col-md-4">
-                            <a href="/course/${course.id}" class="ui-card clickable h-100 d-flex flex-column">
-                        <span style="color:var(--text-secondary); font-weight:600; font-size:12px; text-transform:uppercase;">
-                                ${course.category}
-                        </span>
-                                <h4 style="font-size: 20px; font-weight: 600; margin: 10px 0;">${course.title}</h4>
-                            </a>
-                        </div>
-                    </c:forEach>
-                </div>
-            </div>
-
-            <div class="mt-5 pt-5">
-                <h2 style="font-weight: 700; margin-bottom: 24px;">All Lectures</h2>
-                <div class="ui-card" style="padding: 20px;">
-                    <div class="list-group list-group-flush">
-                        <c:forEach items="${lectures}" var="lecture">
-                            <a href="/lecture/${lecture.id}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 border-0">
-                                <div>
-                                    <span class="badge bg-primary me-2">Lecture</span>
-                                    <span style="font-weight: 500;">${lecture.title}</span>
-                                </div>
-                                <span class="text-muted" style="font-size: 14px;">View Details &rarr;</span>
-                            </a>
-                        </c:forEach>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-5 pt-5">
-                <h2 style="font-weight: 700; margin-bottom: 24px;">Active Polls</h2>
-                <div class="row g-4">
-                    <c:forEach items="${polls}" var="poll">
-                        <div class="col-md-6">
-                            <a href="/poll/${poll.id}" class="ui-card clickable d-flex align-items-center gap-3">
-                                <div style="font-size: 28px;">📊</div>
-                                <div>
-                                    <h4 style="margin:0; font-weight: 600; font-size: 18px;">${poll.question}</h4>
-                                    <p style="margin:0; font-size: 14px; color: var(--text-secondary);">Participate in this multiple choice poll</p>
-                                </div>
-                            </a>
-                        </div>
-                    </c:forEach>
-                </div>
-            </div>
-
-
         </c:forEach>
     </div>
-    <div class="row mt-5 pt-5 g-4">
-        <div class="col-md-4">
-            <div class="ui-card static h-100" style="padding: 40px;">
-                <div style="font-size: 32px; margin-bottom: 20px;">🎨</div>
-                <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 12px;">Modern UI</h3>
-                <p style="color: var(--text-secondary); font-size: 16px; line-height: 1.6;">A pixel-perfect interface designed for focus. No clutter, just your content.</p>
+
+    <div class="row">
+        <div class="col-md-7">
+            <h2 style="font-weight: 700; margin-bottom: 24px; font-size: 24px;">Latest Lectures</h2>
+            <div class="d-flex flex-column gap-3">
+                <c:forEach items="${recentLectures}" var="lecture">
+                    <a href="/lecture/${lecture.id}" class="ui-card clickable" style="padding: 18px 24px;">
+                        <span class="source-tag">COURSE: ${lecture.course.title}</span>
+                        <div class="d-flex align-items-center">
+                            <div style="background: var(--brand-blue); width: 8px; height: 8px; border-radius: 50%; margin-right: 15px;"></div>
+                            <span style="font-weight: 600; color: var(--text-primary); font-size: 16px;">${lecture.title}</span>
+                        </div>
+                    </a>
+                </c:forEach>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="ui-card static h-100" style="padding: 40px;">
-                <div style="font-size: 32px; margin-bottom: 20px;">⚡</div>
-                <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 12px;">Smart Sync</h3>
-                <p style="color: var(--text-secondary); font-size: 16px; line-height: 1.6;">Access your courses and lectures from any device. Your progress stays with you.</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="ui-card static h-100" style="padding: 40px;">
-                <div style="font-size: 32px; margin-bottom: 20px;">🛠️</div>
-                <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 12px;">Easy Management</h3>
-                <p style="color: var(--text-secondary); font-size: 16px; line-height: 1.6;">Powerful tools for creators to organize lectures and materials effortlessly.</p>
+
+        <div class="col-md-5">
+            <h2 style="font-weight: 700; margin-bottom: 24px; font-size: 24px;">Active Polls</h2>
+            <div class="d-flex flex-column gap-3">
+                <c:forEach items="${activePolls}" var="poll">
+                    <a href="/poll/${poll.id}" class="ui-card clickable" style="padding: 20px;">
+                        <span class="source-tag">POLL IN: ${poll.course.title}</span>
+                        <div class="d-flex align-items-center mt-1">
+                            <div style="font-size: 24px; margin-right: 15px;">📊</div>
+                            <div>
+                                <h4 style="margin:0; font-weight: 600; font-size: 16px; color: var(--text-primary);">${poll.question}</h4>
+                                <p style="margin:0; font-size: 12px; color: var(--text-secondary);">Participate now</p>
+                            </div>
+                        </div>
+                    </a>
+                </c:forEach>
             </div>
         </div>
     </div>
 </div>
+
 </body>
 </html>
