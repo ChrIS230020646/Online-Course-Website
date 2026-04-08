@@ -7,9 +7,11 @@ import hkmu.comp3820sef._820sef_project_s12992583.repository.LectureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -56,5 +58,19 @@ public class LectureController {
         model.addAttribute("lectureId", lectureId);
 
         return "course-material-page";
+    }
+    @PostMapping("/course-material-page/delete/{lectureId}")
+    public String deleteLecture(@PathVariable Long lectureId) {
+        // 1. Find the lecture to identify the course ID for redirection
+        Lecture lecture = lectureRepository.findById(lectureId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid lecture Id:" + lectureId));
+
+        Long courseId = lecture.getCourse().getId();
+
+        // 2. Delete the lecture
+        lectureRepository.delete(lecture);
+
+        // 3. Redirect back to the specific course detail page
+        return "redirect:/courses/" + courseId;
     }
 }
