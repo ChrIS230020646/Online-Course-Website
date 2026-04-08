@@ -118,7 +118,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                             <%-- Display the Question created in add-poll.jsp --%>
-                        <h4 style="font-size:18px; margin:0;">📊 ${poll.question}</h4>
+                        <h4 style="font-size:18px; margin:0;"> ${poll.question}</h4>
                         <p class="text-muted m-0" style="font-size:13px; mt-1">
                             Cast your vote to help shape the next class!
                         </p>
@@ -126,8 +126,10 @@
 
                         <%-- Teacher View: See Results --%>
                     <sec:authorize access="hasRole('TEACHER')">
+                    <div>
                         <a href="/polls/courses/${course.id}/poll/${poll.id}" class="btn btn-sm btn-light rounded-pill px-3">View Results/Edit</a>
 <%@ include file="/WEB-INF/jsp/poll-components/btn-delete.jsp" %>
+                    </div>
                     </sec:authorize>
 
                         <%-- Student View: Vote --%>
