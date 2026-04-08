@@ -1,0 +1,14 @@
+/* poll-detail.css 內容 */
+.ui-card { border-radius: 15px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    max-width: 800px;
+    margin: auto;
+}
+.progress { height: 12px; border-radius: 6px; background-color: #f0f2f5; margin-top: 10px; }
+.progress-bar { background: linear-gradient(90deg, #0d6efd 0%, #0db8fd 100%); transition: width 0.8s ease-in-out; border-radius: 6px; }
+.editable-area { padding: 5px; transition: 0.2s; border-radius: 5px; display: inline-block; }
+.editable-area:hover { background: #f0f7ff; cursor: pointer; }
+.poll-option-item { padding: 15px; border: 1px solid #eee; border-radius: 10px; margin-bottom: 15px; transition: 0.3s; }
+.poll-option-item:hover { border-color: #0d6efd; background-color: #fcfdff; }
+.cursor-pointer { cursor: pointer; }

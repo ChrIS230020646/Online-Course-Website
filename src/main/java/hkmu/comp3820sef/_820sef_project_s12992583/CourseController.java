@@ -38,13 +38,20 @@ public class CourseController {
     }
 
     @GetMapping("/courses/add")
-    public String showAddCourseForm(Model model) {
-        model.addAttribute("course", new Course());
+    public String showAddCourseForm(Model model,Authentication auth) {
+         Course c= new Course();
+        String currentUsername = auth.getName();
+        AppUser user =userRepository.findByUsername(currentUsername);
+         c.setInstructor(user);
+        model.addAttribute("course", c);
         return "add-course";
     }
 
     @PostMapping("/courses/add")
-    public String saveCourse(Course course) {
+    public String saveCourse(Course course,Authentication auth)  {
+        String currentUsername = auth.getName();
+        AppUser user =userRepository.findByUsername(currentUsername);
+        course.setInstructor(user);
         courseRepository.save(course);
         return "redirect:/courses";
     }
@@ -100,6 +107,7 @@ public class CourseController {
         Course course = courseRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid course Id:" + id));
         model.addAttribute("course", course);
 
+
         boolean isEnrolled = false;
         if (authentication != null) {
             String username = authentication.getName();
@@ -130,6 +138,7 @@ public class CourseController {
         model.addAttribute("courseId", courseId);
         return "add-poll"; // Directs to your add-poll.jsp
     }
+
     @PostMapping("/courses/{courseId}/add-poll")
     public String createPoll(@PathVariable Long courseId,
                              @RequestParam String question,

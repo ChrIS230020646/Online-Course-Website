@@ -126,14 +126,15 @@
 
                         <%-- Teacher View: See Results --%>
                     <sec:authorize access="hasRole('TEACHER')">
-                        <a href="/courses/${course.id}/poll/${poll.id}" class="btn btn-sm btn-light rounded-pill px-3">View Results/Edit</a>
+                        <a href="/polls/courses/${course.id}/poll/${poll.id}" class="btn btn-sm btn-light rounded-pill px-3">View Results/Edit</a>
+<%@ include file="/WEB-INF/jsp/poll-components/btn-delete.jsp" %>
                     </sec:authorize>
 
                         <%-- Student View: Vote --%>
                     <sec:authorize access="hasRole('STUDENT')">
                         <c:choose>
                             <c:when test="${isEnrolled}">
-                                <a href="/courses/${course.id}/poll/${poll.id}" class="btn btn-sm btn-primary rounded-pill px-4">View Results/Vote</a>
+                                <a href="/polls/courses/${course.id}/poll/${poll.id}" class="btn btn-sm btn-primary rounded-pill px-4">View Results/Vote</a>
                             </c:when>
                             <c:otherwise>
                                 <button class="btn btn-sm btn-light disabled rounded-pill px-3" title="Enroll to participate">Locked 🔒</button>

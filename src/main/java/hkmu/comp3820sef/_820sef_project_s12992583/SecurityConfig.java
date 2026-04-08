@@ -23,14 +23,19 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(jakarta.servlet.DispatcherType.FORWARD, jakarta.servlet.DispatcherType.ERROR).permitAll()
 
                         // Makes these specific paths (Home, Login, Register, CSS/JS) public to everyone
-                        .requestMatchers("/h2-console/**", "/register", "/login", "/", "/css/**", "/js/**", "/style.css","/uploads/**").permitAll()
+                        .requestMatchers("/h2-console/**", "/register", "/login", "/", "/css/**", "/js/**", "/style.css","/poll-detail.css","/uploads/**").permitAll()
 
                         // Restricts Course creation, editing, and deletion to users with the 'TEACHER' role only
                         .requestMatchers("/courses/add", "/courses/edit/**", "/courses/delete/**").hasRole("TEACHER")
-
+                                .requestMatchers("/courses/*/poll/*").authenticated()
                         // Requires any logged-in user (Student or Teacher) to access general course lists or their dashboard
-                        .requestMatchers("/courses/**", "/my-courses").authenticated()
-
+//                        .requestMatchers("/courses/**", "/my-courses").authenticated()
+// 修正 3：加入留言與課程詳情的存取權限
+                                .requestMatchers("/courses/**").authenticated()
+                                .requestMatchers("/lectures/**").authenticated()
+                                .requestMatchers("/comment/**").authenticated()
+                                .requestMatchers("/my-courses").authenticated()
+                                .requestMatchers("/polls/*/delete").hasRole("TEACHER")
                         // Restricts all paths starting with /admin to users with the 'ADMIN' role
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 

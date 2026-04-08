@@ -62,7 +62,8 @@ public class UserController {
         if (!password.matches(strongPasswordPattern)) {
             return redirectWithError("Password too weak.");
         }
-
+        if(!(role.equals("TEACHER")||role.equals("STUDENT")))
+            return "redirect:/register?error=role not exists";
         AppUser newUser = new AppUser();
         newUser.setUsername(username);
         newUser.setFullName(fullName);
