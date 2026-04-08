@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<%-- 1. 權限與身分判斷 --%>
+<%-- 1. Permissions and Identity Judgment--%>
 <sec:authentication property="principal.username" var="currentUsername" />
 <c:set var="isInstructor" value="${poll.course.instructor.username == currentUsername}" />
 
@@ -23,14 +23,14 @@
 
 <div class="container py-5">
     <div class="ui-card bg-white p-5 shadow-sm">
-        <%-- 返回按鈕 --%>
+        <%--Back Button--%>
         <a href="/courses/${courseId}" class="btn btn-link mb-3 p-0 text-decoration-none">❮ Back to Course</a>
 
-        <%-- 2. 投票標題區域 --%>
+        <%-- 2. Voting Title Area --%>
         <div class="poll-header mb-5">
             <c:choose>
                 <c:when test="${isInstructor}">
-                    <%-- 老師可編輯標題 --%>
+                        <%--Teacher can edit the title--%>
                     <div onclick="toggleEdit('q-text', 'q-form')" id="q-text" class="editable-area">
                         <h2 class="fw-bold">${poll.question} <i class="bi bi-pencil-square text-muted fs-6"></i></h2>
                     </div>
@@ -50,7 +50,7 @@
             <p class="text-muted">Total: <strong>${totalVotes}</strong> votes</p>
         </div>
 
-        <%-- 3. 投票與選項區域 --%>
+        <%-- 3. Voting and Options Area --%>
         <form action="/polls/${poll.id}/vote" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
@@ -62,14 +62,14 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="flex-grow-1">
                             <div class="d-flex align-items-center">
-                                <%-- Radio Button (所有人均可投票/修改投票) --%>
+                               <%-- Radio Button (everyone can vote/modify their vote) --%>
                                 <div class="form-check me-2">
                                     <input class="form-check-input" type="radio" name="optionIndex" id="radio-${i}" value="${i}" required>
                                 </div>
 
                                 <c:choose>
                                     <c:when test="${isInstructor}">
-                                        <%-- 老師：可點擊文字編輯內容 --%>
+                                        <%--Teacher: Text can be edited by click--%>
                                         <div onclick="toggleEdit('opt-t-${i}', 'opt-f-${i}')" id="opt-t-${i}" class="editable-area">
                                             <label class="fw-bold mb-0 cursor-pointer" for="radio-${i}">
                                                 ${poll.options[i]} <i class="bi bi-pencil text-muted small"></i>
@@ -82,7 +82,7 @@
                                 </c:choose>
                             </div>
 
-                            <%-- 老師專用的選項編輯表單 (獨立於投票 Form 外，透過 JS 觸發) --%>
+                            <%--Teacher-specific options to edit form (triggered via JS, independent of voting Form) --%>
                             <c:if test="${isInstructor}">
                                 <div id="opt-f-${i}" style="display:none;" class="mt-2">
                                     <div class="input-group input-group-sm w-75">
@@ -94,18 +94,18 @@
                             </c:if>
                         </div>
 
-                        <%-- 右側票數顯示 --%>
+                        <%--The votes on the right are displayed--%>
                         <span class="text-primary fw-bold">${v} votes (${p}%)</span>
                     </div>
 
-                    <%-- 進度條 --%>
+                    <%--progress bar--%>
                     <div class="progress">
                         <div class="progress-bar" style="width: ${p}%"></div>
                     </div>
                 </div>
             </c:forEach>
 
-            <%-- 投票提交按鈕 --%>
+           <%--Vote Submit Button--%>
             <div class="text-center mt-5">
                 <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm" style="border-radius: 30px;">
                     <i class="bi bi-check2-circle"></i> Submit My Vote
@@ -116,7 +116,7 @@
 </div>
 
 <script>
-// 切換編輯與顯示模式
+// Switch between editing and display modes
 function toggleEdit(textId, formId) {
     const textElem = document.getElementById(textId);
     const formElem = document.getElementById(formId);
@@ -134,7 +134,7 @@ function toggleEdit(textId, formId) {
     }
 }
 
-// 老師編輯單個選項的 AJAX 邏輯 (避免嵌套 Form 衝突)
+// Teacher edits AJAX logic for a single option (to avoid nested Form conflicts)
 function saveOption(pollId, index) {
     const newText = document.getElementById('input-opt-' + index).value;
     const formData = new URLSearchParams();

@@ -27,18 +27,14 @@ public class Comment {
     @JoinColumn(name = "lecture_id")
     private Lecture lecture;
 
-    // --- 回覆功能的關鍵修正 ---
 
-    // 指向「父評論」，這就是你想要的 reply_id 邏輯
     @ManyToOne
     @JoinColumn(name = "parent_id") // 資料庫會產生 parent_id 欄位
     private Comment parentComment;
 
-    // 一個評論可以有多個回覆
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
     @OrderBy("commentTime ASC") // 讓回覆按時間先後排序
     private List<Comment> replies = new ArrayList<>();
-// hkmu.comp3820sef._820sef_project_s12992583.model.Comment
 
     @ManyToOne
     @JoinColumn(name = "reply_to_user_id") // 確保資料庫有呢一欄
@@ -46,7 +42,6 @@ public class Comment {
 
 
     // -----------------------
-    // 記得加埋 Getter 同 Setter
     public AppUser getReplyToUser() { return replyToUser; }
     public void setReplyToUser(AppUser replyToUser) { this.replyToUser = replyToUser; }
 

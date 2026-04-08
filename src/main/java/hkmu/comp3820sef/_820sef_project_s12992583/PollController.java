@@ -73,25 +73,25 @@ public class PollController {
         model.addAttribute("voteCounts", voteCounts);
         model.addAttribute("totalVotes", allResponses.size());
 
-        // 最終路徑選擇
+
         String target = isInstructor ? "poll-detail" : "student-vote";
         log.info(">>>> [View Selection] Final decision: Redirecting to -> {}.jsp", target);
 
         return target;
     }
 
-    // 2. 處理投票邏輯 (先清空、後插入)
+
     @Transactional
     @PostMapping("/{pollId}/vote")
     public String handleVote(@PathVariable Long pollId, @RequestParam int optionIndex, Authentication auth) {
         Poll poll = pollRepository.findById(pollId).orElseThrow();
         AppUser user = userRepository.findByUsername(auth.getName());
 
-        // 強制執行一人一票：先刪除該用戶在該 Poll 的舊紀錄
+
         pollResponseRepository.deleteByUserAndPoll(user, poll);
         pollResponseRepository.flush();
 
-        // 插入新選擇
+
         if (optionIndex >= 0 && optionIndex < poll.getOptions().size()) {
             PollResponse newResponse = new PollResponse(user, poll, optionIndex);
             newResponse.setSelectedOptionText(poll.getOptions().get(optionIndex));
@@ -100,7 +100,6 @@ public class PollController {
         List<Integer> currentVotes = new ArrayList<>();
 
 
-        // 直接從源頭（PollResponse 表）按 Index 計算
         for (int i = 0; i < poll.getOptions().size(); i++) {
             long count = pollResponseRepository.countByPollAndSelectedOptionIndex(poll, i);
             currentVotes.add(Integer.parseInt(String.valueOf(count))); // 這就是你要的「直接返回數值」
@@ -112,7 +111,6 @@ public class PollController {
     }
 
 
-    // 3. 刪除投票
     @Transactional
     @PostMapping("/delete/{pollId}")
     public String deletePoll(@PathVariable Long pollId, Authentication auth, RedirectAttributes redirectAttributes) {
@@ -122,7 +120,7 @@ public class PollController {
         Course course = poll.getCourse();
         String currentUsername = auth.getName();
 
-        // --- 新增 Debug Logs ---
+
         log.info("==== [Delete Attempt] Poll ID: {} ====", pollId);
         log.info("Current User: {}", currentUsername);
 
@@ -150,13 +148,13 @@ public class PollController {
             log.error("[Delete Failed] User {} is NOT the instructor of Course {}",
                     currentUsername, course.getId());
 
-            // 建議改為跳回課程頁面，並顯示錯誤訊息
+
             redirectAttributes.addFlashAttribute("error", "Only the course instructor can delete polls.");
             return "redirect:/courses/" + course.getId();
         }
     }
 
-    // 4. 編輯標題
+
     @Transactional
     @PostMapping("/{pollId}/edit-question")
     public String updateQuestion(@PathVariable Long pollId, @RequestParam String newQuestion, Authentication auth) {
@@ -168,7 +166,6 @@ public class PollController {
         return "redirect:/polls/courses/" + poll.getCourse().getId() + "/poll/" + pollId;
     }
 
-    // 5. 編輯單個選項 (AJAX)
     @Transactional
     @PostMapping("/{pollId}/edit-option")
     @ResponseBody
@@ -185,18 +182,15 @@ public class PollController {
         return "error";
     }
 
-    // 6. 投票歷史紀錄
+
     @GetMapping("/history")
     public String showPollHistory(Principal principal, Model model) {
         AppUser user = userRepository.findByUsername(principal.getName());
 
-        // 1. 學生視角：我參與過的投票 (從 PollResponse 找)
         List<PollResponse> participationHistory = pollResponseRepository.findByUserOrderByVoteTimeDesc(user);
 
-        // 2. 講師視角：我發起過的投票 (從 Poll 找)
         List<Poll> createdPolls = pollRepository.findByCourseInstructor(user);
 
-        // 統一傳給 JSP
         model.addAttribute("participationHistory", participationHistory);
         model.addAttribute("createdPolls", createdPolls);
 

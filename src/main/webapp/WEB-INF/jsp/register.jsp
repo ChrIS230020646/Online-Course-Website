@@ -22,7 +22,7 @@
     <div class="ui-card static" style="width: 100%; max-width: 440px; padding: 40px;">
         <a href="/" class="text-decoration-none text-muted" style="position: absolute; top: 20px; left: 25px; font-size: 20px;">❮</a>
 
-        <!-- 錯誤提示 -->
+        <!--Error Prompt-->
         <c:if test="${not empty param.error}">
             <div class="alert alert-danger" style="border-radius: 12px; font-size: 13px;">
                     ${param.error}
