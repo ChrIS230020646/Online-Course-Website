@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
   <title>Edit Course - ${course.title}</title>
@@ -16,7 +17,7 @@
 <body>
 <div class="ui-container mt-5">
   <a href="/courses/${course.id}" class="btn-back mb-4">❮</a>
-
+  <sec:authorize access="hasRole('TEACHER')">
   <div class="ui-card">
     <h1 class="mb-4" style="font-weight: 700;">Edit Course Details</h1>
 
@@ -46,5 +47,16 @@
     </form>
   </div>
 </div>
+</sec:authorize>
+<sec:authorize access="hasRole('STUDENT')">
+  <div class="ui-card static">
+    <div class="d-flex justify-content-center">
+      <h1 class="page-title mb-5">You DO NOT have permission to access this page</h1>
+    </div>
+    <div class="d-flex justify-content-center">
+      <a href="/courses" class="btn-primary-custom">Back to Courses</a>
+    </div>
+  </div>
+</sec:authorize>
 </body>
 </html>
