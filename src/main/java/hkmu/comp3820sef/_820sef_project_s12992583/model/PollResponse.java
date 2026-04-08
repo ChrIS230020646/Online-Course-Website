@@ -24,7 +24,7 @@ public class PollResponse {
     private LocalDateTime voteTime = LocalDateTime.now();
 
     public PollResponse() {}
-    // 這裡建議在構造函數中直接初始化時間
+
     public PollResponse(AppUser user, Poll poll, int selectedOptionIndex) {
         this.user = user;
         this.poll = poll;

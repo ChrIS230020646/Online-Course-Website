@@ -42,7 +42,7 @@
                     <div class="option-box">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="form-check">
-                                <%-- 這裡判斷 userChoice，如果等於當前 Index 就加上 checked --%>
+                                <%-- check userChoice --%>
                                 <input class="form-check-input" type="radio" name="optionIndex"
                                        id="opt-${idx}" value="${idx}" required
                                        ${userChoice == idx ? 'checked' : ''}>
@@ -51,11 +51,11 @@
                                 </label>
                             </div>
                             <span class="badge bg-light text-dark border">
-                                ${count} 票 (${percent}%)
+                                ${count} ticket (${percent}%)
                             </span>
                         </div>
 
-                        <%-- 進度條顯示即時統計 --%>
+                        <%-- progressbar --%>
                         <div class="progress">
                             <div class="progress-bar bg-primary" role="progressbar"
                                  style="width: ${percent}%"></div>

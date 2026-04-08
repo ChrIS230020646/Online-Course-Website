@@ -9,7 +9,7 @@
     <div class="info-group mb-3 d-flex align-items-center">
         <span class="badge bg-primary">System ID: ${cmt.id}</span>
 
-        <%-- 重點：加入回覆對象 ID --%>
+
         <c:if test="${not empty cmt.parentComment}">
             <span class="badge bg-info ms-2">Replying to ID: ${cmt.parentComment.id}</span>
         </c:if>
@@ -21,7 +21,6 @@
         <strong>Author:</strong>
         <span class="text-info">@${cmt.user.username}</span>
 
-        <%-- 如果有父級留言，顯示回覆對象的名稱 --%>
         <c:if test="${not empty cmt.parentComment}">
             <span class="text-muted ms-1">replied to</span>
             <span class="fw-bold text-dark">@${cmt.parentComment.user.username}</span>

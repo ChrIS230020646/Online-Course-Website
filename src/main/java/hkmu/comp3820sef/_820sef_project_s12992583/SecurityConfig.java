@@ -30,7 +30,7 @@ public class SecurityConfig {
                                 .requestMatchers("/courses/*/poll/*").authenticated()
                         // Requires any logged-in user (Student or Teacher) to access general course lists or their dashboard
 //                        .requestMatchers("/courses/**", "/my-courses").authenticated()
-// 修正 3：加入留言與課程詳情的存取權限
+
                                 .requestMatchers("/courses/**").authenticated()
                                 .requestMatchers("/lectures/**").authenticated()
                                 .requestMatchers("/comment/**").authenticated()

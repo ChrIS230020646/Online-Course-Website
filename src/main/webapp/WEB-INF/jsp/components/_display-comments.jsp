@@ -8,7 +8,7 @@
 
     <div class="comment-stack">
         <c:forEach var="cmt" items="${commentList}">
-            <%-- 主留言區塊 --%>
+
             <div class="comment-item py-4 border-bottom" id="comment-${cmt.id}">
                 <div class="d-flex justify-content-between align-items-start">
                     <div class="user-info d-flex align-items-center">
@@ -21,7 +21,7 @@
                         </div>
                     </div>
 
-                    <%-- 主留言刪除功能 --%>
+
                     <c:set var="isAuthor" value="${pageContext.request.userPrincipal.name == cmt.user.username}" />
                     <sec:authorize access="hasRole('TEACHER')" var="isTeacher" />
                     <c:if test="${isTeacher || isAuthor}">
@@ -37,7 +37,6 @@
                     ${cmt.description}
                 </div>
 
-                <%-- 主留言 Reply 按鈕 --%>
                 <div class="mt-2">
                     <sec:authorize access="isAuthenticated()">
                         <button class="btn btn-link p-0" style="font-size: 0.85rem; text-decoration: none;"
@@ -45,7 +44,7 @@
                     </sec:authorize>
                 </div>
 
-                <%-- 該討論串公用的回覆輸入框 --%>
+
                 <div id="reply-form-${cmt.id}" class="mt-3 ms-4" style="display:none;">
                     <form action="${pageContext.request.contextPath}/comment/lectures/${lectureId}/add-comment" method="post" class="d-flex flex-column gap-2">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -62,7 +61,7 @@
                     </form>
                 </div>
 
-                <%-- 二級回覆列表 --%>
+
                 <c:if test="${not empty cmt.replies}">
                     <div class="replies-list ms-4 mt-3 ps-3" style="border-left: 2px solid #f5f5f7;">
                         <c:forEach var="reply" items="${cmt.replies}">
@@ -71,13 +70,13 @@
                                     <strong style="font-size: 0.85rem; color: #1d1d1f;">@${reply.user.username}</strong>
 
                                     <div class="d-flex gap-2 align-items-center">
-                                        <%-- 二級回覆 Reply 按鈕 --%>
+
                                         <sec:authorize access="isAuthenticated()">
                                             <button class="btn btn-link p-0" style="font-size: 0.75rem; text-decoration: none;"
                                                     onclick="prepareReply('${cmt.id}', '${reply.user.username}')">Reply</button>
                                         </sec:authorize>
 
-                                        <%-- 二級回覆刪除按鈕 (已修正位置與判斷邏輯) --%>
+
                                         <c:set var="isReplyAuthor" value="${pageContext.request.userPrincipal.name == reply.user.username}" />
                                         <c:if test="${isTeacher || isReplyAuthor}">
                                             <form action="${pageContext.request.contextPath}/comment/lectures/delete/${reply.id}" method="post" class="m-0">

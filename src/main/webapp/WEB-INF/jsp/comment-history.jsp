@@ -56,7 +56,7 @@
                 </c:when>
 <c:otherwise>
     <c:forEach items="${historyList}" var="cmt">
-        <%-- 將目前的 cmt 強制放入 request scope，確保子頁面一定讀到 --%>
+        <%-- Force the current cmt into the request scope to ensure that the subpage must read --%>
         <c:set var="cmt" value="${cmt}" scope="request" />
 
         <div class="comment-item-container">
