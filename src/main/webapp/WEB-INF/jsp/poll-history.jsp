@@ -56,10 +56,10 @@
                         </div>
                     </td>
                     <td class="text-end pe-4">
-                        <a href="/polls/courses/${poll.course.id}/poll/${poll.id}?type=poll&targetId=${poll.id}"
-                           class="btn btn-sm btn-info text-white rounded-pill px-3">
-                            View Full Statistics
-                        </a>
+<a href="${pageContext.request.contextPath}/polls/courses/${poll.courseId}/poll/${poll.id}?type=poll&targetId=${poll.id}"
+   class="btn btn-sm btn-info text-white rounded-pill px-3">
+    View Full Statistics
+</a>
                     </td>
                 </tr>
             </c:forEach>

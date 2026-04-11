@@ -14,13 +14,27 @@
     </c:when>
 
 
-    <c:when test="${cmt.targetType == 'poll'}">
-        <c:set var="areaColor" value="success" />
-        <c:set var="areaIcon" value="bi-patch-check" />
-        <c:set var="areaLabel" value="Poll" />
-        <c:set var="targetTitle" value="Survey Discussion" />
-        <c:set var="viewUrl" value="$/polls/courses/${course.id}/poll/${poll.id}" />
-    </c:when>
+
+ <c:when test="${cmt.targetType == 'poll'}">
+     <c:set var="areaColor" value="success" />
+     <c:set var="areaIcon" value="bi-patch-check" />
+     <c:set var="areaLabel" value="Poll" />
+
+
+     <c:set var="targetPoll" value="${pollMap[cmt.targetId]}" />
+
+     <c:choose>
+         <c:when test="${not empty targetPoll}">
+             <c:set var="targetTitle" value="${targetPoll.question}" />
+
+             <c:set var="viewUrl" value="${pageContext.request.contextPath}/polls/courses/${targetPoll.course.id}/poll/${targetPoll.id}?type=poll&targetId=${targetPoll.id}" />
+         </c:when>
+         <c:otherwise>
+             <c:set var="targetTitle" value="Survey Discussion (ID: ${cmt.targetId})" />
+             <c:set var="viewUrl" value="#" />
+         </c:otherwise>
+     </c:choose>
+ </c:when>
 
 
     <c:otherwise>

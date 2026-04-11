@@ -1,15 +1,15 @@
 package hkmu.comp3820sef._820sef_project_s12992583;
 
 
+import hkmu.comp3820sef._820sef_project_s12992583.dto.PollDTO;
 import hkmu.comp3820sef._820sef_project_s12992583.model.AppUser;
 import hkmu.comp3820sef._820sef_project_s12992583.model.Comment;
 import hkmu.comp3820sef._820sef_project_s12992583.model.Lecture;
-import hkmu.comp3820sef._820sef_project_s12992583.repository.CommentRepository;
+import hkmu.comp3820sef._820sef_project_s12992583.model.Poll;
+import hkmu.comp3820sef._820sef_project_s12992583.repository.*;
 
-import hkmu.comp3820sef._820sef_project_s12992583.repository.CourseRepository;
-import hkmu.comp3820sef._820sef_project_s12992583.repository.LectureRepository;
-import hkmu.comp3820sef._820sef_project_s12992583.repository.UserRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.service.CommentService;
+import hkmu.comp3820sef._820sef_project_s12992583.service.PollService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
@@ -24,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,28 +37,42 @@ public class CommentController {
     @Autowired private CommentRepository commentRepository;
     @Autowired private UserRepository userRepository;
     @Autowired private CommentService commentService;
-
+    @Autowired private PollRepository  pollRepository;
+    @Autowired
+    private PollService pollService;
     @GetMapping("/history")
     public String showHistory(Principal principal, Model model) {
         if (principal == null) return "redirect:/login";
 
-
         AppUser currentUser = userRepository.findByUsername(principal.getName());
-
-
         Sort sort = Sort.by("commentTime").descending();
+
         List<Comment> historyList = commentRepository.findByUser(currentUser, sort);
 
+        Map<Long, Poll> pollMap = new HashMap<>();
+
         for (Comment cmt : historyList) {
+            if ("poll".equalsIgnoreCase(cmt.getTargetType()) && cmt.getTargetId() != null) {
+                pollRepository.findById(cmt.getTargetId()).ifPresent(poll -> {
+                    pollMap.put(poll.getId(), poll);
+                });
+            }
+
             if (cmt.getLecture() != null) {
                 cmt.getLecture().getTitle();
+                if (cmt.getLecture().getCourse() != null) {
+                    cmt.getLecture().getCourse().getTitle();
+                }
             }
+
+
             if (cmt.getParentComment() != null) {
                 cmt.getParentComment().getUser().getUsername();
             }
         }
 
         model.addAttribute("historyList", historyList);
+        model.addAttribute("pollMap", pollMap);
         return "comment-history";
     }
     @GetMapping("/comments/{Id}")
@@ -126,9 +141,9 @@ public class CommentController {
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/");
     }
-    @PostMapping("/comments/edit")
+    @PostMapping("/edit")
     public String editComment(@RequestParam("commentId") Long commentId,
-                              @RequestParam("content") String content,
+                              @RequestParam("description") String content,
                               @RequestParam("type") String type,
                               @RequestParam("targetId") Long targetId) {
 

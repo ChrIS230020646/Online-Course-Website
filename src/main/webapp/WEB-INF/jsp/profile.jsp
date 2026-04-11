@@ -17,7 +17,20 @@
 
 <div class="ui-container">
   <a href="javascript:history.back()" class="btn-back">❮</a>
-
+<div class="position-absolute" style="top: 130px; right: 40px; z-index: 10;">
+        <div class="d-flex gap-2">
+            <a href="${pageContext.request.contextPath}/comment/history"
+               class="btn btn-outline-secondary btn-sm px-3"
+               style="border-radius: 20px; font-size: 13px; color: #86868b; border-color: #d2d2d7; background: white;">
+               Comment History
+            </a>
+            <a href="${pageContext.request.contextPath}/polls/history"
+               class="btn btn-outline-secondary btn-sm px-3"
+               style="border-radius: 20px; font-size: 13px; color: #86868b; border-color: #d2d2d7; background: white;">
+               Poll History
+            </a>
+        </div>
+    </div>
   <h1 class="page-title">User Profile</h1>
   <p class="text-secondary mb-5">Manage your personal information and security settings.</p>
 

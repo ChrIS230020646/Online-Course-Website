@@ -1,6 +1,7 @@
 package hkmu.comp3820sef._820sef_project_s12992583;
 
 import hkmu.comp3820sef._820sef_project_s12992583.model.Comment;
+import hkmu.comp3820sef._820sef_project_s12992583.model.Course;
 import hkmu.comp3820sef._820sef_project_s12992583.model.Lecture;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.CommentRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.LectureRepository;
@@ -29,7 +30,8 @@ public class LectureController {
     public String showCourseMaterialPage(@PathVariable("lectureId") Long lectureId, Model model) {
 
         Lecture lecture = lectureRepository.findById(lectureId).orElse(null);
-
+        Course course =lecture.getCourse();
+        model.addAttribute("course", course);
         model.addAttribute("lecture", lecture);
         model.addAttribute("lectureId", lectureId);
         if (lecture == null) {
