@@ -4,18 +4,18 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "poll_responses") // 建議用複數，避開某些資料庫的保留字
+@Table(name = "poll_responses")
 public class PollResponse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id") // 明確指定外鍵名稱
+    @JoinColumn(name = "user_id")
     private AppUser user;
 
     @ManyToOne
-    @JoinColumn(name = "poll_id") // 明確指定外鍵名稱
+    @JoinColumn(name = "poll_id")
     private Poll poll;
 
     private int selectedOptionIndex;

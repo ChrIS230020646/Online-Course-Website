@@ -22,7 +22,6 @@
 <div class="container py-5">
     <div class="card poll-card mx-auto" style="max-width: 700px;">
         <div class="card-body p-5">
-            <%-- 返回按鈕 --%>
             <a href="/courses/${courseId}" class="btn btn-link p-0 mb-4 text-decoration-none">
                 <i class="bi bi-chevron-left"></i> Back to Course
             </a>
@@ -36,7 +35,6 @@
                 <c:forEach var="option" items="${poll.options}" varStatus="status">
                     <c:set var="idx" value="${status.index}" />
                     <c:set var="count" value="${voteCounts[idx]}" />
-                    <%-- 計算百分比 --%>
                     <c:set var="percent" value="${totalVotes > 0 ? (count * 100 / totalVotes) : 0}" />
 
                     <div class="option-box">
@@ -78,6 +76,9 @@
         </div>
     </div>
 </div>
-
+<jsp:include page="/WEB-INF/jsp/components/comment-section.jsp" >
+    <jsp:param name="type" value="poll" />
+    <jsp:param name="targetId" value="${poll.id}" />
+</jsp:include>
 </body>
 </html>

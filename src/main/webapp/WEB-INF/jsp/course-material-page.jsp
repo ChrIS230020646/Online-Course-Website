@@ -111,8 +111,11 @@
     <div class="ui-card">
         <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 25px;">Comments / Discussion</h2>
 
-        <jsp:include page="/WEB-INF/jsp/components/comment-section.jsp" />
 
+<jsp:include page="/WEB-INF/jsp/components/comment-section.jsp" >
+    <jsp:param name="type" value="lecture" />
+    <jsp:param name="targetId" value="${lecture.id}" />
+</jsp:include>
     </div>
 </div>
 

@@ -1,7 +1,10 @@
 package hkmu.comp3820sef._820sef_project_s12992583;
 
+import hkmu.comp3820sef._820sef_project_s12992583.dto.PollDTO;
 import hkmu.comp3820sef._820sef_project_s12992583.model.*;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.*;
+import hkmu.comp3820sef._820sef_project_s12992583.service.CommentService;
+import hkmu.comp3820sef._820sef_project_s12992583.service.PollService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/polls")
@@ -27,58 +31,28 @@ public class PollController {
     private PollResponseRepository pollResponseRepository;
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private PollService pollService;
+    @Autowired
+    private CommentService commentService;
     private static final Logger log = LoggerFactory.getLogger(PollController.class);
-
-    // 1. 查看投票詳情 (包含即時票數統計)
     @GetMapping("/courses/{courseId}/poll/{pollId}")
     public String viewPoll(@PathVariable Long courseId, @PathVariable Long pollId,
                            Authentication auth, Model model) {
 
-        log.info(">>>> [Poll Debug] Starting access check for User: {}", auth.getName());
-
-        Poll poll = pollRepository.findById(pollId).orElseThrow(() ->
-                new IllegalArgumentException("Invalid poll Id:" + pollId));
-
-        // 獲取當前登入者
-        String currentLoginUser = auth.getName();
-
-        // --- 權限診斷 Log ---
-        boolean isInstructor = false;
-        if (poll.getCourse() != null && poll.getCourse().getInstructor() != null) {
-            String courseInstructorName = poll.getCourse().getInstructor().getUsername();
-
-            // 核心比對細節
-            isInstructor = courseInstructorName.equalsIgnoreCase(currentLoginUser);
-
-            log.info(">>>> [Comparison Detail]");
-            log.info("     - Logged in as: [{}]", currentLoginUser);
-            log.info("     - Course Instructor is: [{}]", courseInstructorName);
-            log.info("     - Match Result: {}", isInstructor);
-        } else {
-            log.warn(">>>> [Data Error] Course or Instructor is NULL for this poll!");
-        }
-
-        // 執行統計邏輯 (保持不變)
-        List<PollResponse> allResponses = pollResponseRepository.findByPoll(poll);
-        int[] voteCounts = new int[poll.getOptions().size()];
-        for (PollResponse r : allResponses) {
-            int idx = r.getSelectedOptionIndex();
-            if (idx >= 0 && idx < voteCounts.length) voteCounts[idx]++;
-        }
-
-        model.addAttribute("poll", poll);
+        PollDTO pollDto = pollService.getPollViewData(pollId, auth.getName());
+        model.addAttribute("poll", pollDto);
         model.addAttribute("courseId", courseId);
-        model.addAttribute("isInstructor", isInstructor);
-        model.addAttribute("voteCounts", voteCounts);
-        model.addAttribute("totalVotes", allResponses.size());
 
 
-        String target = isInstructor ? "poll-detail" : "student-vote";
-        log.info(">>>> [View Selection] Final decision: Redirecting to -> {}.jsp", target);
 
-        return target;
+        List<Comment> comments = commentService.getCommentsByTarget("poll", pollId);
+
+        model.addAttribute("commentList", comments);
+
+        return pollDto.isInstructor() ? "poll-detail" : "student-vote";
     }
+
 
 
     @Transactional
@@ -102,7 +76,7 @@ public class PollController {
 
         for (int i = 0; i < poll.getOptions().size(); i++) {
             long count = pollResponseRepository.countByPollAndSelectedOptionIndex(poll, i);
-            currentVotes.add(Integer.parseInt(String.valueOf(count))); // 這就是你要的「直接返回數值」
+            currentVotes.add(Integer.parseInt(String.valueOf(count)));
 
         }
         poll.setVotes(currentVotes);
@@ -138,7 +112,7 @@ public class PollController {
         if (isOwner) {
             Long courseId = course.getId();
             pollResponseRepository.deleteByPoll(poll);
-            pollRepository.saveAndFlush(poll); // 確保刪除前狀態同步
+            pollRepository.saveAndFlush(poll);
             pollRepository.delete(poll);
 
             log.info("[Delete Success] Poll {} deleted by instructor {}", pollId, currentUsername);
@@ -189,10 +163,34 @@ public class PollController {
 
         List<PollResponse> participationHistory = pollResponseRepository.findByUserOrderByVoteTimeDesc(user);
 
+
         List<Poll> createdPolls = pollRepository.findByCourseInstructor(user);
 
+
+        List<PollDTO> createdPollDTOs = createdPolls.stream().map(poll -> {
+            PollDTO dto = new PollDTO();
+            dto.setId(poll.getId());
+            dto.setQuestion(poll.getQuestion());
+            dto.setVotes(poll.getVotes());
+
+            int total = 0;
+            if (poll.getVotes() != null) {
+                for (int v : poll.getVotes()) {
+                    total += v;
+                }
+            }
+            dto.setTotalVotes(total);
+            // -----------------------
+
+            if (poll.getCourse() != null) {
+                dto.setCourseId(poll.getCourse().getId());
+            }
+            dto.setInstructor(true);
+            return dto;
+        }).collect(Collectors.toList());
+
         model.addAttribute("participationHistory", participationHistory);
-        model.addAttribute("createdPolls", createdPolls);
+        model.addAttribute("createdPolls", createdPollDTOs);
 
         return "poll-history";
     }

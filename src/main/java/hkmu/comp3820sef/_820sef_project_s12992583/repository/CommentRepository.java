@@ -11,10 +11,10 @@ import java.util.List;
 
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    // 透過父評論物件的 ID 欄位來查詢
+
     List<Comment> findByParentCommentId(Long parentId);
 
-    // 或是直接傳入整個父評論物件來查詢
+
     List<Comment> findByParentComment(Comment parentComment);
 
     List<Comment> findByLectureIdAndParentCommentIsNullOrderByCommentTimeDesc(Long lectureId);
@@ -27,4 +27,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @EntityGraph(attributePaths = {"lecture", "user"})
     List<Comment> findByUserAndLectureId(AppUser user, Long lectureId, Sort sort);
+
+    List<Comment> findByTargetTypeAndTargetIdAndParentCommentIsNull(String targetType, Long targetId);
 }

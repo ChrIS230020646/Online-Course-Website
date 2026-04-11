@@ -11,7 +11,7 @@ public interface PollResponseRepository extends JpaRepository<PollResponse, Long
     List<PollResponse> findByPoll(Poll poll);
     Optional<PollResponse> findByUserAndPoll(AppUser user, Poll poll);
     void deleteByUserAndPoll(AppUser user, Poll poll);
-    void deleteByPoll(Poll poll); // 用於刪除 Poll 時連帶刪除紀錄
-    List<PollResponse> findByUserOrderByVoteTimeDesc(AppUser user); // 用於歷史紀錄
+    void deleteByPoll(Poll poll);
+    List<PollResponse> findByUserOrderByVoteTimeDesc(AppUser user);
     long countByPollAndSelectedOptionIndex(Poll poll, int selectedOptionIndex);
 }

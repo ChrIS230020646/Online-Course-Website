@@ -5,7 +5,12 @@
         <a href="/lectures/${lectureId}" class="btn btn-outline-secondary btn-sm">Back to Lecture</a>
     </div>
     <hr>
-
+    <c:forEach var="comment" items="${comments}">
+        <div class="comment-item">
+            <p>${comment.description}</p>
+            <button onclick="toggleReplyForm(${comment.id})">Reply</button>
+        </div>
+    </c:forEach>
     <div class="info-group mb-3 d-flex align-items-center">
         <span class="badge bg-primary">System ID: ${cmt.id}</span>
 

@@ -29,16 +29,16 @@ public class Comment {
 
 
     @ManyToOne
-    @JoinColumn(name = "parent_id") // 資料庫會產生 parent_id 欄位
+    @JoinColumn(name = "parent_id")
     private Comment parentComment;
 
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
-    @OrderBy("commentTime ASC") // 讓回覆按時間先後排序
+    @OrderBy("commentTime ASC")
     private List<Comment> replies = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "reply_to_user_id") // 確保資料庫有呢一欄
-    private AppUser replyToUser; // 名稱必須同 JSP 寫法一致
+    @JoinColumn(name = "reply_to_user_id")
+    private AppUser replyToUser;
 
 
     // -----------------------
@@ -46,7 +46,18 @@ public class Comment {
     public void setReplyToUser(AppUser replyToUser) { this.replyToUser = replyToUser; }
 
     public Comment() {}
+    @Column(nullable = false)
+    private String targetType;
 
+    @Column(nullable = false)
+    private Long targetId;
+
+    // Getter and Setter
+    public String getTargetType() { return targetType; }
+    public void setTargetType(String targetType) { this.targetType = targetType; }
+
+    public Long getTargetId() { return targetId; }
+    public void setTargetId(Long targetId) { this.targetId = targetId; }
     @PrePersist
     protected void onCreate() {
         this.commentTime = LocalDateTime.now();
@@ -73,4 +84,9 @@ public class Comment {
 
     public List<Comment> getReplies() { return replies; }
     public void setReplies(List<Comment> replies) { this.replies = replies; }
+
+
+
+    public void setUpdatedAt(LocalDateTime localDateTime) {
+    }
 }

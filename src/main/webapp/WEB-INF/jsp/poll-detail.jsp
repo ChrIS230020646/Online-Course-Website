@@ -4,7 +4,7 @@
 
 <%-- 1. Permissions and Identity Judgment--%>
 <sec:authentication property="principal.username" var="currentUsername" />
-<c:set var="isInstructor" value="${poll.course.instructor.username == currentUsername}" />
+<c:set var="isInstructor" value="${poll.instructor}" />
 
 <!DOCTYPE html>
 <html>
@@ -56,7 +56,7 @@
 
             <c:forEach var="i" begin="0" end="4">
                 <c:set var="v" value="${poll.votes[i]}" />
-                <c:set var="p" value="${totalVotes > 0 ? (v * 100 / totalVotes) : 0}" />
+                <c:set var="p" value="${poll.totalVotes > 0 ? (v * 100.0 / poll.totalVotes) : 0}" />
 
                 <div class="poll-option-item">
                     <div class="d-flex justify-content-between align-items-center">
@@ -114,7 +114,10 @@
         </form>
     </div>
 </div>
-
+<jsp:include page="/WEB-INF/jsp/components/comment-section.jsp" >
+    <jsp:param name="type" value="poll" />
+    <jsp:param name="targetId" value="${poll.id}" />
+</jsp:include>
 <script>
 // Switch between editing and display modes
 function toggleEdit(textId, formId) {
