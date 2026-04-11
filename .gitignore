@@ -5,6 +5,11 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+/build/
+/target/
+/out/
+.gradle/
+
 ### STS ###
 .apt_generated
 .classpath
@@ -35,3 +40,11 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### H2 DB ###
+*.mv.db
+*.trace.db
+*.lock.db
+/data/
+uploads/
+uploads/lectures

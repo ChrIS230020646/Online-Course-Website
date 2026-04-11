@@ -13,11 +13,16 @@ Key technologies used:
 
 
 ## Update Log
+### [2026-04-12 By Chris 12992583]
+- **Added**: URL upload + File upload + Download File
+- **Added**: teacher Invite students 
+- **Added**: Delete student/teacher account + Remove students of class
+- **Added**: DataBase Initial data setting
 ### [2026-04-12 By Jacky 12728551]
 - **Added**: edit comment & part of history
 ### [2026-04-11 By Jacky 12728551]
 - **Added**: add comment box to poll page
-### [2026-04-05 By Adrian 14219499]
+### [2026-04-09 By Adrian 14219499]
 - **Added**: Edit course, edit lectures, delete course, delete lectures
 ### [2026-04-08 By Chris 12992583]
 - **Added**: Index UI rewrite + profile avatar upload bug fixed

@@ -9,6 +9,7 @@ import hkmu.comp3820sef._820sef_project_s12992583.repository.LectureRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.PollRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,12 +25,10 @@ import java.util.List;
 @Controller
 public class CourseController {
 
-    @Autowired
-    private CourseRepository courseRepository;
-    @Autowired
-    private LectureRepository lectureRepository;
-    @Autowired
-    private UserRepository userRepository;
+    @Autowired private CourseRepository courseRepository;
+    @Autowired private LectureRepository lectureRepository;
+    @Autowired private UserRepository userRepository;
+    @Autowired private PollRepository pollRepository;
 
     @GetMapping("/courses")
     public String listCourses(Model model) {
@@ -63,6 +62,7 @@ public class CourseController {
         return "add-lecture";
     }
 
+    /*
     @PostMapping("/courses/{courseId}/add-lecture")
     public String saveLecture(@PathVariable("courseId") Long courseId, Lecture lecture) {
 
@@ -76,7 +76,7 @@ public class CourseController {
 
         return "redirect:/courses/" + courseId;
     }
-
+    */
     @PostMapping("/courses/{courseId}/enroll")
     public String enrollCourse(@PathVariable Long courseId, Authentication authentication, RedirectAttributes redirectAttributes) {
         String username = authentication.getName();
@@ -107,6 +107,7 @@ public class CourseController {
         Course course = courseRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Invalid course Id:" + id));
         model.addAttribute("course", course);
 
+        model.addAttribute("allUsers", userRepository.findAll());
 
         boolean isEnrolled = false;
         if (authentication != null) {
@@ -121,6 +122,30 @@ public class CourseController {
         return "course-detail";
     }
 
+    @PostMapping("/courses/{courseId}/add-student")
+    @PreAuthorize("hasRole('TEACHER')")
+    public String addStudentToCourse(@PathVariable Long courseId,
+                                     @RequestParam Long studentId,
+                                     RedirectAttributes redirectAttributes) {
+        Course course = courseRepository.findById(courseId).orElseThrow();
+        AppUser student = userRepository.findById(studentId).orElseThrow();
+
+        if (student.getEnrolledCourses().contains(course)) {
+            redirectAttributes.addFlashAttribute("message", "Error: Student is already enrolled in this course!");
+        } else {
+            student.getEnrolledCourses().add(course);
+            userRepository.save(student);
+            redirectAttributes.addFlashAttribute("message", "Success: Student added successfully!");
+        }
+        return "redirect:/courses/" + courseId;
+    }
+
+
+
+
+
+
+
     @GetMapping("/lectures/{lectureId}")
     public String viewLecture(@PathVariable Long lectureId, Model model) {
         // lectureRepository
@@ -130,8 +155,6 @@ public class CourseController {
         // it need a lecture-detail.jsp to display
         return "lecture-detail";
     }
-    @Autowired
-    private PollRepository pollRepository;
 
     @GetMapping("/courses/{courseId}/add-poll")
     public String showAddPollForm(@PathVariable Long courseId, Model model) {

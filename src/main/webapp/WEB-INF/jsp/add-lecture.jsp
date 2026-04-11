@@ -12,52 +12,44 @@
 <head>
     <title>Add New Lecture</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
 <div class="ui-container">
     <a href="/courses/${courseId}" class="btn-back">❮</a>
-<sec:authorize access="hasRole('TEACHER')">
-    <h1 class="page-title mb-5">New Lecture</h1>
-    <p style="color: var(--text-secondary); margin-top: -40px; margin-bottom: 40px;">
-        Adding content to Course ID: <strong>${courseId}</strong>
-    </p>
 
-    <div class="ui-card static">
-        <form action="/courses/${courseId}/add-lecture" method="post">
+    <sec:authorize access="hasRole('TEACHER')">
+        <h1 class="page-title mb-5">New Lecture</h1>
+        <p style="color: var(--text-secondary); margin-top: -40px; margin-bottom: 40px;">
+            Adding content to Course ID: <strong>${courseId}</strong>
+        </p>
 
-        <div class="mb-4">
-                <label for="title">Lecture Title</label>
-                <input type="text" id="title" name="title" class="ui-input"
-                       placeholder="e.g. Introduction to Spring Security" required>
-            </div>
+        <div class="ui-card static">
+            <form action="/courses/${courseId}/add-lecture" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
-            <div class="mb-4">
-                <label for="content">Lecture Content / URL</label>
-                <textarea id="content" name="content" class="ui-input" rows="5"
-                          placeholder="Enter lecture notes or video links here..." required></textarea>
-            </div>
+                <div class="mb-4">
+                    <label for="title">Lecture Title</label>
+                    <input type="text" id="title" name="title" class="ui-input" placeholder="e.g. Week 1: Intro" required>
+                </div>
 
-            <div class="d-flex align-items-center mt-5">
-                <button type="submit" class="btn-primary-custom me-4">Save Lecture</button>
-                <a href="/courses/${courseId}" class="btn-link-custom">Cancel</a>
-            </div>
+                <div class="mb-4">
+                    <label for="content">Lecture Content / External URL</label>
+                    <textarea id="content" name="content" class="ui-input" rows="5"
+                              placeholder="Enter summary or a link (starting with http://)"></textarea>
+                </div>
 
-            <%-- if Spring Security have CSRF --%>
-            <%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> --%>
-        </form>
-    </div>
-</sec:authorize>
-    <sec:authorize access="hasRole('STUDENT')">
-    <div class="ui-card static">
-        <div class="d-flex justify-content-center">
-        <h1 class="page-title mb-5">You DO NOT have permission to access this page</h1>
+                <div class="mb-3">
+                    <label>Upload Material (PDF/DOC/ZIP)</label>
+                    <input type="file" name="file" class="form-control">
+                </div>
+
+                <div class="d-flex align-items-center mt-5">
+                    <button type="submit" class="btn-primary-custom me-4">Save Lecture</button>
+                    <a href="/courses/${courseId}" class="btn-link-custom">Cancel</a>
+                </div>
+            </form>
         </div>
-        <div class="d-flex justify-content-center">
-        <a href="/courses" class="btn-primary-custom">Back to Courses</a>
-        </div>
-    </div>
     </sec:authorize>
 </div>
 </body>

@@ -13,6 +13,9 @@ public class Lecture {
     @Column(length = 2000)
     private String content;
 
+    private String fileName;
+    private String filePath;
+
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
@@ -31,5 +34,11 @@ public class Lecture {
 
     public Course getCourse() { return course; }
     public void setCourse(Course course) { this.course = course; }
+
+    public String getFileName() { return fileName; }
+    public void setFileName(String fileName) { this.fileName = fileName; }
+
+    public String getFilePath() { return filePath; }
+    public void setFilePath(String filePath) { this.filePath = filePath; }
 }
 

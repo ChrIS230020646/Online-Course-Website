@@ -4,6 +4,8 @@ package hkmu.comp3820sef._820sef_project_s12992583;
 // Imports necessary Spring Security components for configuration and encryption
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration // Tells Spring this class contains bean definitions (configuration settings)
 @EnableWebSecurity // Enables Spring Security's web security support for the project
+@EnableMethodSecurity // EnableGlobalMethodSecurity
 public class SecurityConfig {
 
     @Bean // Tells Spring to manage the returned object (SecurityFilterChain) as a Bean

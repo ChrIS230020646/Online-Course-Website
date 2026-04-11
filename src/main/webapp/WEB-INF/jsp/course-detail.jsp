@@ -134,9 +134,6 @@
                     <div>
                             <%-- Display the Question created in add-poll.jsp --%>
                         <h4 style="font-size:18px; margin:0;"> ${poll.question}</h4>
-                        <p class="text-muted m-0" style="font-size:13px; mt-1">
-                            Cast your vote to help shape the next class!
-                        </p>
                     </div>
 
                         <%-- Teacher View: See Results --%>
@@ -172,15 +169,49 @@
 
     <sec:authorize access="hasRole('TEACHER')">
         <div class="mt-5 pt-5 border-top">
-            <h3 class="section-title">Enrolled Students</h3>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="section-title m-0">Course Management</h3>
+                <a href="/users" class="btn btn-sm btn-outline-dark rounded-pill px-3">Manage Global Users</a>
+            </div>
+
+            <div class="ui-card mb-4" style="background: #f8f9fa; border: 1px dashed #dee2e6;">
+                <h6 class="mb-3">Add Student to this Course Manually</h6>
+                <form action="/courses/${course.id}/add-student" method="post" class="row g-2 align-items-center">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <div class="col-auto" style="min-width: 300px;">
+                        <select name="studentId" class="form-select" required>
+                            <option value="" disabled selected>Select a user to enroll...</option>
+                                <c:forEach var="user" items="${allUsers}">
+                                    <c:if test="${user.role == 'STUDENT'}">
+                                        <option value="${user.id}">${user.username} - ${user.role}</option>
+                                    </c:if>
+                                </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary px-4">Add Now</button>
+                    </div>
+                </form>
+            </div>
+
             <div class="ui-card" style="background:#fff;">
+                <h5 class="mb-3 text-muted" style="font-size: 14px; font-weight: 600;">CURRENT ENROLLED STUDENTS</h5>
                 <c:choose>
                     <c:when test="${not empty course.students}">
                         <ul class="list-group list-group-flush">
                             <c:forEach items="${course.students}" var="student">
                                 <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
-                                    <span>👤 ${student.username}</span>
-                                    <span class="badge rounded-pill bg-light text-dark border">Student Account</span>
+                                    <div>
+                                        <span class="fw-bold">👤 ${student.fullName}</span>
+                                        <small class="text-muted">(@${student.username})</small>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <form action="/courses/${course.id}/kick/${student.id}" method="post" style="display:inline;">
+                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                            <button type="submit" class="btn btn-sm btn-outline-warning rounded-pill px-3"
+                                                    onclick="return confirm('Remove student from this course?')">Remove From Course</button>
+                                        </form>
+                                    </div>
                                 </li>
                             </c:forEach>
                         </ul>
