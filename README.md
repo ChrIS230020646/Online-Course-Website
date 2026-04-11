@@ -13,6 +13,8 @@ Key technologies used:
 
 
 ## Update Log
+### [2026-04-11 By Jacky 12728551]
+- **Added**: add comment box to poll page
 ### [2026-04-05 By Adrian 14219499]
 - **Added**: Edit course, edit lectures, delete course, delete lectures
 ### [2026-04-08 By Chris 12992583]
