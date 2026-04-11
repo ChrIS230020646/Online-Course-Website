@@ -1,6 +1,6 @@
 package hkmu.comp3820sef._820sef_project_s12992583.service;
 
-import hkmu.comp3820sef._820sef_project_s12992583.dto.PollDTO;
+import hkmu.comp3820sef._820sef_project_s12992583.dto.*;
 import hkmu.comp3820sef._820sef_project_s12992583.model.*;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.*;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class PollService {
     @Autowired private PollRepository pollRepository;
     @Autowired private PollResponseRepository pollResponseRepository;
     @Autowired private UserRepository userRepository;
-
+    @Autowired private CommentRepository commentRepository;
 
     public PollDTO getPollViewData(Long pollId, String username) {
 
@@ -134,4 +134,45 @@ public class PollService {
                 poll.getCourse().getInstructor() != null &&
                 poll.getCourse().getInstructor().getUsername().equalsIgnoreCase(username);
     }
+
+
+
+@Transactional(readOnly = true)
+public List<PollGroupDTO> getAllPollHistory() {
+    List<Poll> polls = pollRepository.findAll();
+    List<PollGroupDTO> pollHistories = new ArrayList<>();
+
+    for (Poll poll : polls) {
+        PollGroupDTO groupDto = new PollGroupDTO();
+        groupDto.setPollId(poll.getId());
+        groupDto.setPollQuestion(poll.getQuestion());
+
+
+
+        if (poll.getCourse() != null) {
+            groupDto.setCourseId(poll.getCourse().getId().toString());
+            groupDto.setCreatedBy(poll.getCourse().getInstructor() != null ? poll.getCourse().getInstructor().getUsername():"null");
+        } else {
+            groupDto.setCourseId("N/A");
+        }
+
+        groupDto.setPollQuestion(poll.getQuestion());
+        List<PollResponse> responses = pollResponseRepository.findByPoll(poll);
+        List<VoterDetail> voterDetails = new ArrayList<>();
+        if (responses != null) {
+            for (PollResponse r : responses) {
+                VoterDetail vd = new VoterDetail();
+                vd.setUsername(r.getUser().getUsername());
+                vd.setOptionText(r.getSelectedOptionText()); // 確保這行有值
+                voterDetails.add(vd);
+            }
+        }
+        groupDto.setVoters(voterDetails);
+        pollHistories.add(groupDto);
+    }
+    return pollHistories;
+}
+
+
+
 }

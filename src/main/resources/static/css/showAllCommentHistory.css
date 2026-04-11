@@ -1,0 +1,50 @@
+.avatar-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+}
+
+.badge-user {
+    display: inline-flex;
+    align-items: center;
+    background: #f2f2f7;
+    padding: 4px 12px;
+    border-radius: 980px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* 標籤頁樣式統一 */
+.nav-pills {
+    background: rgba(118, 118, 128, 0.12);
+    padding: 4px;
+    border-radius: 12px;
+    display: inline-flex;
+}
+
+.nav-pills .nav-link {
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 15px;
+    padding: 8px 24px;
+    border: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-pills .nav-link.active {
+    background-color: white;
+    color: var(--brand-blue);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.timestamp {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.empty-state-box {
+    padding: 80px 0;
+    opacity: 0.5;
+}

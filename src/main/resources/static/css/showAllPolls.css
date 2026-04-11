@@ -1,0 +1,38 @@
+.badge-course {
+    background: rgba(0, 113, 227, 0.1);
+    color: var(--brand-blue);
+    padding: 4px 12px;
+    border-radius: 980px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.poll-stat-pill {
+    display: inline-flex;
+    align-items: center;
+    background: var(--site-bg);
+    border: 1px solid var(--border-color);
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+.voter-details-section {
+    background: #fafafa;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+
+.voter-avatar {
+    width: 24px; height: 24px;
+    background: #e5e5ea;
+    color: var(--text-secondary);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: bold;
+}

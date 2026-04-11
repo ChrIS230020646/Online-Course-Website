@@ -14,4 +14,6 @@ public interface PollResponseRepository extends JpaRepository<PollResponse, Long
     void deleteByPoll(Poll poll);
     List<PollResponse> findByUserOrderByVoteTimeDesc(AppUser user);
     long countByPollAndSelectedOptionIndex(Poll poll, int selectedOptionIndex);
+
+    PollResponse findByPollId(Long id);
 }
