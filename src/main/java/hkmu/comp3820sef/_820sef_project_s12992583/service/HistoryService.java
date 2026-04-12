@@ -37,13 +37,16 @@ public class HistoryService {
         dto.setUsername(cmt.getUser().getUsername());
         dto.setUserProfilePicture(cmt.getUser().getProfilePicture());
         dto.setCreatedAt(cmt.getCommentTime());
-        if (cmt.getTargetId() != null) {
-            Optional<Lecture> lecture =lectureRepository.findById(cmt.getTargetId());
 
-            dto.setLectureTitle(lecture.get().getTitle());
-            dto.setLectureID(lecture.get().getId());
-            dto.setLectureTitle(lecture.get().getTitle());
-            dto.setCourseId(lecture.get().getCourse().getId());
+        if (cmt.getTargetId() != null) {
+            // 最少改動：使用 ifPresent 確保只有在資料存在時才執行 get()
+            lectureRepository.findById(cmt.getTargetId()).ifPresent(lecture -> {
+                dto.setLectureID(lecture.getId());
+                dto.setLectureTitle(lecture.getTitle());
+                if (lecture.getCourse() != null) {
+                    dto.setCourseId(lecture.getCourse().getId());
+                }
+            });
         }
         return dto;
     }

@@ -3,6 +3,7 @@ package hkmu.comp3820sef._820sef_project_s12992583;
 import hkmu.comp3820sef._820sef_project_s12992583.dto.CommentHistoryDTO;
 import hkmu.comp3820sef._820sef_project_s12992583.dto.PollGroupDTO;
 import hkmu.comp3820sef._820sef_project_s12992583.dto.PollHistoryDTO;
+import hkmu.comp3820sef._820sef_project_s12992583.model.Lecture;
 import hkmu.comp3820sef._820sef_project_s12992583.model.Poll;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.PollRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.service.HistoryService;
@@ -27,6 +28,7 @@ public class showAllController {
     private PollService pollService;
     @Autowired
     private PollRepository pollRepository;
+
     @GetMapping("/comment/all")
     public String showAllCommentHistory(Model model) {
         log.info("Fetching system-wide comment and poll history...");

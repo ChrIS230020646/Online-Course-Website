@@ -2,6 +2,7 @@ package hkmu.comp3820sef._820sef_project_s12992583.service;
 import hkmu.comp3820sef._820sef_project_s12992583.dto.CommentHistoryDTO;
 import hkmu.comp3820sef._820sef_project_s12992583.model.AppUser;
 import hkmu.comp3820sef._820sef_project_s12992583.model.Comment;
+import hkmu.comp3820sef._820sef_project_s12992583.model.Lecture;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.CommentRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.LectureRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.UserRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service

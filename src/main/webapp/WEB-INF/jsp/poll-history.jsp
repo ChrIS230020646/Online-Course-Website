@@ -55,12 +55,38 @@
     </style>
 </head>
 <body>
-
+<nav class="main-nav">
+    <div class="d-flex align-items-center">
+        <a href="/profile" class="text-decoration-none d-flex align-items-center">
+            <img src="${pageContext.request.userPrincipal != null ? currentUser.profilePicture : 'https://ui-avatars.com/api/?name=User'}"
+                 alt="Avatar"
+                 style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #eee;">
+            <span class="ms-2 fw-bold" style="color: #333;">
+                ${currentUser.fullName}
+            </span>
+        </a>
+    </div>
+    <div class="nav-links">
+        <a href="/courses">All Courses</a>
+        <sec:authorize access="hasRole('STUDENT')">
+            <a href="/my-courses">My Learning</a>
+        </sec:authorize>
+        <form action="/logout" method="post" style="display:inline; margin-left:25px;">
+            <button type="submit" class="btn-logout" style="border:none; background:none; cursor:pointer; font-weight:500;">Logout</button>
+        </form>
+        <a href="/history/comment/all" class="nav-history-link">
+                            <span class="badge rounded-pill bg-info-subtle text-info-emphasis">All Comment History</span>
+                        </a>
+                        <a href="/history/poll/all" class="nav-history-link">
+                            <span class="badge rounded-pill bg-primary-subtle text-primary-emphasis">All Poll History</span>
+                        </a>
+    </div>
+</nav>
 <div class="ui-container">
     <div class="text-center mb-5">
-        <a href="${pageContext.request.contextPath}/" class="btn-back">
+        <!--<a href="${pageContext.request.contextPath}/" class="btn-back">
             <i class="bi bi-chevron-left"></i>
-        </a>
+        </a>-->
         <h1 class="page-title">Poll Management</h1>
         <p style="color: var(--text-secondary);">Track your created polls and participation activity.</p>
     </div>
