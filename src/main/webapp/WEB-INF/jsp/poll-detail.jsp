@@ -25,11 +25,9 @@
 
         function handleSmartBack() {
             const backUrl = sessionStorage.getItem('poll_back_url');
-            if (backUrl) {
-                window.location.href = backUrl;
-            } else {
-                window.location.href = '/courses/${courseId}';
-            }
+
+                window.location.href = '/courses/${poll.courseId}';
+
         }
     </script>
 </head>
