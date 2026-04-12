@@ -101,7 +101,10 @@
                     <sec:authorize access="hasRole('TEACHER')">
                       <div>
                         <a href="/course-material-page/${lecture.id}" class="btn btn-sm btn-light rounded-pill px-3">View / Edit</a>
-                        <%@ include file="/WEB-INF/jsp/lecture-components/btn-delete.jsp" %>
+                        <form action="${pageContext.request.contextPath}/courses/${course.id}/lecture/${lecture.id}/delete" method="post" class="d-inline m-0" onsubmit="return confirm('Delete this lecture permanently?');">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3">Delete</button>
+                        </form>
                         </div>
                     </sec:authorize>
 
@@ -132,7 +135,6 @@
             <div class="ui-card mb-3" style="border-left: 4px solid #007aff;">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                            <%-- Display the Question created in add-poll.jsp --%>
                         <h4 style="font-size:18px; margin:0;"> ${poll.question}</h4>
                         <br>
                         <jsp:include page="poll-components/poll-result.jsp">
@@ -144,7 +146,10 @@
                     <sec:authorize access="hasRole('TEACHER')">
                     <div>
                         <a href="/polls/courses/${course.id}/poll/${poll.id}" class="btn btn-sm btn-light rounded-pill px-3">View Results/Edit</a>
-<%@ include file="/WEB-INF/jsp/poll-components/btn-delete.jsp" %>
+                        <form action="${pageContext.request.contextPath}/polls/${poll.id}/delete" method="post" class="d-inline m-0" onsubmit="return confirm('Delete this poll permanently?');">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3">Delete</button>
+                        </form>
                     </div>
                     </sec:authorize>
 
