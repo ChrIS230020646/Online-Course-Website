@@ -112,11 +112,17 @@ public class PollController {
 
         if (isOwner) {
             Long courseId = course.getId();
+
+            // 1. Clear Votes
             pollResponseRepository.deleteByPoll(poll);
-            pollRepository.saveAndFlush(poll);
+
+            // 2. Clear Comments (ADD THIS HERE)
+            commentService.deleteCommentsByTarget("poll", pollId);
+
+            // 3. Sync and Delete
+            pollResponseRepository.flush();
             pollRepository.delete(poll);
 
-            log.info("[Delete Success] Poll {} deleted by instructor {}", pollId, currentUsername);
             redirectAttributes.addFlashAttribute("message", "Poll deleted successfully.");
             return "redirect:/courses/" + courseId;
         } else {

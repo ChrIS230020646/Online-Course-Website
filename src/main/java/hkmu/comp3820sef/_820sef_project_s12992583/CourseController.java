@@ -8,10 +8,12 @@ import hkmu.comp3820sef._820sef_project_s12992583.repository.CourseRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.LectureRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.PollRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.UserRepository;
+import hkmu.comp3820sef._820sef_project_s12992583.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +31,7 @@ public class CourseController {
     @Autowired private LectureRepository lectureRepository;
     @Autowired private UserRepository userRepository;
     @Autowired private PollRepository pollRepository;
+    @Autowired private CommentService commentService; // Add this at the top with other Autowired fields
 
     @GetMapping("/courses")
     public String listCourses(Model model) {
@@ -211,15 +214,47 @@ public class CourseController {
         // Redirect back to the course detail page to see changes
         return "redirect:/courses/" + id;
     }
+    @Transactional
     @PostMapping("/courses/{id}/delete")
     public String deleteCourse(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
-            courseRepository.deleteById(id);
-            redirectAttributes.addFlashAttribute("message", "Course has been successfully deleted.");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Failed to delete course. Ensure all related data is cleared.");
-        }
+            Course course = courseRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid course Id:" + id));
 
+            // --- THE CRITICAL CHANGE IS HERE ---
+            // 1. Manually unenroll students (This forces the USER_COURSES table to clear)
+            for (AppUser student : new ArrayList<>(course.getStudents())) {
+                student.getEnrolledCourses().remove(course);
+                userRepository.save(student); // Tells the database to drop the link
+            }
+            course.getStudents().clear();
+            courseRepository.saveAndFlush(course);
+            // ------------------------------------
+
+            // 2. Wipe Polls and their comments
+            if (course.getPolls() != null) {
+                for (Poll poll : course.getPolls()) {
+                    commentService.deleteCommentsByTarget("poll", poll.getId());
+                }
+                pollRepository.deleteAll(course.getPolls());
+            }
+
+            // 3. Wipe Lectures and their comments
+            if (course.getLectures() != null) {
+                for (Lecture lecture : course.getLectures()) {
+                    commentService.deleteCommentsByTarget("lecture", lecture.getId());
+                }
+                lectureRepository.deleteAll(course.getLectures());
+            }
+
+            // 4. Finally delete the course
+            courseRepository.delete(course);
+
+            redirectAttributes.addFlashAttribute("message", "Course deleted successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Could not delete course: " + e.getMessage());
+        }
         return "redirect:/courses";
     }
 }

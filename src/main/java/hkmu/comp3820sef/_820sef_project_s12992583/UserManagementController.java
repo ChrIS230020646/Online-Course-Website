@@ -2,6 +2,7 @@ package hkmu.comp3820sef._820sef_project_s12992583;
 
 import hkmu.comp3820sef._820sef_project_s12992583.model.AppUser;
 import hkmu.comp3820sef._820sef_project_s12992583.model.Course;
+import hkmu.comp3820sef._820sef_project_s12992583.repository.CommentRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.CourseRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.UserRepository;
 import jakarta.servlet.ServletException;
@@ -22,6 +23,7 @@ public class UserManagementController {
     @Autowired private UserRepository userRepository;
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private CourseRepository courseRepository;
+    @Autowired private CommentRepository commentRepository;
 
     @GetMapping
     @PreAuthorize("hasRole('TEACHER')")
@@ -108,6 +110,7 @@ public class UserManagementController {
 
         userToDelete.getEnrolledCourses().clear();
         userRepository.save(userToDelete);
+        commentRepository.deleteByUser(userToDelete);
         userRepository.deleteById(id);
 
         // --- Self-deletion logout logic ---
