@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import java.util.List;
@@ -34,7 +31,6 @@ public class UserManagementController {
     @PreAuthorize("hasRole('TEACHER')")
     public String deleteUser(@PathVariable Long id) {
         AppUser user = userRepository.findById(id).orElseThrow();
-
         if ("TEACHER".equals(user.getRole())) {
             List<Course> courses = courseRepository.findByInstructor(user);
             for (Course c : courses) {
@@ -42,20 +38,37 @@ public class UserManagementController {
                 courseRepository.save(c);
             }
         }
-
         user.getEnrolledCourses().clear();
         userRepository.save(user);
-
         userRepository.deleteById(id);
         return "redirect:/users";
     }
 
+    // This handles: GET /users/edit/{id}
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('TEACHER')")
     public String editUserForm(@PathVariable Long id, Model model) {
         AppUser user = userRepository.findById(id).orElseThrow();
         model.addAttribute("user", user);
-        return "user-edit";
+        return "edit-user"; // Make sure your file is named edit-user.jsp
+    }
+
+    // This handles: POST /users/update/{id}
+    @PostMapping("/update/{id}")
+    @PreAuthorize("hasRole('TEACHER')")
+    public String adminUpdateUser(@PathVariable Long id,
+                                  @RequestParam String fullName,
+                                  @RequestParam String role,
+                                  @RequestParam String password,
+                                  @RequestParam(required = false) String phoneNumber) {
+
+        AppUser user = userRepository.findById(id).orElseThrow();
+        user.setFullName(fullName);
+        user.setRole(role);
+        user.setPhoneNumber(phoneNumber);
+        user.setPassword(password); // Plain text as requested
+
+        userRepository.save(user);
+        return "redirect:/users"; // Go back to the user list
     }
 }
-
