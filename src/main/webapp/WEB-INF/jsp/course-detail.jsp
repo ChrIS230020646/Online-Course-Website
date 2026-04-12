@@ -49,7 +49,7 @@
                 <form action="/courses/${course.id}/delete" method="post" class="m-0"
                       onsubmit="return confirm('WARNING: This will permanently delete the course. Proceed?');">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <button type="submit" class="btn btn-danger rounded-pill px-4">Delete Course</button> <%--Nuke the Course
+                    <button type="submit" class="btn btn-danger rounded-pill px-4">Delete Course</button> <%--Nuke the Course--%>
                 </form>
             </div>
         </sec:authorize>
