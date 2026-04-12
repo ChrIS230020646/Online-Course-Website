@@ -4,13 +4,16 @@ import hkmu.comp3820sef._820sef_project_s12992583.model.AppUser;
 import hkmu.comp3820sef._820sef_project_s12992583.model.Course;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.CourseRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.UserRepository;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -27,22 +30,22 @@ public class UserManagementController {
         return "user-list";
     }
 
-    @PostMapping("/delete/{id}")
-    @PreAuthorize("hasRole('TEACHER')")
-    public String deleteUser(@PathVariable Long id) {
-        AppUser user = userRepository.findById(id).orElseThrow();
-        if ("TEACHER".equals(user.getRole())) {
-            List<Course> courses = courseRepository.findByInstructor(user);
-            for (Course c : courses) {
-                c.setInstructor(null);
-                courseRepository.save(c);
-            }
-        }
-        user.getEnrolledCourses().clear();
-        userRepository.save(user);
-        userRepository.deleteById(id);
-        return "redirect:/users";
-    }
+    //@PostMapping("/delete/{id}")
+    //@PreAuthorize("hasRole('TEACHER')")
+    //public String deleteUser(@PathVariable Long id) {
+      //  AppUser user = userRepository.findById(id).orElseThrow();
+        //if ("TEACHER".equals(user.getRole())) {
+          //  List<Course> courses = courseRepository.findByInstructor(user);
+            //for (Course c : courses) {
+              //  c.setInstructor(null);
+                //courseRepository.save(c);
+            //}
+//        }
+  //      user.getEnrolledCourses().clear();
+    //    userRepository.save(user);
+      //  userRepository.deleteById(id);
+        //return "redirect:/users";
+    //}
 
     // This handles: GET /users/edit/{id}
     @GetMapping("/edit/{id}")
@@ -77,5 +80,46 @@ public class UserManagementController {
 
         userRepository.save(user);
         return "redirect:/users"; // Go back to the user list
+    }
+    @PostMapping("/delete/{id}")
+// Change: Remove the ID comparison from the annotation
+    @PreAuthorize("hasRole('TEACHER') or isAuthenticated()")
+    public String deleteUser(@PathVariable Long id, Principal principal, HttpServletRequest request) {
+        AppUser userToDelete = userRepository.findById(id).orElseThrow();
+        String currentUsername = principal.getName();
+
+        // Check if the user is a teacher OR if they are deleting themselves
+        boolean isTeacher = request.isUserInRole("ROLE_TEACHER");
+        boolean isSelfDeletion = userToDelete.getUsername().equals(currentUsername);
+
+        // SECURITY GATE: If neither condition is met, block the student!
+        if (!isTeacher && !isSelfDeletion) {
+            return "redirect:/login?error=unauthorized";
+        }
+
+        // --- Cleanup logic (Courses, etc.) ---
+        if ("TEACHER".equals(userToDelete.getRole())) {
+            List<Course> courses = courseRepository.findByInstructor(userToDelete);
+            for (Course c : courses) {
+                c.setInstructor(null);
+                courseRepository.save(c);
+            }
+        }
+
+        userToDelete.getEnrolledCourses().clear();
+        userRepository.save(userToDelete);
+        userRepository.deleteById(id);
+
+        // --- Self-deletion logout logic ---
+        if (isSelfDeletion) {
+            try {
+                request.logout();
+            } catch (ServletException e) {
+                e.printStackTrace();
+            }
+            return "redirect:/login?deleted=self";
+        }
+
+        return "redirect:/users";
     }
 }

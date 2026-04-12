@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
   <title>My Profile Settings</title>
@@ -101,8 +102,25 @@
       <div class="text-end mt-4">
         <button type="submit" class="btn-primary-custom">Save Changes</button>
       </div>
-    </div>
+
+
   </form>
+  <hr style="border-color: #ffcfcf; margin: 40px 0 30px 0;">
+
+  <div class="danger-zone p-3" style="background-color: #fff5f5; border-radius: 12px; border: 1px solid #ffcfcf;">
+    <p class="text-secondary mb-3" style="font-size: 13px;">
+      Deleting your account is permanent. All your data will be wiped and you will be logged out immediately.
+    </p>
+
+    <%-- Pointing to the unified delete endpoint --%>
+    <form action="${pageContext.request.contextPath}/users/delete/${user.id}" method="post" class="m-0"
+          onsubmit="return confirm('CRITICAL WARNING: This will permanently delete your account. Proceed?');">
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+      <%-- Updated to btn-danger rounded-pill px-4 for the 'Nuke' look --%>
+      <button type="submit" class="btn btn-danger rounded-pill px-4">Delete My Account</button>
+    </form>
+</div>
+  </div>
 </div>
 
 </body>

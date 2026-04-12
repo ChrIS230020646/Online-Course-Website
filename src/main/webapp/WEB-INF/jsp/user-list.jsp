@@ -14,6 +14,7 @@
 </head>
 <body class="p-5">
 <h2>Global User Management</h2>
+<sec:authorize access="hasRole('TEACHER')">
 <table class="table border">
     <thead>
     <tr>
@@ -30,21 +31,21 @@
             <td>
                 <div class="d-flex gap-2">
                         <%-- Only Teachers see the Edit button --%>
-                    <sec:authorize access="hasRole('TEACHER')">
-                        <a href="${pageContext.request.contextPath}/users/edit/${user.id}" class="btn btn-warning btn-sm">Edit</a>
-                    </sec:authorize>
 
-                    <form action="/users/delete/${user.id}" method="post" class="m-0"
-                          onsubmit="return confirm('Delete this account?')">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <button class="btn btn-danger btn-sm">Delete Account Permanently</button>
-                    </form>
+                        <a href="${pageContext.request.contextPath}/users/edit/${user.id}" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="${pageContext.request.contextPath}/users/delete/${user.id}" method="post" class="m-0"
+                                  onsubmit="return confirm('${user.username == pageContext.request.userPrincipal.name ?
+                                'WARNING: You are deleting YOUR OWN account. You will be logged out immediately. Continue?':'Are you sure you want to delete this account?'}')">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <button class="btn btn-danger btn-sm">Delete Account Permanently</button>
+                            </form>
                 </div>
             </td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
+</sec:authorize>
 <a href="/courses" class="btn btn-secondary">Back to Courses</a>
 </body>
 </html>

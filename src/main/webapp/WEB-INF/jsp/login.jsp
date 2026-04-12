@@ -24,7 +24,9 @@
     </div>
 
     <div class="ui-card static" style="width: 100%; max-width: 400px; padding: 48px;">
-
+        <c:if test="${param.deleted == 'self'}">
+            <div class="alert alert-info">Your account has been successfully deleted and you have been logged out.</div>
+        </c:if>
         <c:if test="${param.registered == 'true'}">
             <div class="alert alert-success py-2" style="font-size: 14px;">Registration successful! Please sign in.</div>
         </c:if>
