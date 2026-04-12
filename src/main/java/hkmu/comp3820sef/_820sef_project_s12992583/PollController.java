@@ -2,7 +2,9 @@ package hkmu.comp3820sef._820sef_project_s12992583;
 
 import hkmu.comp3820sef._820sef_project_s12992583.dto.PollDTO;
 import hkmu.comp3820sef._820sef_project_s12992583.model.*;
-import hkmu.comp3820sef._820sef_project_s12992583.repository.*;
+import hkmu.comp3820sef._820sef_project_s12992583.repository.PollRepository;
+import hkmu.comp3820sef._820sef_project_s12992583.repository.PollResponseRepository;
+import hkmu.comp3820sef._820sef_project_s12992583.repository.UserRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.service.CommentService;
 import hkmu.comp3820sef._820sef_project_s12992583.service.PollService;
 import org.slf4j.Logger;
@@ -10,15 +12,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -86,7 +87,7 @@ public class PollController {
 
 
     @Transactional
-    @PostMapping("/delete/{pollId}")
+    @PostMapping("/{pollId}/delete")
     public String deletePoll(@PathVariable Long pollId, Authentication auth, RedirectAttributes redirectAttributes) {
         Poll poll = pollRepository.findById(pollId).orElseThrow(() ->
                 new IllegalArgumentException("Poll not found: " + pollId));

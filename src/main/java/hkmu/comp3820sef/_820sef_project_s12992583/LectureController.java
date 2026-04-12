@@ -78,7 +78,7 @@ public class LectureController {
 
         return "course-material-page";
     }
-    @PostMapping("/course-material-page/delete/{lectureId}")
+    @PostMapping("/courses/{courseId}/lecture/{lectureId}/delete")
     public String deleteLecture(@PathVariable Long lectureId) {
         //Find the lecture to identify the course ID for redirection
         Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(() -> new IllegalArgumentException("Invalid lecture Id:" + lectureId));
