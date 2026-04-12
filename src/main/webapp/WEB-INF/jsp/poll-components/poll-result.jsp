@@ -1,42 +1,50 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<button class="btn btn-sm btn-light border-0 mb-1 d-flex align-items-center js-poll-trigger${pollId}"
-        type="button">
-    <span id="poll-arrow">▼</span>
-</button>
+<div class="poll-wrapper mb-3" data-poll-id="${param.pollId}">
+    <button class="btn btn-sm btn-light border-0 d-flex align-items-center js-poll-btn"
+            type="button">
+        <span class="js-arrow">▶</span>
+        <span class="ms-1">View Results</span>
+    </button>
 
-<div class="collapse show" id="pollCollapse">
-    <div id="poll-box" class="p-2 border rounded shadow-sm bg-white" style="width: 280px; display: none;">
-        <div id="poll-options-list"></div>
-        <div class="text-end mt-1" style="border-top: 1px solid #eee; padding-top: 4px;">
-            <small class="text-muted" style="font-size: 0.65rem;">Total: <span id="poll-total">0</span></small>
+    <div class="collapse  js-collapse-body">
+        <div class="p-2 border rounded shadow-sm bg-white js-poll-box" style="width: 280px; display: none;">
+            <div class="js-options-list"></div>
+            <div class="text-end mt-1" style="border-top: 1px solid #eee; padding-top: 4px;">
+                <small class="text-muted" style="font-size: 0.65rem;">
+                    Total: <span class="js-total-count">0</span>
+                </small>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-// --- 原有邏輯保持不變 ---
-function loadPollResults(pollId) {
-    console.log("[Poll Log] Fetching data for ID:", pollId);
+
+function loadPollResults(pollId, $container) {
+    console.log(`[Poll Log][Fetch] Data is requesting ID: ${pollId}`);
+
     fetch('/polls/api/polls/' + pollId + '/results')
         .then(response => response.json())
         .then(poll => {
             const total = poll.totalVotes || 0;
-            const pollBox = document.getElementById('poll-box');
-            const collapseEl = document.getElementById('pollCollapse');
+            const $pollBox = $container.find('.js-poll-box');
+
+            const $listContainer = $container.find('.js-options-list');
+            // [Critical Fix] Get a native DOM node to use appendChild
+            const listContainer = $listContainer[0];
 
             if (total === 0) {
-                collapseEl.parentElement.style.display = 'none';
+                $container.hide();
                 return;
             }
 
-            const listContainer = document.getElementById('poll-options-list');
-            listContainer.innerHTML = '';
+            // Empty old content (using jQuery syntax)
+            $listContainer.empty();
 
             (poll.options || []).forEach((opt, i) => {
                 const v = (poll.votes && poll.votes[i] !== undefined) ? poll.votes[i] : 0;
@@ -64,51 +72,61 @@ function loadPollResults(pollId) {
                 data.textContent = v + ' (' + p + '%)';
 
                 row.append(label, progWrap, data);
+
+                // Now the listContainer has been defined as $listContainer[0]
                 listContainer.appendChild(row);
             });
 
-            document.getElementById('poll-total').textContent = total;
-            pollBox.style.display = 'block';
-        });
+            $container.find('.js-total-count').text(total);
+            $pollBox.show();
+            console.log(`[Poll Log][UI] ID: ${pollId} Rendering completed`);
+        })
+        .catch(err => console.error(`[Poll Log][Error] ID: ${pollId} Loading failed:`, err));
 }
 
-// --- 2. 使用 jQuery 改寫監聽部分 ---
 $(function() {
-    console.log("[Poll Log] Controller Initialized");
+    console.log("[Poll Log] Controller Initialized - The system starts successfully");
 
-    // A. 監聽點擊事件 (取代原本的 toggleManualCollapse)
-    $(document).on('click', '.js-poll-trigger${pollId}', function() {
-        const $collEl = $('#pollCollapse');
-        const $arrow = $('#poll-arrow');
+    // A. Fixed click listening: Uses Class selector and handles animation synchronization
+    $(document).on('click', '.js-poll-btn', function() {
+        const $btn = $(this);
+        const $wrapper = $btn.closest('.poll-wrapper');
+        const pollId = $wrapper.data('poll-id');
+        const $collEl = $wrapper.find('.js-collapse-body');
+        const $arrow = $btn.find('.js-arrow');
 
-        // 透過 Bootstrap 實例控制摺疊
+        console.log(`[Poll Log][Event] Click Trigger - Target ID: ${pollId}`);
+
         const bsColl = bootstrap.Collapse.getOrCreateInstance($collEl[0]);
         bsColl.toggle();
 
-        // 動畫結束後切換箭頭方向 (使用 .one 確保不重複綁定)
+        // Listen to Bootstrap’s built-in events to switch arrows
         $collEl.one('hidden.bs.collapse', () => {
             $arrow.text('▶');
-            console.log("[Poll Log] Panel Closed");
+            console.log(`[Poll Log][Event] ID: ${pollId} The folding panel is closed`);
         });
         $collEl.one('shown.bs.collapse', () => {
             $arrow.text('▼');
-            console.log("[Poll Log] Panel Opened");
+            console.log(`[Poll Log][Event] ID: ${pollId} The folding panel is open`);
         });
     });
 
-    // B. 初始化數據加載 (取代原本的 DOMContentLoaded)
-    let id = '${poll.id}';
 
-    if (!id || id === '' || id.includes('$')) {
-        const pathSegments = window.location.pathname.split('/');
-        id = pathSegments[pathSegments.length - 1];
-    }
+    $('.poll-wrapper').each(function() {
+        const $item = $(this);
+        let pid = $item.data('poll-id');
 
-    if (id && !isNaN(id)) {
-        loadPollResults(id);
-    } else {
-        console.error("[Poll Log] Invalid ID:", id);
-        if ($('#poll-q').length) $('#poll-q').text("Error: ID not found");
-    }
+        if (!pid || pid === '' || pid.toString().includes('$')) {
+            const segments = window.location.pathname.split('/');
+            pid = segments[segments.length - 1];
+            console.log(`[Poll Log][Init] Grab ID from URL: ${pid}`);
+        }
+
+        if (pid && !isNaN(pid)) {
+            loadPollResults(pid, $item);
+        } else {
+            console.error(`[Poll Log][Init] Unable to identify valid ID: ${pid}`);
+        }
+    });
 });
 </script>

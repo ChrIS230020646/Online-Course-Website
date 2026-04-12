@@ -39,7 +39,7 @@ public class HistoryService {
         dto.setCreatedAt(cmt.getCommentTime());
 
         if (cmt.getTargetId() != null) {
-            // 最少改動：使用 ifPresent 確保只有在資料存在時才執行 get()
+
             lectureRepository.findById(cmt.getTargetId()).ifPresent(lecture -> {
                 dto.setLectureID(lecture.getId());
                 dto.setLectureTitle(lecture.getTitle());

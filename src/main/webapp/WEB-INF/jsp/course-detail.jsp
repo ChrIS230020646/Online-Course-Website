@@ -134,6 +134,10 @@
                     <div>
                             <%-- Display the Question created in add-poll.jsp --%>
                         <h4 style="font-size:18px; margin:0;"> ${poll.question}</h4>
+                        <br>
+                        <jsp:include page="poll-components/poll-result.jsp">
+                            <jsp:param name="pollId" value="${poll.id}" />
+                        </jsp:include>
                     </div>
 
                         <%-- Teacher View: See Results --%>

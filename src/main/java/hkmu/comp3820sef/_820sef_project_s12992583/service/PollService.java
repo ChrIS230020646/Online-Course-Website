@@ -173,6 +173,26 @@ public List<PollGroupDTO> getAllPollHistory() {
     return pollHistories;
 }
 
+    public PollDTO getJustResults(Long pollId) {
+        Poll poll = pollRepository.findById(pollId)
+                .orElseThrow(() -> new RuntimeException("Poll not found"));
+
+        PollDTO dto = new PollDTO();
+        dto.setQuestion(poll.getQuestion());
+        dto.setOptions(poll.getOptions());
+
+
+        List<PollResponse> responses = pollResponseRepository.findByPoll(poll);
+        int[] counts = new int[poll.getOptions().size()];
+        for (PollResponse r : responses) {
+            int idx = r.getSelectedOptionIndex();
+            if (idx >= 0 && idx < counts.length) counts[idx]++;
+        }
+        dto.setVotes(counts);
+        dto.setTotalVotes(responses.size());
+
+        return dto;
+    }
 
 
 }
