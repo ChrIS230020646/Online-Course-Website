@@ -28,9 +28,18 @@
             <td>${user.username}</td>
             <td>${user.role}</td>
             <td>
-                <form action="/users/delete/${user.id}" method="post" onsubmit="return confirm('Delete this account?')">
-                    <button class="btn btn-danger btn-sm">Delete Account Permanently</button>
-                </form>
+                <div class="d-flex gap-2">
+                        <%-- Only Teachers see the Edit button --%>
+                    <sec:authorize access="hasRole('TEACHER')">
+                        <a href="${pageContext.request.contextPath}/users/edit/${user.id}" class="btn btn-warning btn-sm">Edit</a>
+                    </sec:authorize>
+
+                    <form action="/users/delete/${user.id}" method="post" class="m-0"
+                          onsubmit="return confirm('Delete this account?')">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <button class="btn btn-danger btn-sm">Delete Account Permanently</button>
+                    </form>
+                </div>
             </td>
         </tr>
     </c:forEach>
