@@ -4,6 +4,7 @@ import hkmu.comp3820sef._820sef_project_s12992583.model.AppUser;
 import hkmu.comp3820sef._820sef_project_s12992583.model.Course;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.CommentRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.CourseRepository;
+import hkmu.comp3820sef._820sef_project_s12992583.repository.PollResponseRepository;
 import hkmu.comp3820sef._820sef_project_s12992583.repository.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +26,7 @@ public class UserManagementController {
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private CourseRepository courseRepository;
     @Autowired private CommentRepository commentRepository;
+    @Autowired private PollResponseRepository pollResponseRepository;
 
     @GetMapping
     @PreAuthorize("hasRole('TEACHER')")
@@ -83,23 +86,21 @@ public class UserManagementController {
         userRepository.save(user);
         return "redirect:/users"; // Go back to the user list
     }
+    @Transactional // CRITICAL: Ensures all deletes happen in order
     @PostMapping("/delete/{id}")
-// Change: Remove the ID comparison from the annotation
     @PreAuthorize("hasRole('TEACHER') or isAuthenticated()")
     public String deleteUser(@PathVariable Long id, Principal principal, HttpServletRequest request) {
         AppUser userToDelete = userRepository.findById(id).orElseThrow();
         String currentUsername = principal.getName();
 
-        // Check if the user is a teacher OR if they are deleting themselves
         boolean isTeacher = request.isUserInRole("ROLE_TEACHER");
         boolean isSelfDeletion = userToDelete.getUsername().equals(currentUsername);
 
-        // SECURITY GATE: If neither condition is met, block the student!
         if (!isTeacher && !isSelfDeletion) {
             return "redirect:/login?error=unauthorized";
         }
 
-        // --- Cleanup logic (Courses, etc.) ---
+        // 1. Cleanup Courses (If teacher)
         if ("TEACHER".equals(userToDelete.getRole())) {
             List<Course> courses = courseRepository.findByInstructor(userToDelete);
             for (Course c : courses) {
@@ -108,12 +109,20 @@ public class UserManagementController {
             }
         }
 
+        // 2. Clear Enrollments (Join Table)
         userToDelete.getEnrolledCourses().clear();
-        userRepository.save(userToDelete);
-        commentRepository.deleteByUser(userToDelete);
-        userRepository.deleteById(id);
+        userRepository.saveAndFlush(userToDelete);
 
-        // --- Self-deletion logout logic ---
+        // 3. Delete Comments FIRST (The fix for your current error)
+        // Ensure this method exists in your CommentRepository
+        commentRepository.deleteByUser(userToDelete);
+        commentRepository.flush(); // Force the comments to be deleted NOW
+        pollResponseRepository.deleteByUser(userToDelete);
+        pollResponseRepository.flush();
+        commentRepository.flush();
+        // 4. Finally delete the user
+        userRepository.delete(userToDelete);
+
         if (isSelfDeletion) {
             try {
                 request.logout();
