@@ -4,10 +4,7 @@ import hkmu.comp3820sef._820sef_project_s12992583.model.AppUser;
 import hkmu.comp3820sef._820sef_project_s12992583.model.Course;
 import hkmu.comp3820sef._820sef_project_s12992583.model.Lecture;
 import hkmu.comp3820sef._820sef_project_s12992583.model.Poll;
-import hkmu.comp3820sef._820sef_project_s12992583.repository.CourseRepository;
-import hkmu.comp3820sef._820sef_project_s12992583.repository.LectureRepository;
-import hkmu.comp3820sef._820sef_project_s12992583.repository.PollRepository;
-import hkmu.comp3820sef._820sef_project_s12992583.repository.UserRepository;
+import hkmu.comp3820sef._820sef_project_s12992583.repository.*;
 import hkmu.comp3820sef._820sef_project_s12992583.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,7 +28,8 @@ public class CourseController {
     @Autowired private LectureRepository lectureRepository;
     @Autowired private UserRepository userRepository;
     @Autowired private PollRepository pollRepository;
-    @Autowired private CommentService commentService; // Add this at the top with other Autowired fields
+    @Autowired private CommentService commentService;
+    @Autowired private PollResponseRepository pollResponseRepository;// Add this at the top with other Autowired fields
 
     @GetMapping("/courses")
     public String listCourses(Model model) {
@@ -221,25 +219,28 @@ public class CourseController {
             Course course = courseRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid course Id:" + id));
 
-            // --- THE CRITICAL CHANGE IS HERE ---
-            // 1. Manually unenroll students (This forces the USER_COURSES table to clear)
+            // 1. Clear Student Enrollments (USER_COURSES)
             for (AppUser student : new ArrayList<>(course.getStudents())) {
                 student.getEnrolledCourses().remove(course);
-                userRepository.save(student); // Tells the database to drop the link
+                userRepository.save(student);
             }
             course.getStudents().clear();
-            courseRepository.saveAndFlush(course);
-            // ------------------------------------
+            userRepository.flush(); // Force sync
 
-            // 2. Wipe Polls and their comments
+            // 2. Clear Polls and their nested dependencies
             if (course.getPolls() != null) {
                 for (Poll poll : course.getPolls()) {
+                    // IMPORTANT: Wipe student votes first!
+                    pollResponseRepository.deleteByPoll(poll);
+
+                    // Wipe poll comments
                     commentService.deleteCommentsByTarget("poll", poll.getId());
                 }
+                pollResponseRepository.flush(); // Force clear responses before deleting polls
                 pollRepository.deleteAll(course.getPolls());
             }
 
-            // 3. Wipe Lectures and their comments
+            // 3. Clear Lectures and their comments
             if (course.getLectures() != null) {
                 for (Lecture lecture : course.getLectures()) {
                     commentService.deleteCommentsByTarget("lecture", lecture.getId());
@@ -247,17 +248,18 @@ public class CourseController {
                 lectureRepository.deleteAll(course.getLectures());
             }
 
-            // 4. Finally delete the course
+            // 4. Finally safe to delete the course
             courseRepository.delete(course);
 
-            redirectAttributes.addFlashAttribute("message", "Course deleted successfully.");
+            redirectAttributes.addFlashAttribute("message", "Course and all related data (votes, comments, polls) deleted successfully.");
         } catch (Exception e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Could not delete course: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Database error: " + e.getMessage());
         }
         return "redirect:/courses";
     }
-}
+    }
+
 
 
 
