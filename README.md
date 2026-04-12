@@ -13,6 +13,9 @@ Key technologies used:
 
 
 ## Update Log
+### [2026-04-12 By Jacky 12728551]
+- **Added**: poll all history & all comment history btn
+- **Added**: poll all history & all comment history
 ### [2026-04-12 By Chris 12992583]
 - **Added**: URL upload + File upload + Download File
 - **Added**: teacher Invite students 
