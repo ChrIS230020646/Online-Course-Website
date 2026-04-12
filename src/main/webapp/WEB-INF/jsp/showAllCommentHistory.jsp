@@ -40,32 +40,38 @@
                         </a>
     </div>
 </nav>
-<div class="ui-container">
-    <!-- <div class="text-center mb-5">
-        <a href="${pageContext.request.contextPath}/" class="btn-back">
-            <i class="bi bi-chevron-left"></i>
-        </a>
-        <h1 class="page-title"><i class="bi bi-activity me-2"></i>All Comment History</h1>
-        <p style="color: var(--text-secondary);">Review system-wide student comments.</p>
-    </div>-->
-
-
-    <div class="text-center mb-5">
-        <ul class="nav nav-pills" id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="pills-comments-tab" data-bs-toggle="pill"
-                        data-bs-target="#tab-comments" type="button" role="tab" aria-selected="true">
-                    <i class="bi bi-chat-fill me-2"></i>Comments (${commentHistory.size()})
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-polls-tab" data-bs-toggle="pill"
-                        data-bs-target="#tab-polls" type="button" role="tab" aria-selected="false">
-                    <i class="bi bi-check2-square me-2"></i>Poll Activities (${pollHistory.size()})
-                </button>
-            </li>
-        </ul>
+<br>
+<div class="text-center mb-5">
+<h1 class="page-title">Comment History</h1>
     </div>
+
+    <!-- <div class="text-center mb-5">-->
+        <%-- <a href="${pageContext.request.contextPath}/" class="btn-back"> --%>
+            <%-- <i class="bi bi-chevron-left"></i> --%>
+        <%-- </a> --%>
+        <%-- <h1 class="page-title"><i class="bi bi-activity me-2"></i>All Comment History</h1> --%>
+        <%-- <p style="color: var(--text-secondary);">Review system-wide student comments.</p> --%>
+    <%-- </div> --%>
+
+
+    <%-- <div class="text-center mb-5"> --%>
+        <%-- <ul class="nav nav-pills" id="pills-tab" role="tablist"> --%>
+            <%-- <li class="nav-item" role="presentation"> --%>
+                <%-- <button class="nav-link active" id="pills-comments-tab" data-bs-toggle="pill" --%>
+                        <%-- data-bs-target="#tab-comments" type="button" role="tab" aria-selected="true"> --%>
+                    <%-- <i class="bi bi-chat-fill me-2"></i>Comments (${commentHistory.size()}) --%>
+                <%-- </button> --%>
+            <%-- </li> --%>
+            <%-- <li class="nav-item" role="presentation"> --%>
+                <%-- <button class="nav-link" id="pills-polls-tab" data-bs-toggle="pill" --%>
+                        <%-- data-bs-target="#tab-polls" type="button" role="tab" aria-selected="false"> --%>
+                    <%-- <i class="bi bi-check2-square me-2"></i>Poll Activities (${pollHistory.size()}) --%>
+                <%-- </button> --%>
+            <%-- </li> --%>
+        <%-- </ul> --%>
+
+
+<div class="ui-container">
 
     <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="tab-comments" role="tabpanel" aria-labelledby="pills-comments-tab">
@@ -148,7 +154,7 @@
         </div>
     </div>
 </div>
-
+    </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
