@@ -194,4 +194,9 @@ public class PollController {
 
         return "poll-history";
     }
+    @GetMapping("/api/polls/{pollId}/results")
+    @ResponseBody
+    public PollDTO getPollResults(@PathVariable Long pollId) {
+        return pollService.getJustResults(pollId);
+    }
 }

@@ -169,7 +169,10 @@
         </sec:authorize>
     </div>
 </div>
-
+<jsp:include page="/WEB-INF/jsp/components/comment-section.jsp" >
+    <jsp:param name="type" value="lecture" />
+    <jsp:param name="targetId" value="${lecture.id}" />
+</jsp:include>
 <script>
     function prepareSubmit() {
         const desc = document.getElementById('editDesc').value;
