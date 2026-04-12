@@ -19,6 +19,9 @@
   <a href="javascript:history.back()" class="btn-back">❮</a>
 <div class="position-absolute" style="top: 130px; right: 80px; z-index: 10;">
         <div class="d-flex gap-2">
+            <sec:authorize access="hasRole('TEACHER')">
+            <a href="/users" class="btn btn-outline-secondary btn-sm px-3" style="border-radius: 25px; font-size: 20px; color: #16161b; border-color: #d2d2d7; background: white;">Manage Global Users</a>
+            </sec:authorize>
             <a href="${pageContext.request.contextPath}/comment/history"
                class="btn btn-outline-secondary btn-sm px-3"
                style="border-radius: 25px; font-size: 20px; color: #16161b; border-color: #d2d2d7; background: white;">
