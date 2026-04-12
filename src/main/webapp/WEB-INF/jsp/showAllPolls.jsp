@@ -44,7 +44,6 @@
             <i class="bi bi-chevron-left"></i>
         </a>-->
         <h1 class="page-title">Poll Monitoring</h1>
-        <p style="color: var(--text-secondary);">Comprehensive tracking of system-wide poll participation.</p>
     </div>
 
 
