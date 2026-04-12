@@ -31,6 +31,25 @@
         .url-name { font-size: 13px; color: #0071e3; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .upload-section { background: #fff; border: 2px dashed #dee2e6; padding: 20px; border-radius: 12px; text-align: center; margin-top: 20px; }
     </style>
+
+    <script>
+        (function() {
+            const currentPath = window.location.pathname;
+            const referrer = document.referrer;
+            if (referrer && !referrer.includes(currentPath)) {
+                sessionStorage.setItem('lecture_back_url', referrer);
+            }
+        })();
+
+        function handleSmartBack() {
+            const backUrl = sessionStorage.getItem('lecture_back_url');
+            if (backUrl) {
+                window.location.href = backUrl;
+            } else {
+                window.location.href = '/courses/${lecture.course.id}';
+            }
+        }
+    </script>
 </head>
 <body class="bg-light">
 
@@ -53,12 +72,13 @@
     </div>
     <div class="nav-links">
         <a href="/courses">All Courses</a>
-        <a href="/courses/${lecture.course.id}">Back to Course</a>
+        <a href="javascript:void(0)" onclick="handleSmartBack()">Back</a>
     </div>
 </nav>
 
 <div class="ui-container">
-    <a href="/courses/${lecture.course.id}" class="btn-back">❮</a>
+
+    <a href="javascript:void(0)" onclick="handleSmartBack()" class="btn-back">❮</a>
 
     <div class="ui-card mb-4">
         <sec:authorize access="hasRole('TEACHER')">
@@ -93,15 +113,12 @@
         <h5 class="mb-4 text-muted" style="font-size: 13px; font-weight: 700;">ATTACHED MATERIALS & LINKS</h5>
 
         <c:if test="${not empty urlList}">
-
             <c:forEach var="link" items="${fn:split(urlList, ' ')}">
                 <c:set var="trimmedLink" value="${fn:trim(link)}" />
                 <c:if test="${not empty trimmedLink and fn:startsWith(trimmedLink, 'http')}">
-
                     <c:set var="d" value="${fn:replace(fn:replace(fn:replace(trimmedLink, 'https://', ''), 'http://', ''), 'www.', '')}" />
                     <c:set var="domain" value="${fn:substringBefore(d, '/')}" />
                     <c:if test="${empty domain}"><c:set var="domain" value="${d}" /></c:if>
-
                     <div class="file-box" style="border-left: 4px solid #0071e3;">
                         <a href="${trimmedLink}" target="_blank" class="file-info">
                             <img src="https://cdn-icons-png.flaticon.com/512/44/44386.png" width="30" alt="web">
@@ -128,7 +145,6 @@
                 <c:when test="${fn:endsWith(fnLower, '.zip') || fn:endsWith(fnLower, '.rar')}"><c:set var="fileIcon" value="https://cdn-icons-png.flaticon.com/512/337/337941.png" /></c:when>
                 <c:otherwise><c:set var="fileIcon" value="https://cdn-icons-png.flaticon.com/512/337/337956.png" /></c:otherwise>
             </c:choose>
-
             <div class="file-box" style="border-left: 4px solid #ff9500;">
                 <a href="/download/lecture/${lecture.id}" class="file-info">
                     <img src="${fileIcon}" width="30" alt="file">

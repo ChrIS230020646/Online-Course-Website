@@ -27,6 +27,32 @@
         .lecture-card { transition: transform 0.2s, box-shadow 0.2s; border: 1px solid #eee !important; }
         .lecture-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
     </style>
+
+    <script>
+        (function() {
+            const referrer = document.referrer;
+            if (referrer) {
+                try {
+                    const refUrl = new URL(referrer);
+                    const path = refUrl.pathname;
+
+                    const whiteList = ['/courses', '/my-courses', '/', '/index'];
+                    const isFromWhiteList = whiteList.some(item => path === item || path === (item + '/'));
+
+                    if (isFromWhiteList) {
+                        sessionStorage.setItem('course_detail_back_url', referrer);
+                    }
+                } catch (e) {
+                    console.error("Referrer parsing error", e);
+                }
+            }
+        })();
+
+        function handleSmartBack() {
+            const backUrl = sessionStorage.getItem('course_detail_back_url');
+            window.location.href = backUrl ? backUrl : '/courses';
+        }
+    </script>
 </head>
 <body>
 
@@ -55,7 +81,7 @@
 
 <div class="ui-container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="/courses" class="btn-back">❮</a>
+        <a href="javascript:void(0)" onclick="handleSmartBack()" class="btn-back">❮</a>
         <sec:authorize access="hasRole('TEACHER')">
             <div class="d-flex gap-2 align-items-center">
                 <a href="/courses/${course.id}/edit" class="btn btn-outline-primary rounded-pill px-4">Edit Course</a>
@@ -129,7 +155,7 @@
                                 <c:if test="${not empty lecture.fileName}">
                                     <a href="/download/lecture/${lecture.id}" class="quick-link-btn btn-link-file">
                                         <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" width="14" alt="file">
-                                        ${fn:length(lecture.fileName) > 20 ? fn:substring(lecture.fileName, 0, 17).concat('...') : lecture.fileName}
+                                            ${fn:length(lecture.fileName) > 20 ? fn:substring(lecture.fileName, 0, 17).concat('...') : lecture.fileName}
                                     </a>
                                 </c:if>
 
@@ -140,7 +166,7 @@
                                             <a href="${fn:trim(url)}" target="_blank" class="quick-link-btn btn-link-web">
                                                 <img src="https://cdn-icons-png.flaticon.com/512/44/44386.png" width="14" alt="link">
                                                 <c:set var="d" value="${fn:replace(fn:replace(fn:replace(url, 'https://', ''), 'http://', ''), 'www.', '')}" />
-                                                ${fn:contains(d, '/') ? fn:substringBefore(d, '/') : d}
+                                                    ${fn:contains(d, '/') ? fn:substringBefore(d, '/') : d}
                                             </a>
                                         </c:if>
                                     </c:forEach>
@@ -153,8 +179,8 @@
                         <sec:authorize access="hasRole('TEACHER')">
                             <a href="/course-material-page/${lecture.id}" class="btn btn-sm btn-light rounded-pill px-3 fw-bold">Edit Content</a>
                             <form action="${pageContext.request.contextPath}/courses/${course.id}/lecture/${lecture.id}/delete" method="post" class="d-inline m-0" onsubmit="return confirm('Delete this lecture permanently?');">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3">Delete</button>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3">Delete</button>
                             </form>
                         </sec:authorize>
 
@@ -280,5 +306,3 @@
 </div>
 </body>
 </html>
-
-

@@ -20,6 +20,7 @@ Key technologies used:
 ## Update Log
 ### [2026-04-12 By Chris 12992583]
 - **Added**: content display download file and download link
+- **Added**: Path to the return button is automatically determined
 - **Bug Fixes**: index path bug
 ### [2026-04-12 By Jacky 12728551]
 - **Added**: poll result Thumbnails & fix course-material-page

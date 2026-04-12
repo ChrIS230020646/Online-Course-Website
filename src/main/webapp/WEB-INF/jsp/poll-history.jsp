@@ -33,7 +33,7 @@
         }
 
         .participation-choice {
-            color: #34c759; /* Apple Success Green */
+            color: #34c759;
             font-weight: 600;
             background: rgba(52, 199, 89, 0.1);
             padding: 4px 10px;
