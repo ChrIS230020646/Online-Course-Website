@@ -54,8 +54,8 @@
                     <jsp:include page="/WEB-INF/jsp/components/edit-comment.jsp">
                         <jsp:param name="commentId" value="${cmt.id}" />
                         <jsp:param name="currentContent" value="${cmt.description}" />
-                        <jsp:param name="type" value="lecture" />
-                        <jsp:param name="targetId" value="${lectureId}" />
+                        <jsp:param name="type" value="${param.type}" />
+                        <jsp:param name="targetId" value="${param.targetId}" />
                     </jsp:include>
                 </div>
 
@@ -68,8 +68,10 @@
                 </div>
 
                 <%-- Reply Input Form (Hidden by default) --%>
+                <iframe name="hidden_frame" style="display:none;"></iframe>
                 <div id="reply-form-${cmt.id}" class="mt-3 ms-4" style="display:none;">
-                    <form action="${pageContext.request.contextPath}/comment/lecture/${lectureId}/add" method="post" class="d-flex flex-column gap-2">
+                    <form action="${pageContext.request.contextPath}/comment/${param.type}/${param.targetId}/add-ajax" method="post" class="d-flex flex-column gap-2"
+                    target="hidden_frame" onsubmit="setTimeout(() => { location.reload(); }, 100);">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="parentId" value="${cmt.id}"/>
                         <div id="reply-label-${cmt.id}" class="badge bg-light text-dark align-self-start" style="display:none; font-weight: normal; padding: 5px 10px; border-radius: 10px;"></div>
@@ -121,8 +123,8 @@
                                     <jsp:include page="/WEB-INF/jsp/components/edit-comment.jsp">
                                         <jsp:param name="commentId" value="${reply.id}" />
                                         <jsp:param name="currentContent" value="${reply.description}" />
-                                        <jsp:param name="type" value="lecture" />
-                                        <jsp:param name="targetId" value="${lectureId}" />
+                                        <jsp:param name="type" value="${param.type}" />
+                                        <jsp:param name="targetId" value="${param.targetId}" />
                                     </jsp:include>
                                 </div>
                             </div>

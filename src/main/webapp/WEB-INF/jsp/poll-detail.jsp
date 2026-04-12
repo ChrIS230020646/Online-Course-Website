@@ -150,7 +150,7 @@
 </jsp:include>
 </div>
 <script>
-    function toggleEdit(textId, formId) {
+/*    function toggleEdit(textId, formId) {
         const textElem = document.getElementById(textId);
         const formElem = document.getElementById(formId);
         if (textElem.style.display === 'none') {
@@ -165,7 +165,7 @@
             input.value = '';
             input.value = val;
         }
-    }
+    }*/
 
     function saveOption(pollId, index) {
         const newText = document.getElementById('input-opt-' + index).value;

@@ -16,7 +16,6 @@
 
 
 <script>
-lecture-comment-section.jsp
 function toggleReplyForm(id) {
     const form = document.getElementById('reply-form-' + id);
     if (form) {
