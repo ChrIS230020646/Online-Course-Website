@@ -10,8 +10,13 @@ Key technologies used:
 - **Frontend:** JSP, Bootstrap
 
 ---
-
-
+## Teacher test account:
+- **Account**: t123
+- **Password**: Tpw123@@
+## Student tset account:
+- **Account**: s123
+- **Password**: Spw123@@
+---
 ## Update Log
 ### [2026-04-12 By Chris 12992583]
 - **Added**: content display download file and download link
