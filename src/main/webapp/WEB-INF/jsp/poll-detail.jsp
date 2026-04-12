@@ -70,7 +70,7 @@
         <div class="poll-header mb-5">
             <c:choose>
                 <c:when test="${isInstructor}">
-                    <div onclick="toggleEdit('q-text', 'q-form')" id="q-text" class="editable-area">
+                    <div onclick="toggleEdit2('q-text', 'q-form')" id="q-text" class="editable-area">
                         <h2 class="fw-bold">${poll.question} <i class="bi bi-pencil-square text-muted fs-6"></i></h2>
                     </div>
                     <form id="q-form" action="/polls/${poll.id}/edit-question" method="post" style="display:none;" class="mt-2">
@@ -78,7 +78,7 @@
                         <div class="input-group">
                             <input type="text" name="newQuestion" class="form-control form-control-lg" value="${poll.question}" required>
                             <button class="btn btn-primary">Save</button>
-                            <button type="button" class="btn btn-outline-secondary" onclick="toggleEdit('q-text', 'q-form')">Cancel</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="toggleEdit2('q-text', 'q-form')">Cancel</button>
                         </div>
                     </form>
                 </c:when>
@@ -105,7 +105,7 @@
                                 </div>
                                 <c:choose>
                                     <c:when test="${isInstructor}">
-                                        <div onclick="toggleEdit('opt-t-${i}', 'opt-f-${i}')" id="opt-t-${i}" class="editable-area">
+                                        <div onclick="toggleEdit2('opt-t-${i}', 'opt-f-${i}')" id="opt-t-${i}" class="editable-area">
                                             <label class="fw-bold mb-0 cursor-pointer" for="radio-${i}">
                                                     ${poll.options[i]} <i class="bi bi-pencil text-muted small"></i>
                                             </label>
@@ -121,7 +121,7 @@
                                     <div class="input-group input-group-sm w-75">
                                         <input type="text" id="input-opt-${i}" class="form-control" value="${poll.options[i]}">
                                         <button type="button" class="btn btn-success" onclick="saveOption(${poll.id}, ${i})">OK</button>
-                                        <button type="button" class="btn btn-light border" onclick="toggleEdit('opt-t-${i}', 'opt-f-${i}')">Cancel</button>
+                                        <button type="button" class="btn btn-light border" onclick="toggleEdit2('opt-t-${i}', 'opt-f-${i}')">Cancel</button>
                                     </div>
                                 </div>
                             </c:if>
@@ -150,7 +150,7 @@
 </jsp:include>
 </div>
 <script>
-/*    function toggleEdit(textId, formId) {
+    function toggleEdit2(textId, formId) {
         const textElem = document.getElementById(textId);
         const formElem = document.getElementById(formId);
         if (textElem.style.display === 'none') {
@@ -165,7 +165,7 @@
             input.value = '';
             input.value = val;
         }
-    }*/
+    }
 
     function saveOption(pollId, index) {
         const newText = document.getElementById('input-opt-' + index).value;
