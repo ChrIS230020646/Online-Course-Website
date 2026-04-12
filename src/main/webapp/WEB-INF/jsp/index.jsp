@@ -24,19 +24,20 @@
 
 <nav class="main-nav">
     <div class="nav-links" style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
-
         <div class="d-flex align-items-center gap-3">
             <sec:authorize access="isAuthenticated()">
                 <a href="/profile">
-                    <img src="${not empty user.profilePicture ? user.profilePicture : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}" class="nav-avatar">
+                    <img src="${not empty currentUser.profilePicture ? currentUser.profilePicture : 'https://ui-avatars.com/api/?name=User'}" class="nav-avatar">
                 </a>
-                <a href="/logout" class="btn-logout" style="font-size: 14px; text-decoration: none;">Logout</a>
+                <form action="/logout" method="post" style="display:inline;">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <button type="submit" style="border:none; background:none; color:#dc3545; font-size: 14px; font-weight: 600;">Logout</button>
+                </form>
             </sec:authorize>
             <sec:authorize access="isAnonymous()">
                 <a href="/login" style="text-decoration: none; font-weight: 600;">Login</a>
             </sec:authorize>
         </div>
-
         <div>
             <a href="/courses" style="font-weight: 600;">Browse Courses</a>
         </div>
@@ -44,10 +45,9 @@
 </nav>
 
 <div class="ui-container">
-
     <div class="mt-4 mb-5">
         <sec:authorize access="isAuthenticated()">
-            <h1 class="page-title">Hello, ${user.fullName}</h1>
+            <h1 class="page-title">Hello, ${currentUser.fullName}</h1>
             <p class="text-secondary">Explore your courses and recent updates.</p>
         </sec:authorize>
     </div>
@@ -59,7 +59,7 @@
     <div class="row g-4 mb-5">
         <c:forEach items="${courses}" var="course">
             <div class="col-md-4">
-                <a href="/course/${course.id}" class="ui-card clickable h-100 d-flex flex-column">
+                <a href="/courses/${course.id}" class="ui-card clickable h-100 d-flex flex-column">
                     <div class="d-flex justify-content-between align-items-center">
                         <span style="color:var(--text-secondary); font-weight:600; font-size:11px; text-transform:uppercase;">${course.category}</span>
                         <span class="instructor-tag">👤 ${course.instructor.fullName}</span>
@@ -77,7 +77,8 @@
             <h2 style="font-weight: 700; margin-bottom: 24px; font-size: 24px;">Latest Lectures</h2>
             <div class="d-flex flex-column gap-3">
                 <c:forEach items="${recentLectures}" var="lecture">
-                    <a href="/lecture/${lecture.id}" class="ui-card clickable" style="padding: 18px 24px;">
+
+                    <a href="/course-material-page/${lecture.id}" class="ui-card clickable" style="padding: 18px 24px;">
                         <span class="source-tag">COURSE: ${lecture.course.title}</span>
                         <div class="d-flex align-items-center">
                             <div style="background: var(--brand-blue); width: 8px; height: 8px; border-radius: 50%; margin-right: 15px;"></div>
@@ -92,7 +93,7 @@
             <h2 style="font-weight: 700; margin-bottom: 24px; font-size: 24px;">Active Polls</h2>
             <div class="d-flex flex-column gap-3">
                 <c:forEach items="${activePolls}" var="poll">
-                    <a href="/poll/${poll.id}" class="ui-card clickable" style="padding: 20px;">
+                    <a href="/polls/courses/${poll.course.id}/poll/${poll.id}" class="ui-card clickable" style="padding: 20px;">
                         <span class="source-tag">POLL IN: ${poll.course.title}</span>
                         <div class="d-flex align-items-center mt-1">
                             <div style="font-size: 24px; margin-right: 15px;">📊</div>
@@ -107,6 +108,5 @@
         </div>
     </div>
 </div>
-
 </body>
 </html>

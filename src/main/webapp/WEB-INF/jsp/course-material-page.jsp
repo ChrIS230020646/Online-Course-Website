@@ -43,10 +43,6 @@
     <c:set var="displayDesc" value="${parts[0]}" />
     <c:set var="urlList" value="${fn:trim(parts[1])}" />
 </c:if>
-<c:if test="${not fn:contains(rawContent, '|||') and fn:startsWith(rawContent, 'http')}">
-    <c:set var="displayDesc" value="" />
-    <c:set var="urlList" value="${fn:trim(rawContent)}" />
-</c:if>
 
 <nav class="main-nav">
     <div class="d-flex align-items-center">
@@ -57,12 +53,13 @@
     </div>
     <div class="nav-links">
         <a href="/courses">All Courses</a>
-        <a href="/courses/${course.id}">Back to Course</a>
+        <%-- 使用 lecture.course.id 保證返回不報錯 --%>
+        <a href="/courses/${lecture.course.id}">Back to Course</a>
     </div>
 </nav>
 
 <div class="ui-container">
-    <a href="/courses/${course.id}" class="btn-back">❮</a>
+    <a href="/courses/${lecture.course.id}" class="btn-back">❮</a>
 
     <div class="ui-card mb-4">
         <sec:authorize access="hasRole('TEACHER')">
@@ -72,20 +69,17 @@
                     <label class="fw-bold text-muted small">LECTURE TITLE</label>
                     <input type="text" name="title" class="form-control form-control-lg border-0 bg-light" value="${lecture.title}" required>
                 </div>
-
                 <div class="mb-4">
                     <label class="fw-bold text-muted small">DESCRIPTION (TEXT ONLY)</label>
-                    <textarea id="editDesc" class="form-control border-0 bg-light" rows="4" placeholder="Enter lecture notes...">${displayDesc}</textarea>
+                    <textarea id="editDesc" class="form-control border-0 bg-light" rows="4">${displayDesc}</textarea>
                 </div>
-
                 <div class="mb-4">
                     <label class="fw-bold text-muted small">EXTERNAL LINKS (ONE PER LINE)</label>
-                    <textarea id="editUrlList" class="form-control border-0 bg-light" rows="3" placeholder="Paste URLs here, one per line...">${urlList}</textarea>
+                    <textarea id="editUrlList" class="form-control border-0 bg-light" rows="3">${urlList}</textarea>
                 </div>
-
                 <input type="hidden" name="content" id="finalContentField">
                 <div class="d-flex justify-content-between align-items-center">
-                    <span class="text-muted small">Edit content and links above. Links will appear as icons below.</span>
+                    <span class="text-muted small">Edit content and links.</span>
                     <button type="submit" onclick="prepareSubmit()" class="btn btn-primary rounded-pill px-5">Save Changes</button>
                 </div>
             </form>
@@ -93,15 +87,11 @@
 
         <sec:authorize access="hasRole('STUDENT')">
             <h1 style="font-weight: 700; margin-bottom: 20px;">${lecture.title}</h1>
+            <div class="mt-2 mb-4" style="font-size: 17px; line-height: 1.7; white-space: pre-wrap; color: #444;">${displayDesc}</div>
         </sec:authorize>
 
-        <c:if test="${not empty displayDesc}">
-            <div class="mt-2 mb-4" style="font-size: 17px; line-height: 1.7; white-space: pre-wrap; color: #444;">${displayDesc}</div>
-        </c:if>
-
         <hr class="my-5">
-
-        <h5 class="mb-4 text-muted" style="font-size: 13px; font-weight: 700; letter-spacing: 1px;">ATTACHED MATERIALS & LINKS</h5>
+        <h5 class="mb-4 text-muted" style="font-size: 13px; font-weight: 700;">ATTACHED MATERIALS & LINKS</h5>
 
         <c:if test="${not empty urlList}">
 

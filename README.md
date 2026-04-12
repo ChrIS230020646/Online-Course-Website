@@ -13,11 +13,11 @@ Key technologies used:
 
 
 ## Update Log
+### [2026-04-12 By Chris 12992583]
+- **Added**: content display download file and download link
+- **Bug Fixes**: index path bug
 ### [2026-04-12 By Jacky 12728551]
 - **Added**: poll result Thumbnails & fix course-material-page
-### [2026-04-12 By Adrian 14219499]
-- **Added**: Added function to Edit Students accounts for Teachers
-- **Added**: Perfected Delete Function: Teachers can delete any account on the user management page, both students and teachers can delete their own accounts on edit profile
 ### [2026-04-12 By Jacky 12728551]
 - **Added**: poll all history & all comment history btn
 - **Added**: poll all history & all comment history
@@ -30,6 +30,9 @@ Key technologies used:
 - **Added**: edit comment & part of history
 ### [2026-04-11 By Jacky 12728551]
 - **Added**: add comment box to poll page
+### [2026-04-09 By Adrian 14219499]
+- **Added**: Added function to Edit Students accounts for Teachers
+- **Added**: Perfected Delete Function: Teachers can delete any account on the user management page, both students and teachers can delete their own accounts on edit profile
 ### [2026-04-09 By Adrian 14219499]
 - **Added**: Edit course, edit lectures, delete course, delete lectures
 ### [2026-04-08 By Chris 12992583]
