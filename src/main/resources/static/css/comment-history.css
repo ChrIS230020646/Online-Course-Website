@@ -1,0 +1,5 @@
+body { background-color: #f8f9fa; }
+.bg-primary-soft { background-color: #e7f0ff; }
+.card { transition: transform 0.2s; }
+.card:hover { transform: translateY(-3px); }
+.sort-btn { border-radius: 20px; }
