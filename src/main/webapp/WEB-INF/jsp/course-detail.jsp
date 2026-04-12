@@ -178,7 +178,7 @@
                     <div class="ms-3 d-flex align-items-center gap-2">
                         <sec:authorize access="hasRole('TEACHER')">
                             <a href="/course-material-page/${lecture.id}" class="btn btn-sm btn-light rounded-pill px-3 fw-bold">Edit Content</a>
-                            <form action="${pageContext.request.contextPath}/courses/${course.id}/lecture/${lecture.id}/delete" method="post" class="d-inline m-0" onsubmit="return confirm('Delete this lecture permanently?');">
+                            <form action="${pageContext.request.contextPath}/course-material-page/delete/${lecture.id}" method="post" class="d-inline m-0" onsubmit="return confirm('Delete this lecture permanently?');">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3">Delete</button>
                             </form>
@@ -218,7 +218,7 @@
                     <sec:authorize access="hasRole('TEACHER')">
                         <div>
                             <a href="/polls/courses/${course.id}/poll/${poll.id}" class="btn btn-sm btn-light rounded-pill px-3">View Results/Edit</a>
-                            <form action="${pageContext.request.contextPath}/polls/${poll.id}/delete" method="post" class="d-inline m-0"
+                            <form action="${pageContext.request.contextPath}/polls/delete/${poll.id}" method="post" class="d-inline m-0"
                                   onsubmit="return confirm('Delete this poll permanently?');">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3">Delete</button>
