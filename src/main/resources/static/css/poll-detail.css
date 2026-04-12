@@ -1,10 +1,19 @@
-/* poll-detail.css 內容 */
-.ui-card { border-radius: 15px;
-    border: none;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    max-width: 800px;
-    margin: auto;
+.file-box {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #eee;
+    transition: all 0.2s; margin-bottom: 12px; border-left: 4px solid #dee2e6;
 }
+.file-box:hover { background: #fefefe; border-color: #0071e3; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.file-info { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #333; flex: 1; overflow: hidden; }
+.file-info:hover { color: #0071e3; }
+.file-info span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.btn-delete-item { color: #ff3b30; border: none; background: none; font-size: 22px; padding: 0 10px; cursor: pointer; line-height: 1; }
+.btn-delete-item:hover { color: #d70015; transform: scale(1.2); }
+
+.url-name { font-size: 13px; color: #0071e3; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.upload-section { background: #fff; border: 2px dashed #dee2e6; padding: 20px; border-radius: 12px; text-align: center; margin-top: 20px; }
+
 .progress { height: 12px; border-radius: 6px; background-color: #f0f2f5; margin-top: 10px; }
 .progress-bar { background: linear-gradient(90deg, #0d6efd 0%, #0db8fd 100%); transition: width 0.8s ease-in-out; border-radius: 6px; }
 .editable-area { padding: 5px; transition: 0.2s; border-radius: 5px; display: inline-block; }

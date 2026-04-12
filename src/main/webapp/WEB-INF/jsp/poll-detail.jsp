@@ -47,12 +47,13 @@
                         </a>
     </div>
 </nav>
+<div class="ui-container">
 <div class="container py-5">
     <div class="ui-card bg-white p-5 shadow-sm">
         <%--<%--Back Button--%>
-        <a href="/courses/${courseId}" class="btn btn-link mb-3 p-0 text-decoration-none">❮ Back to Course</a>
+        <a href="/courses/${courseId}" class="btn btn-link mb-3 p-0 text-decoration-none">❮</a>
 
-        <%-- 2. Voting Title Area --%>
+
         <div class="poll-header mb-5">
             <c:choose>
                 <c:when test="${isInstructor}">
@@ -139,11 +140,14 @@
             </div>
         </form>
     </div>
-</div>
+    </div>
+<div class="ui-container">
+
 <jsp:include page="/WEB-INF/jsp/components/comment-section.jsp" >
     <jsp:param name="type" value="poll" />
     <jsp:param name="targetId" value="${poll.id}" />
 </jsp:include>
+</div>
 <script>
 // Switch between editing and display modes
 function toggleEdit(textId, formId) {

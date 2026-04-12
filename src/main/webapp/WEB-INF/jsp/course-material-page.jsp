@@ -53,7 +53,6 @@
     </div>
     <div class="nav-links">
         <a href="/courses">All Courses</a>
-        <%-- 使用 lecture.course.id 保證返回不報錯 --%>
         <a href="/courses/${lecture.course.id}">Back to Course</a>
     </div>
 </nav>
@@ -159,10 +158,12 @@
         </sec:authorize>
     </div>
 </div>
+<div class="ui-container">
 <jsp:include page="/WEB-INF/jsp/components/comment-section.jsp" >
     <jsp:param name="type" value="lecture" />
     <jsp:param name="targetId" value="${lecture.id}" />
 </jsp:include>
+</div>
 <script>
     function prepareSubmit() {
         const desc = document.getElementById('editDesc').value;

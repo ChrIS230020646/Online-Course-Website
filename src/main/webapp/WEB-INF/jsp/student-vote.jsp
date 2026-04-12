@@ -20,11 +20,38 @@
 
 </head>
 <body class="bg-light">
-
+<nav class="main-nav">
+    <div class="d-flex align-items-center">
+        <a href="/profile" class="text-decoration-none d-flex align-items-center">
+            <img src="${pageContext.request.userPrincipal != null ? currentUser.profilePicture : 'https://ui-avatars.com/api/?name=User'}"
+                 alt="Avatar"
+                 style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #eee;">
+            <span class="ms-2 fw-bold" style="color: #333;">
+                ${currentUser.fullName}
+            </span>
+        </a>
+    </div>
+    <div class="nav-links">
+        <a href="/courses">All Courses</a>
+        <sec:authorize access="hasRole('STUDENT')">
+            <a href="/my-courses">My Learning</a>
+        </sec:authorize>
+        <form action="/logout" method="post" style="display:inline; margin-left:25px;">
+            <button type="submit" class="btn-logout" style="border:none; background:none; cursor:pointer; font-weight:500;">Logout</button>
+        </form>
+        <a href="/history/comment/all" class="nav-history-link">
+                            <span class="badge rounded-pill bg-info-subtle text-info-emphasis">All Comment History</span>
+                        </a>
+                        <a href="/history/poll/all" class="nav-history-link">
+                            <span class="badge rounded-pill bg-primary-subtle text-primary-emphasis">All Poll History</span>
+                        </a>
+    </div>
+</nav>
+<div class="ui-container">
 <div class="container py-5">
     <div class="ui-card bg-white p-5 shadow-sm">
         <%--Back Button--%>
-        <a href="/courses/${courseId}" class="btn btn-link mb-3 p-0 text-decoration-none">❮ Back to Course</a>
+        <a href="/courses/${courseId}" class="btn btn-link mb-3 p-0 text-decoration-none">❮ </a>
 
         <%-- 2. Voting Title Area --%>
         <div class="poll-header mb-5">
@@ -114,10 +141,17 @@
         </form>
     </div>
 </div>
+
+
+
+</div>
+<div class="ui-container">
+
 <jsp:include page="/WEB-INF/jsp/components/comment-section.jsp" >
     <jsp:param name="type" value="poll" />
     <jsp:param name="targetId" value="${poll.id}" />
 </jsp:include>
+</div>
 <script>
 
 
