@@ -37,6 +37,12 @@
         <form action="/logout" method="post" style="display:inline; margin-left:25px;">
             <button type="submit" class="btn-logout" style="border:none; background:none; cursor:pointer; font-weight:500;">Logout</button>
         </form>
+        <a href="/history/comment/all" class="nav-history-link">
+                            <span class="badge rounded-pill bg-info-subtle text-info-emphasis">All Comment History</span>
+                        </a>
+                        <a href="/history/poll/all" class="nav-history-link">
+                            <span class="badge rounded-pill bg-primary-subtle text-primary-emphasis">All Poll History</span>
+                        </a>
     </div>
 </nav>
 <div class="ui-container">
