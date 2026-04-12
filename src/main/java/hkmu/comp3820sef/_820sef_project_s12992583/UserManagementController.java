@@ -57,15 +57,22 @@ public class UserManagementController {
     @PostMapping("/update/{id}")
     @PreAuthorize("hasRole('TEACHER')")
     public String adminUpdateUser(@PathVariable Long id,
-                                  @RequestParam String fullName,
-                                  @RequestParam String role,
-                                  @RequestParam String password,
+                                  @RequestParam(required = false) String fullName,
+                                  @RequestParam(required = false) String email,
+                                  @RequestParam(required = false) String role,
+                                  @RequestParam(required = false) String password,
                                   @RequestParam(required = false) String phoneNumber) {
 
         AppUser user = userRepository.findById(id).orElseThrow();
+        if(!fullName.isEmpty())
         user.setFullName(fullName);
+        if(!email.isEmpty())
+            user.setEmail(email);
+        if(!role.isEmpty())
         user.setRole(role);
+        if(!phoneNumber.isEmpty()&&phoneNumber.length()==8)
         user.setPhoneNumber(phoneNumber);
+        if(!password.isEmpty())
         user.setPassword(password); // Plain text as requested
 
         userRepository.save(user);

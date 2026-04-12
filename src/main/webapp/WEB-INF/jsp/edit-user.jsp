@@ -90,7 +90,8 @@
                  class="ui-input"
                  placeholder="Enter new password"
                  style="background-color: #f0f7ff; border: 1px solid #cce3ff;"
-                 required>
+
+                 >
           <small class="text-muted">As a teacher, you are setting a new visible password for this student.</small>
         </div>
       </div>
