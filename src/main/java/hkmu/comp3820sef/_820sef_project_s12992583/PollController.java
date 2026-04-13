@@ -40,15 +40,28 @@ public class PollController {
     @GetMapping("/courses/{courseId}/poll/{pollId}")
     public String viewPoll(@PathVariable Long courseId, @PathVariable Long pollId,
                            Authentication auth, Model model) {
-
         PollDTO pollDto = pollService.getPollViewData(pollId, auth.getName());
+
+        AppUser currentUser = userRepository.findByUsername(auth.getName());
+        Poll poll = pollRepository.findById(pollId).orElseThrow();
+        Course course = poll.getCourse();
+
+        boolean isEnrolled = false;
+        if (currentUser != null) {
+            boolean enrolledInCourse = currentUser.getEnrolledCourses().contains(course);
+            boolean isTeacher = currentUser.getRole().equals("TEACHER");
+            isEnrolled = enrolledInCourse || isTeacher;
+        }
+
         model.addAttribute("poll", pollDto);
         model.addAttribute("courseId", courseId);
+        model.addAttribute("isEnrolled", isEnrolled);
+        model.addAttribute("currentUser", currentUser);
 
-
+        // ADD THIS LINE: The JSP specifically looks for ${totalVotes}
+        model.addAttribute("totalVotes", pollDto.getTotalVotes());
 
         List<Comment> comments = commentService.getCommentsByTarget("poll", pollId);
-
         model.addAttribute("commentList", comments);
 
         return pollDto.isInstructor() ? "poll-detail" : "student-vote";

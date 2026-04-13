@@ -105,8 +105,20 @@
         </sec:authorize>
 
         <sec:authorize access="hasRole('STUDENT')">
+                <c:choose>
+                    <c:when test="${isEnrolled}">
             <h1 style="font-weight: 700; margin-bottom: 20px;">${lecture.title}</h1>
             <div class="mt-2 mb-4" style="font-size: 17px; line-height: 1.7; white-space: pre-wrap; color: #444;">${displayDesc}</div>
+                    </c:when>
+                    <c:otherwise>
+                            <div class="d-flex justify-content-center">
+                                <h1 class="page-title mb-5">You DO NOT have permission to access this page</h1>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <a href="/courses" class="btn-primary-custom">Back to Courses</a>
+                            </div>
+                    </c:otherwise>
+                </c:choose>
         </sec:authorize>
 
         <hr class="my-5">
@@ -174,12 +186,18 @@
         </sec:authorize>
     </div>
 </div>
+<c:choose>
+    <c:when test="${isEnrolled}">
 <div class="ui-container">
 <jsp:include page="/WEB-INF/jsp/components/comment-section.jsp" >
     <jsp:param name="type" value="lecture" />
     <jsp:param name="targetId" value="${lecture.id}" />
 </jsp:include>
 </div>
+</c:when>
+<c:otherwise>
+</c:otherwise>
+</c:choose>
 <script>
     function prepareSubmit() {
         const desc = document.getElementById('editDesc').value;

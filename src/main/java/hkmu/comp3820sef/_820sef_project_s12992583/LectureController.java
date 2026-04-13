@@ -43,19 +43,44 @@ public class LectureController {
     @Autowired
     private CommentService commentService;
     @GetMapping("/course-material-page/{lectureId}")
-    public String showCourseMaterialPage(@PathVariable("lectureId") Long lectureId, Model model) {
+    public String showCourseMaterialPage(@PathVariable("lectureId") Long lectureId,
+                                         Model model,
+                                         org.springframework.security.core.Authentication auth) {
 
         Lecture lecture = lectureRepository.findById(lectureId).orElse(null);
-        Course course =lecture.getCourse();
-        model.addAttribute("course", course);
-        model.addAttribute("lecture", lecture);
-        model.addAttribute("lectureId", lectureId);
         if (lecture == null) {
             return "redirect:/";
         }
-        List<Comment> comments = commentService.getCommentsByTarget("lecture", lectureId);
 
+        Course course = lecture.getCourse();
+
+        // --- START OF NEW LOGIC ---
+        boolean isEnrolled = false;
+        AppUser currentUser = null;
+
+        if (auth != null && auth.isAuthenticated()) {
+            currentUser = userRepository.findByUsername(auth.getName());
+            if (currentUser != null) {
+                // Check if user is a student enrolled in this course OR a teacher
+                boolean enrolledInCourse = currentUser.getEnrolledCourses().contains(course);
+                boolean isTeacher = currentUser.getRole().equals("TEACHER");
+
+                isEnrolled = enrolledInCourse || isTeacher;
+            }
+        }
+        // --- END OF NEW LOGIC ---
+
+        model.addAttribute("course", course);
+        model.addAttribute("lecture", lecture);
+        model.addAttribute("lectureId", lectureId);
+
+        // THESE TWO LINES ARE CRITICAL FOR YOUR JSP
+        model.addAttribute("isEnrolled", isEnrolled);
+        model.addAttribute("currentUser", currentUser);
+
+        List<Comment> comments = commentService.getCommentsByTarget("lecture", lectureId);
         model.addAttribute("commentList", comments);
+
         return "course-material-page";
     }
 

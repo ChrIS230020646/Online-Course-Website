@@ -60,6 +60,8 @@
     </div>
 </nav>
 <div class="ui-container">
+    <c:choose>
+    <c:when test="${isEnrolled}">
 <div class="container py-5">
     <div class="ui-card bg-white p-5 shadow-sm">
 
@@ -138,15 +140,31 @@
                 </button>
             </div>
         </form>
+    </c:when>
+    <c:otherwise>
+        <div class="d-flex justify-content-center">
+            <h1 class="page-title mb-5">You DO NOT have permission to access this page</h1>
+        </div>
+        <div class="d-flex justify-content-center">
+            <a href="/courses" class="btn-primary-custom">Back to Courses</a>
+        </div>
+    </c:otherwise>
+    </c:choose>
     </div>
     </div>
+    <c:choose>
+    <c:when test="${isEnrolled}">
 <div class="ui-container">
-
 <jsp:include page="/WEB-INF/jsp/components/comment-section.jsp" >
     <jsp:param name="type" value="poll" />
     <jsp:param name="targetId" value="${poll.id}" />
 </jsp:include>
+
 </div>
+    </c:when>
+    <c:otherwise>
+    </c:otherwise>
+    </c:choose>
 <script>
     function toggleEdit2(textId, formId) {
         const textElem = document.getElementById(textId);
