@@ -134,6 +134,13 @@ public class CommentController {
 
             if (isTeacher || isOwner) {
                 commentRepository.delete(comment);
+
+                    List<Comment> replies = comment.getReplies();
+                    for (Comment reply : replies) {
+                        commentRepository.delete(reply);
+
+                }
+
             }
         }
 
