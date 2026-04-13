@@ -80,8 +80,10 @@ public class UserManagementController {
         user.setRole(role);
         if(!phoneNumber.isEmpty()&&phoneNumber.length()==8)
         user.setPhoneNumber(phoneNumber);
-        if(!password.isEmpty())
-        user.setPassword(password); // Plain text as requested
+        if(password != null && !password.trim().isEmpty()) {
+            // We MUST encode it, otherwise Spring Security won't let the user log in
+            user.setPassword(passwordEncoder.encode(password));
+        }
 
         userRepository.save(user);
         return "redirect:/users"; // Go back to the user list
