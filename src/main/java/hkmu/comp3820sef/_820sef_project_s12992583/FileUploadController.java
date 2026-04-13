@@ -21,14 +21,14 @@ public class FileUploadController {
             FileEntity fileEntity = new FileEntity(
                     file.getOriginalFilename(),
                     file.getContentType(),
-                    file.getBytes() // 獲取檔案二進位數據
+                    file.getBytes()
             );
 
             fileRepository.save(fileEntity);
-            return ResponseEntity.ok("檔案上傳成功: " + file.getOriginalFilename());
+            return ResponseEntity.ok("file success: " + file.getOriginalFilename());
 
         } catch (IOException e) {
-            return ResponseEntity.status(500).body("檔案處理失敗");
+            return ResponseEntity.status(500).body("file not success");
         }
     }
 }
