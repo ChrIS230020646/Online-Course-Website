@@ -87,8 +87,7 @@
         <!--<a href="${pageContext.request.contextPath}/" class="btn-back">
             <i class="bi bi-chevron-left"></i>
         </a>-->
-        <h1 class="page-title">Poll Management</h1>
-        <p style="color: var(--text-secondary);">Track your created polls and participation activity.</p>
+        <h1 class="page-title">My Poll History</h1>
     </div>
 
     <div class="section-header">
