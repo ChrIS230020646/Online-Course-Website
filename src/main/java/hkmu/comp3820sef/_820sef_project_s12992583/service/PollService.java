@@ -163,7 +163,7 @@ public List<PollGroupDTO> getAllPollHistory() {
             for (PollResponse r : responses) {
                 VoterDetail vd = new VoterDetail();
                 vd.setUsername(r.getUser().getUsername());
-                vd.setOptionText(r.getSelectedOptionText()); // 確保這行有值
+                vd.setOptionText(r.getSelectedOptionText());
                 voterDetails.add(vd);
             }
         }

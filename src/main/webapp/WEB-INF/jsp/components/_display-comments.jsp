@@ -3,7 +3,7 @@
 
 <div class="discussion-container">
     <h4 class="mb-4" style="font-weight: 600; color: #1d1d1f;">
-        Course Discussion (${commentList != null ? commentList.size() : 0})
+        comment (${commentList != null ? commentList.size() : 0})
     </h4>
 
     <div class="comment-stack">

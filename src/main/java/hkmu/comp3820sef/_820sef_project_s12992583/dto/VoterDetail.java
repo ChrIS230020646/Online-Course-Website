@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Getter
 public class VoterDetail {
-    // Getters 和 Setters
+    // Getters , Setters
     private String username;
     private String optionText;
     private LocalDateTime voteTime;
