@@ -52,7 +52,7 @@
     <div class="ui-card bg-white p-5 shadow-sm">
         <%--Back Button--%>
 
-        <a href="/courses/${courseId}" class="btn btn-link mb-3 p-0 text-decoration-none">❮ Back to Course</a>
+        <a href="/courses/${poll.courseId}" class="btn btn-link mb-3 p-0 text-decoration-none">❮ Back to Course</a>
 
         <%-- 2. Voting Title Area --%>
         <div class="poll-header mb-5">
