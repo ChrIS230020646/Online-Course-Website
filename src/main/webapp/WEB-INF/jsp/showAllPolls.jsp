@@ -24,9 +24,6 @@
     </div>
     <div class="nav-links">
         <a href="/courses">All Courses</a>
-        <sec:authorize access="hasRole('STUDENT')">
-            <a href="/my-courses">My Learning</a>
-        </sec:authorize>
         <form action="/logout" method="post" style="display:inline; margin-left:25px;">
             <button type="submit" class="btn-logout" style="border:none; background:none; cursor:pointer; font-weight:500;">Logout</button>
         </form>

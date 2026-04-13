@@ -76,6 +76,12 @@
         <form action="/logout" method="post" style="display:inline; margin-left:20px;">
             <button type="submit" style="border:none; background:none; color:#dc3545; cursor:pointer;">Logout</button>
         </form>
+                <a href="/history/comment/all" class="nav-history-link">
+                    <span class="badge rounded-pill bg-info-subtle text-info-emphasis">All Comment History</span>
+                </a>
+                <a href="/history/poll/all" class="nav-history-link">
+                    <span class="badge rounded-pill bg-primary-subtle text-primary-emphasis">All Poll History</span>
+                </a>
     </div>
 </nav>
 
