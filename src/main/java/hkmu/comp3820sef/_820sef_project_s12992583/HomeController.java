@@ -47,13 +47,13 @@ public class HomeController {
     @GetMapping("/lecture/{id}")
     public String lecturePage(@PathVariable("id") Long id, ModelMap model) {
         model.addAttribute("lecture", lectureRepo.findById(id).orElse(null));
-        return "course-material-page"; // 假設這是你的講義內容頁
+        return "course-material-page";
     }
 
     @GetMapping("/poll/{id}")
     public String pollPage(@PathVariable("id") Long id, ModelMap model) {
         model.addAttribute("poll", pollRepo.findById(id).orElse(null));
-        // 根據你是老師還是學生，這裡可能跳轉到 poll-detail 或 student-vote
+
         return "poll-detail";
     }
 }
